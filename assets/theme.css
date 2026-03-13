@@ -398,31 +398,37 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
 
 .btn-primary {
   background: var(--color-text);
-  color: var(--color-background);
+  color: #FAF7F4;
   border: 2px solid var(--color-text);
+  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.2);
 }
 .btn-primary:hover {
-  background: transparent;
-  color: var(--color-text);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.2);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(201, 133, 106, 0.35);
 }
 
 .btn-outline {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.55);
   color: var(--color-text);
-  border: 2px solid var(--color-text);
+  border: 2px solid rgba(44, 24, 16, 0.55);
+  backdrop-filter: blur(4px);
 }
 .btn-outline:hover {
   background: var(--color-text);
-  color: var(--color-background);
-  transform: translateY(-1px);
+  color: #FAF7F4;
+  border-color: var(--color-text);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.2);
 }
 
 .btn-pink {
   background: var(--color-primary);
   color: var(--color-text);
   border: 2px solid var(--color-primary);
+  box-shadow: 0 4px 16px rgba(244, 167, 179, 0.3);
 }
 .btn-pink:hover {
   background: var(--color-accent);
@@ -729,9 +735,9 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
 }
 
 .hero__cta .btn-outline {
-  background: rgba(250,247,244,0.6);
+  background: rgba(250,247,244,0.85);
   color: var(--color-text);
-  border: 2px solid rgba(44,24,16,0.2);
+  border: 2px solid rgba(44,24,16,0.4);
   padding: 16px 32px;
   font-size: 0.82rem;
   border-radius: 100px;
@@ -743,6 +749,7 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
   color: #FAF7F4;
   border-color: var(--color-text);
   transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(44,24,16,0.2);
 }
 
 /* Social proof */
@@ -1166,7 +1173,7 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
   gap: 8px;
   transition: background 0.2s, transform 0.2s;
 }
-.sticky-atc__btn:hover { background: var(--color-accent); transform: translateY(-1px); }
+.sticky-atc__btn:hover { background: var(--color-accent); color: #fff; transform: translateY(-1px); }
 
 /* Color Swatches */
 .color-swatches {
@@ -1305,8 +1312,18 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
 .btn-add-to-cart:hover {
   background: var(--color-accent);
   border-color: var(--color-accent);
+  color: #fff;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(201, 133, 106, 0.3);
+}
+.btn-add-to-cart:disabled,
+.btn-add-to-cart[disabled] {
+  background: rgba(44, 24, 16, 0.2);
+  border-color: transparent;
+  color: rgba(44, 24, 16, 0.45);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 .btn-add-to-cart svg { width: 20px; height: 20px; }
 
@@ -1658,6 +1675,33 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
   opacity: 0.8;
   max-width: 500px;
   margin: 0 auto 36px;
+}
+
+/* Buttons on the pink gradient CTA banner — inverted/white style */
+.cta-banner .btn-primary {
+  background: #fff;
+  color: var(--color-text);
+  border-color: #fff;
+  box-shadow: 0 6px 24px rgba(44, 24, 16, 0.18);
+}
+.cta-banner .btn-primary:hover {
+  background: var(--color-text);
+  border-color: var(--color-text);
+  color: #FAF7F4;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(44, 24, 16, 0.25);
+}
+.cta-banner .btn-outline {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  border-color: rgba(44, 24, 16, 0.45);
+  backdrop-filter: blur(8px);
+}
+.cta-banner .btn-outline:hover {
+  background: rgba(44, 24, 16, 0.12);
+  border-color: var(--color-text);
+  color: var(--color-text);
+  transform: translateY(-2px);
 }
 
 /* === NEWSLETTER === */
