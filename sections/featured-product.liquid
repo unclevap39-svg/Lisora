@@ -3,36 +3,43 @@
   if product == blank
     assign product = collections.all.products.first
   endif
+  assign selected_variant = product.selected_or_first_available_variant
 -%}
 
 {%- if product != blank -%}
 <section class="product-section" id="product-{{ product.id }}">
+
+  <div class="product-section__deco" aria-hidden="true">
+    <div class="product-section__deco-circle product-section__deco-circle--1"></div>
+    <div class="product-section__deco-circle product-section__deco-circle--2"></div>
+  </div>
+
   <div class="container">
     <div class="product-section__grid">
 
-      {%- comment -%} Product Gallery {%- endcomment -%}
+      {%- comment -%} GALERIE {%- endcomment -%}
       <div class="product-gallery" data-aos="fade-right">
+        {%- if section.settings.gallery_tag != blank -%}
+          <div class="product-gallery__floating-tag" aria-hidden="true">{{ section.settings.gallery_tag }}</div>
+        {%- endif -%}
         <div class="product-gallery__main" data-gallery-main>
-          {%- assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image -%}
+          {%- assign featured_image = selected_variant.featured_image | default: product.featured_image -%}
           <img
-            src="{{ featured_image | image_url: width: 900 }}"
+            src="{{ featured_image | image_url: width: 1000 }}"
             alt="{{ featured_image.alt | default: product.title }}"
-            width="900"
+            width="1000"
             loading="eager"
             id="main-product-image"
           >
         </div>
-
         {%- if product.images.size > 1 -%}
           <div class="product-gallery__thumbs">
             {%- for image in product.images limit: 8 -%}
-              <button
-                class="product-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+              <button class="product-gallery__thumb{% if forloop.first %} is-active{% endif %}"
                 data-gallery-thumb
-                data-src="{{ image | image_url: width: 900 }}"
+                data-src="{{ image | image_url: width: 1000 }}"
                 data-alt="{{ image.alt | default: product.title }}"
-                aria-label="Image {{ forloop.index }}"
-              >
+                aria-label="Image {{ forloop.index }}">
                 <img src="{{ image | image_url: width: 160 }}" alt="{{ image.alt | default: product.title }}" loading="lazy">
               </button>
             {%- endfor -%}
@@ -40,117 +47,90 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} Product Info {%- endcomment -%}
-      <div class="product-info" data-aos="fade-left">
-        {%- if section.settings.badge != blank -%}
-          <div class="product-info__badge">
-            <span class="product-info__badge-dot" aria-hidden="true"></span>
-            {{ section.settings.badge }}
-          </div>
-        {%- endif -%}
+      {%- comment -%} INFOS PRODUIT {%- endcomment -%}
+      <div class="product-info" data-aos="fade-left" data-aos-delay="100ms">
 
-        <h2 class="product-info__title">{{ product.title }}</h2>
-
-        <div class="product-info__rating" aria-label="4.9 sur 5 étoiles">
-          <div class="stars" aria-hidden="true">
-            {%- for i in (1..5) -%}
-              <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-              </svg>
-            {%- endfor -%}
-          </div>
-          <span class="rating-count">
-            <strong>4.9</strong>
-            <a href="#reviews" class="rating-link">({{ section.settings.review_count | default: 247 }} avis)</a>
-          </span>
-        </div>
-
-        <div class="product-info__price-wrap">
-          {%- assign selected_variant = product.selected_or_first_available_variant -%}
-          <span class="product-info__price" data-product-price>
-            {{ selected_variant.price | money }}
-          </span>
-          {%- if selected_variant.compare_at_price > selected_variant.price -%}
-            <span class="product-info__compare-price" data-compare-price>
-              {{ selected_variant.compare_at_price | money }}
-            </span>
-            {%- assign savings = selected_variant.compare_at_price | minus: selected_variant.price | times: 100 | divided_by: selected_variant.compare_at_price -%}
-            <span class="product-info__savings">-{{ savings }}%</span>
+        <div class="product-info__header">
+          {%- if section.settings.badge != blank -%}
+            <div class="product-info__badge">
+              <span class="product-info__badge-dot" aria-hidden="true"></span>
+              {{ section.settings.badge }}
+            </div>
           {%- endif -%}
+          <h2 class="product-info__title">{{ product.title }}</h2>
+          <div class="product-info__rating" aria-label="4.9 sur 5 étoiles">
+            <div class="stars" aria-hidden="true">
+              {%- for i in (1..5) -%}
+                <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              {%- endfor -%}
+            </div>
+            <strong class="rating-score">4.9</strong>
+            <a href="#reviews" class="rating-link">({{ section.settings.review_count | default: 247 }} avis vérifiés)</a>
+          </div>
         </div>
 
-        {%- if product.description != blank -%}
-          <div class="product-info__short-desc">
-            {{ product.description | strip_html | truncate: 180 }}
+        <div class="product-info__price-block">
+          <div class="product-info__price-wrap">
+            <span class="product-info__price" data-product-price>{{ selected_variant.price | money }}</span>
+            {%- if selected_variant.compare_at_price > selected_variant.price -%}
+              <span class="product-info__compare-price" data-compare-price>{{ selected_variant.compare_at_price | money }}</span>
+              {%- assign savings = selected_variant.compare_at_price | minus: selected_variant.price | times: 100 | divided_by: selected_variant.compare_at_price -%}
+              <span class="product-info__savings">-{{ savings }}% aujourd'hui</span>
+            {%- endif -%}
           </div>
+          <p class="product-info__price-note">Taxes incluses · Livraison offerte dès 50€</p>
+        </div>
+
+        {%- if section.settings.highlight_1 != blank or section.settings.highlight_2 != blank or section.settings.highlight_3 != blank or section.settings.highlight_4 != blank -%}
+          <ul class="product-highlights" aria-label="Points forts">
+            {%- if section.settings.highlight_1 != blank -%}
+              <li class="product-highlight"><span class="product-highlight__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>{{ section.settings.highlight_1 }}</li>
+            {%- endif -%}
+            {%- if section.settings.highlight_2 != blank -%}
+              <li class="product-highlight"><span class="product-highlight__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>{{ section.settings.highlight_2 }}</li>
+            {%- endif -%}
+            {%- if section.settings.highlight_3 != blank -%}
+              <li class="product-highlight"><span class="product-highlight__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>{{ section.settings.highlight_3 }}</li>
+            {%- endif -%}
+            {%- if section.settings.highlight_4 != blank -%}
+              <li class="product-highlight"><span class="product-highlight__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>{{ section.settings.highlight_4 }}</li>
+            {%- endif -%}
+          </ul>
+        {%- elsif product.description != blank -%}
+          <p class="product-info__short-desc">{{ product.description | strip_html | truncate: 160 }}</p>
         {%- endif -%}
 
-        {%- comment -%} Product Form {%- endcomment -%}
-        <script>
-          window.__LISORA_PRODUCT__ = {{ product | json }};
-        </script>
+        <script>window.__LISORA_PRODUCT__ = {{ product | json }};</script>
 
         <form action="/cart/add" method="post" data-product-form>
           <input type="hidden" name="id" value="{{ selected_variant.id }}">
 
           {%- unless product.has_only_default_variant -%}
             {%- for option in product.options_with_values -%}
-              {%- assign option_name_downcase = option.name | downcase -%}
-
-              {%- if option_name_downcase == 'couleur' or option_name_downcase == 'color' or option_name_downcase == 'colour' -%}
+              {%- assign opt_down = option.name | downcase -%}
+              {%- if opt_down == 'couleur' or opt_down == 'color' or opt_down == 'colour' -%}
                 <div class="color-swatches" data-option="{{ option.name }}">
                   <div class="color-swatches__label">
-                    {{ option.name }}
+                    <span>{{ option.name }}</span>
                     <span class="color-swatches__selected">{{ option.selected_value }}</span>
                   </div>
                   <div class="color-swatches__grid">
                     {%- for value in option.values -%}
-                      {%- assign color_handle = value | handle -%}
-                      {%- assign swatch_image = color_handle | append: '.png' | file_url -%}
-                      <button
-                        type="button"
-                        class="color-swatch{% if option.selected_value == value %} is-active{% endif %}"
-                        data-color-swatch
-                        data-value="{{ value }}"
-                        style="background-color: {{ value | handle | replace: '-', '' }};"
-                        aria-label="{{ value }}"
-                        title="{{ value }}"
-                      >
-                        <span class="color-swatch__tooltip">{{ value }}</span>
-                      </button>
+                      <button type="button" class="color-swatch{% if option.selected_value == value %} is-active{% endif %}" data-color-swatch data-value="{{ value }}" style="background-color:{{ value | handle | replace: '-', '' }};" aria-label="{{ value }}"><span class="color-swatch__tooltip">{{ value }}</span></button>
                     {%- endfor -%}
                   </div>
-                  <select
-                    name="options[{{ option.name | escape }}]"
-                    data-variant-select
-                    data-option="{{ option.name }}"
-                    class="visually-hidden"
-                    aria-label="{{ option.name }}"
-                  >
+                  <select name="options[{{ option.name | escape }}]" data-variant-select data-option="{{ option.name }}" class="visually-hidden" aria-label="{{ option.name }}">
                     {%- for value in option.values -%}
-                      <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>
-                        {{ value }}
-                      </option>
+                      <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
                     {%- endfor -%}
                   </select>
                 </div>
-
               {%- else -%}
-                <div style="margin-bottom:20px;">
-                  <label style="display:block;font-size:0.85rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">
-                    {{ option.name }}: <span style="font-weight:400;text-transform:none;">{{ option.selected_value }}</span>
-                  </label>
-                  <select
-                    name="options[{{ option.name | escape }}]"
-                    data-variant-select
-                    data-option="{{ option.name }}"
-                    style="padding:12px 16px;border:2px solid rgba(44,24,16,0.15);border-radius:12px;font-size:0.9rem;width:100%;background:transparent;"
-                    aria-label="{{ option.name }}"
-                  >
+                <div class="product-option">
+                  <label class="product-option__label">{{ option.name }} — <span class="product-option__value">{{ option.selected_value }}</span></label>
+                  <select name="options[{{ option.name | escape }}]" data-variant-select data-option="{{ option.name }}" class="product-option__select" aria-label="{{ option.name }}">
                     {%- for value in option.values -%}
-                      <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>
-                        {{ value }}
-                      </option>
+                      <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
                     {%- endfor -%}
                   </select>
                 </div>
@@ -158,65 +138,40 @@
             {%- endfor -%}
           {%- endunless -%}
 
-          <label class="product-form__quantity-label" for="product-quantity">Quantité</label>
-          <div class="quantity-selector" role="group" aria-label="Quantité">
-            <button type="button" class="quantity-btn" data-qty-minus aria-label="Diminuer">−</button>
-            <input
-              type="number"
-              id="product-quantity"
-              name="quantity"
-              value="1"
-              min="1"
-              class="quantity-input"
-              aria-label="Quantité"
-            >
-            <button type="button" class="quantity-btn" data-qty-plus aria-label="Augmenter">+</button>
-          </div>
-
-          <div class="product-form__buttons">
-            <button
-              type="submit"
-              class="btn-add-to-cart"
-              data-add-to-cart
-              {% unless selected_variant.available %}disabled{% endunless %}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-                <line x1="3" y1="6" x2="21" y2="6"/>
-                <path d="M16 10a4 4 0 0 1-8 0"/>
-              </svg>
-              {%- if selected_variant.available -%}
-                Ajouter au panier
-              {%- else -%}
-                Rupture de stock
-              {%- endif -%}
-            </button>
-
-            {%- if section.settings.show_buy_now -%}
-              {{ form | payment_button }}
-            {%- endif -%}
+          <div class="product-form__actions">
+            <div class="product-form__qty-wrap">
+              <div class="quantity-selector">
+                <button type="button" class="quantity-btn" data-qty-minus aria-label="Diminuer">−</button>
+                <input type="number" id="product-quantity" name="quantity" value="1" min="1" class="quantity-input" aria-label="Quantité">
+                <button type="button" class="quantity-btn" data-qty-plus aria-label="Augmenter">+</button>
+              </div>
+            </div>
+            <div class="product-form__buttons">
+              <button type="submit" class="btn-add-to-cart" data-add-to-cart {% unless selected_variant.available %}disabled{% endunless %}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                {%- if selected_variant.available -%}Ajouter au panier{%- else -%}Rupture de stock{%- endif -%}
+              </button>
+              {%- if section.settings.show_buy_now -%}{{ form | payment_button }}{%- endif -%}
+            </div>
           </div>
         </form>
 
-        <div class="product-form__meta">
-          <div class="product-form__meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-              <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
-            </svg>
-            <span>Livraison offerte dès 50€</span>
+        <div class="product-guarantees">
+          <div class="product-guarantee">
+            <div class="product-guarantee__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+            <div><div class="product-guarantee__title">Livraison rapide</div><div class="product-guarantee__sub">Offerte dès 50€</div></div>
           </div>
-          <div class="product-form__meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            <span>Paiement 100% sécurisé</span>
+          <div class="product-guarantee">
+            <div class="product-guarantee__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div><div class="product-guarantee__title">Garantie 2 ans</div><div class="product-guarantee__sub">Satisfait ou remboursé</div></div>
           </div>
-          <div class="product-form__meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-            </svg>
-            <span>Retour gratuit sous 30 jours</span>
+          <div class="product-guarantee">
+            <div class="product-guarantee__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
+            <div><div class="product-guarantee__title">Retour 30 jours</div><div class="product-guarantee__sub">Sans condition</div></div>
+          </div>
+          <div class="product-guarantee">
+            <div class="product-guarantee__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div><div class="product-guarantee__title">Paiement sécurisé</div><div class="product-guarantee__sub">3x sans frais</div></div>
           </div>
         </div>
 
@@ -225,61 +180,36 @@
   </div>
 </section>
 
-{%- comment -%} Sticky Add to Cart {%- endcomment -%}
-<div
-  class="sticky-atc"
-  data-sticky-atc
-  style="position:fixed;bottom:0;left:0;right:0;background:var(--color-background);border-top:1px solid rgba(44,24,16,0.1);padding:16px 24px;z-index:90;transform:translateY(100%);transition:transform 0.3s;display:flex;align-items:center;gap:16px;box-shadow:0 -4px 20px rgba(44,24,16,0.1);"
->
+<div class="sticky-atc" data-sticky-atc>
   {%- if product.featured_image -%}
-    <img src="{{ product.featured_image | image_url: width: 80 }}" alt="{{ product.title }}" width="56" height="56" style="border-radius:8px;object-fit:cover;">
+    <img src="{{ product.featured_image | image_url: width: 80 }}" alt="{{ product.title }}" width="52" height="52" class="sticky-atc__img" loading="lazy">
   {%- endif -%}
-  <div style="flex:1;">
-    <div style="font-weight:600;font-size:0.9rem;">{{ product.title }}</div>
-    <div style="font-size:0.85rem;color:var(--color-text-light);">{{ selected_variant.price | money }}</div>
+  <div class="sticky-atc__info">
+    <span class="sticky-atc__name">{{ product.title }}</span>
+    <span class="sticky-atc__price">{{ selected_variant.price | money }}</span>
   </div>
-  <button class="btn-add-to-cart" style="width:auto;padding:14px 28px;font-size:0.82rem;" aria-label="Ajouter au panier">
+  <button class="sticky-atc__btn">
     Ajouter au panier
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
   </button>
 </div>
-
-<style>
-  .sticky-atc.is-visible { transform: translateY(0) !important; }
-</style>
 {%- endif -%}
 
 {% schema %}
 {
   "name": "Produit vedette",
   "settings": [
-    {
-      "type": "product",
-      "id": "product",
-      "label": "Produit"
-    },
-    {
-      "type": "text",
-      "id": "badge",
-      "label": "Badge",
-      "default": "Nouveauté · Édition limitée"
-    },
-    {
-      "type": "number",
-      "id": "review_count",
-      "label": "Nombre d'avis",
-      "default": 247
-    },
-    {
-      "type": "checkbox",
-      "id": "show_buy_now",
-      "label": "Afficher le bouton Acheter maintenant",
-      "default": true
-    }
+    { "type": "product", "id": "product", "label": "Produit" },
+    { "type": "text", "id": "badge", "label": "Badge", "default": "Nouveauté · Édition limitée" },
+    { "type": "text", "id": "gallery_tag", "label": "Tag flottant sur la photo", "default": "⭐ Best-seller" },
+    { "type": "header", "content": "Points forts du produit" },
+    { "type": "text", "id": "highlight_1", "label": "Point fort 1", "default": "Chauffage professionnel en 30 secondes" },
+    { "type": "text", "id": "highlight_2", "label": "Point fort 2", "default": "Plaques céramique — zéro dommage, brillance maximale" },
+    { "type": "text", "id": "highlight_3", "label": "Point fort 3", "default": "5 coloris exclusifs pour afficher votre style" },
+    { "type": "text", "id": "highlight_4", "label": "Point fort 4", "default": "Arrêt automatique après 30 min — 100% sécurisé" },
+    { "type": "number", "id": "review_count", "label": "Nombre d'avis", "default": 247 },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Bouton Acheter maintenant", "default": true }
   ],
-  "presets": [
-    {
-      "name": "Produit vedette"
-    }
-  ]
+  "presets": [{ "name": "Produit vedette" }]
 }
 {% endschema %}
