@@ -520,6 +520,87 @@ const StickyATC = {
   }
 };
 
+// ============ DYNAMIC BACKGROUND ============
+const DynamicBackground = {
+  // Blob parallax on scroll
+  initParallax() {
+    const before = document.documentElement;
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        const progress = maxScroll > 0 ? scrollY / maxScroll : 0;
+
+        // Shift the fixed gradient blobs slightly on scroll for parallax feel
+        before.style.setProperty('--blob-y', `${progress * 8}vh`);
+        ticking = false;
+      });
+    }, { passive: true });
+  },
+
+  // Smooth background color transition per active section
+  initSectionColors() {
+    const sections = document.querySelectorAll('[data-bg-tint]');
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const tint = entry.target.dataset.bgTint;
+          document.body.style.setProperty('--active-tint', tint);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    sections.forEach(s => observer.observe(s));
+  },
+
+  // Cursor glow effect (desktop only)
+  initCursorGlow() {
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    const glow = document.createElement('div');
+    glow.className = 'cursor-glow';
+    document.body.appendChild(glow);
+
+    let mouseX = 0, mouseY = 0;
+    let glowX = 0, glowY = 0;
+    let rafId;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    }, { passive: true });
+
+    const animate = () => {
+      glowX += (mouseX - glowX) * 0.08;
+      glowY += (mouseY - glowY) * 0.08;
+      glow.style.transform = `translate(${glowX}px, ${glowY}px) translate(-50%, -50%)`;
+      rafId = requestAnimationFrame(animate);
+    };
+    animate();
+
+    // Hide on section with dark background
+    const darkSections = document.querySelectorAll('.how-it-works, .site-footer');
+    const darkObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        glow.style.opacity = e.isIntersecting ? '0' : '';
+      });
+    }, { threshold: 0.3 });
+    darkSections.forEach(s => darkObserver.observe(s));
+  },
+
+  init() {
+    this.initParallax();
+    this.initSectionColors();
+    this.initCursorGlow();
+  }
+};
+
 // ============ INIT ============
 document.addEventListener('DOMContentLoaded', () => {
   Toast.init();
@@ -532,4 +613,5 @@ document.addEventListener('DOMContentLoaded', () => {
   AnimateOnScroll.init();
   Newsletter.init();
   StickyATC.init();
+  DynamicBackground.init();
 });
