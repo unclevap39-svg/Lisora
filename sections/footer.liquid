@@ -1,65 +1,168 @@
 <footer class="site-footer" role="contentinfo">
-  <div class="container">
-    <div class="site-footer__grid">
 
-      {%- comment -%} Brand column {%- endcomment -%}
-      <div>
-        <div class="footer-brand__logo">
-          {%- if settings.logo -%}
-            <img src="{{ settings.logo | image_url: width: 160 }}" alt="{{ shop.name }}" width="120">
-          {%- else -%}
-            {{ shop.name }}
-          {%- endif -%}
-        </div>
-        <div class="footer-brand__desc">{{ settings.footer_about }}</div>
-        <div class="social-links">
-          {%- if section.settings.instagram_url != blank -%}
-            <a href="{{ section.settings.instagram_url }}" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-            </a>
-          {%- endif -%}
-          {%- if section.settings.tiktok_url != blank -%}
-            <a href="{{ section.settings.tiktok_url }}" class="social-link" aria-label="TikTok" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
-            </a>
-          {%- endif -%}
-          {%- if section.settings.facebook_url != blank -%}
-            <a href="{{ section.settings.facebook_url }}" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-            </a>
-          {%- endif -%}
-        </div>
-      </div>
-
-      {%- comment -%} Links columns {%- endcomment -%}
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'link_list' -%}
-          <div {{ block.shopify_attributes }}>
-            <p class="footer-column__title">{{ block.settings.heading }}</p>
-            <ul class="footer-column__links">
-              {%- for link in block.settings.menu.links -%}
-                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-              {%- endfor -%}
-            </ul>
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
-
+  {%- comment -%} Newsletter banner at top of footer {%- endcomment -%}
+  <div class="footer-newsletter">
+    <div class="footer-newsletter__deco" aria-hidden="true">
+      <span>✦</span><span>◆</span><span>✦</span>
     </div>
-
-    {%- comment -%} Bottom bar {%- endcomment -%}
-    <div class="site-footer__bottom">
-      <p class="footer-copyright">
-        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Tous droits réservés.
-      </p>
-      <div class="footer-payments">
-        <span class="payment-icon">Visa</span>
-        <span class="payment-icon">Mastercard</span>
-        <span class="payment-icon">PayPal</span>
-        <span class="payment-icon">Apple Pay</span>
+    <div class="container">
+      <div class="footer-newsletter__inner">
+        <div class="footer-newsletter__text">
+          <span class="footer-newsletter__eyebrow">Newsletter exclusive</span>
+          <h2 class="footer-newsletter__title">{{ section.settings.newsletter_title | default: 'Rejoignez la communauté Lisora' }}</h2>
+          <p class="footer-newsletter__desc">{{ section.settings.newsletter_desc | default: 'Offres privées, conseils beauté et nouveautés en avant-première — réservés à nos abonnées.' }}</p>
+        </div>
+        <div class="footer-newsletter__form-wrap">
+          {%- form 'customer', id: 'footer-newsletter-form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input type="hidden" name="form_type" value="customer">
+            <input type="hidden" name="utf8" value="✓">
+            <div class="footer-newsletter__form">
+              <input
+                type="email"
+                name="contact[email]"
+                id="footer-email"
+                class="footer-newsletter__input"
+                placeholder="{{ section.settings.newsletter_placeholder | default: 'Votre adresse email' }}"
+                autocomplete="email"
+                required
+                aria-label="Adresse email pour la newsletter"
+              >
+              <button type="submit" class="btn btn-primary footer-newsletter__btn">
+                {{ section.settings.newsletter_btn | default: "Je m'inscris" }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+            <p class="footer-newsletter__consent">🔒 Aucun spam. Désinscription en 1 clic à tout moment.</p>
+          {%- endform -%}
+        </div>
       </div>
     </div>
   </div>
+
+  {%- comment -%} Main footer body {%- endcomment -%}
+  <div class="footer-body">
+    <div class="container">
+      <div class="footer-grid">
+
+        {%- comment -%} Brand column {%- endcomment -%}
+        <div class="footer-brand">
+          <div class="footer-brand__logo">
+            {%- if settings.logo -%}
+              <img src="{{ settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" width="140" loading="lazy">
+            {%- else -%}
+              <span class="footer-brand__name">{{ shop.name }}</span>
+            {%- endif -%}
+          </div>
+          <p class="footer-brand__desc">{{ settings.footer_about | default: 'Le lisseur professionnel qui sublime chaque femme. Céramique premium, design exclusif, résultats garantis.' }}</p>
+
+          {%- comment -%} Trust badges {%- endcomment -%}
+          <div class="footer-trust">
+            <div class="footer-trust__item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Paiement sécurisé SSL
+            </div>
+            <div class="footer-trust__item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M1 3h22v18H1z"/><path d="M1 9h22"/></svg>
+              Retours gratuits 30 j
+            </div>
+          </div>
+
+          {%- comment -%} Social links {%- endcomment -%}
+          <div class="footer-social">
+            {%- if section.settings.instagram_url != blank -%}
+              <a href="{{ section.settings.instagram_url }}" class="footer-social__link" aria-label="Lisora sur Instagram" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if section.settings.tiktok_url != blank -%}
+              <a href="{{ section.settings.tiktok_url }}" class="footer-social__link" aria-label="Lisora sur TikTok" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if section.settings.facebook_url != blank -%}
+              <a href="{{ section.settings.facebook_url }}" class="footer-social__link" aria-label="Lisora sur Facebook" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if section.settings.pinterest_url != blank -%}
+              <a href="{{ section.settings.pinterest_url }}" class="footer-social__link" aria-label="Lisora sur Pinterest" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.852 0 1.265.64 1.265 1.408 0 .858-.546 2.140-.828 3.330-.236.995.499 1.806 1.476 1.806 1.772 0 3.136-1.867 3.136-4.563 0-2.386-1.715-4.054-4.162-4.054-2.834 0-4.496 2.125-4.496 4.322 0 .856.33 1.773.74 2.274a.3.3 0 01.069.286c-.075.313-.243.995-.276 1.134-.044.183-.146.221-.338.133-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.220-5.190 6.220-1.013 0-1.966-.527-2.292-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.937.29 1.931.446 2.962.446 5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- comment -%} Link columns {%- endcomment -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'link_list' -%}
+            <div class="footer-column" {{ block.shopify_attributes }}>
+              <h3 class="footer-column__title">{{ block.settings.heading }}</h3>
+              <ul class="footer-column__links">
+                {%- for link in block.settings.menu.links -%}
+                  <li>
+                    <a href="{{ link.url }}" class="footer-column__link">{{ link.title }}</a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%} Contact column {%- endcomment -%}
+        <div class="footer-column">
+          <h3 class="footer-column__title">Contact</h3>
+          <ul class="footer-column__links">
+            <li><a href="mailto:{{ section.settings.contact_email | default: 'contact@lisora.fr' }}" class="footer-column__link">{{ section.settings.contact_email | default: 'contact@lisora.fr' }}</a></li>
+            {%- if section.settings.contact_hours != blank -%}
+              <li class="footer-column__info">{{ section.settings.contact_hours }}</li>
+            {%- endif -%}
+          </ul>
+
+          {%- comment -%} App badges if configured {%- endcomment -%}
+          {%- if section.settings.show_certifications -%}
+            <div class="footer-certs" style="margin-top:20px;">
+              <div class="footer-cert">🌿 Zéro formaldéhyde</div>
+              <div class="footer-cert">✅ Certifié CE</div>
+              <div class="footer-cert">💚 Cruelty-free</div>
+            </div>
+          {%- endif -%}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Footer bottom bar {%- endcomment -%}
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="footer-bottom__inner">
+        <p class="footer-bottom__copy">
+          &copy; {{ 'now' | date: '%Y' }} <strong>{{ shop.name }}</strong>. Tous droits réservés.
+        </p>
+        <div class="footer-bottom__links">
+          <a href="/policies/privacy-policy">Confidentialité</a>
+          <a href="/policies/terms-of-service">CGV</a>
+          <a href="/policies/refund-policy">Remboursements</a>
+        </div>
+        <div class="footer-payments">
+          <span class="payment-icon payment-icon--visa" title="Visa">
+            <svg viewBox="0 0 48 16" fill="none" aria-label="Visa"><text x="0" y="13" font-family="Arial" font-weight="700" font-size="14" fill="currentColor">VISA</text></svg>
+          </span>
+          <span class="payment-icon payment-icon--mc" title="Mastercard">
+            <svg viewBox="0 0 36 24" aria-label="Mastercard"><circle cx="14" cy="12" r="10" fill="#EB001B"/><circle cx="22" cy="12" r="10" fill="#F79E1B"/><path d="M18 4.8a10 10 0 010 14.4A10 10 0 0118 4.8z" fill="#FF5F00"/></svg>
+          </span>
+          <span class="payment-icon" title="PayPal">
+            <svg viewBox="0 0 60 16" fill="none" aria-label="PayPal"><text x="0" y="13" font-family="Arial" font-size="12" font-weight="700" fill="#003087">Pay</text><text x="22" y="13" font-family="Arial" font-size="12" font-weight="700" fill="#009CDE">Pal</text></svg>
+          </span>
+          <span class="payment-icon" title="Apple Pay">
+            <svg viewBox="0 0 60 16" fill="none" aria-label="Apple Pay"><text x="0" y="13" font-family="Arial" font-size="10" font-weight="600" fill="currentColor">Apple Pay</text></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </footer>
 
 {% schema %}
@@ -67,6 +170,38 @@
   "name": "Footer",
   "class": "section-footer",
   "settings": [
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Titre newsletter",
+      "default": "Rejoignez la communauté Lisora"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_desc",
+      "label": "Description newsletter",
+      "default": "Offres privées, conseils beauté et nouveautés en avant-première."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Placeholder email",
+      "default": "Votre adresse email"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_btn",
+      "label": "Texte bouton newsletter",
+      "default": "Je m'inscris"
+    },
+    {
+      "type": "header",
+      "content": "Réseaux sociaux"
+    },
     {
       "type": "text",
       "id": "instagram_url",
@@ -81,6 +216,33 @@
       "type": "text",
       "id": "facebook_url",
       "label": "URL Facebook"
+    },
+    {
+      "type": "text",
+      "id": "pinterest_url",
+      "label": "URL Pinterest"
+    },
+    {
+      "type": "header",
+      "content": "Contact"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Email de contact",
+      "default": "contact@lisora.fr"
+    },
+    {
+      "type": "text",
+      "id": "contact_hours",
+      "label": "Horaires support",
+      "default": "Lun – Ven · 9h – 18h"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_certifications",
+      "label": "Afficher les certifications",
+      "default": true
     }
   ],
   "blocks": [
@@ -108,8 +270,7 @@
       "name": "Footer",
       "blocks": [
         { "type": "link_list", "settings": { "heading": "Boutique" } },
-        { "type": "link_list", "settings": { "heading": "Aide" } },
-        { "type": "link_list", "settings": { "heading": "Informations" } }
+        { "type": "link_list", "settings": { "heading": "Aide & Retours" } }
       ]
     }
   ]

@@ -1,4 +1,13 @@
 <section class="color-showcase">
+
+  {%- comment -%} Decorative sparkles {%- endcomment -%}
+  <div class="color-showcase__deco" aria-hidden="true">
+    <span class="color-showcase__spark color-showcase__spark--1">✦</span>
+    <span class="color-showcase__spark color-showcase__spark--2">✦</span>
+    <span class="color-showcase__spark color-showcase__spark--3">◆</span>
+    <span class="color-showcase__spark color-showcase__spark--4">✦</span>
+  </div>
+
   <div class="container">
     <div class="section-header" data-aos="fade-up">
       {%- if section.settings.eyebrow != blank -%}
@@ -10,6 +19,19 @@
       {%- endif -%}
     </div>
 
+    {%- comment -%} Color dot row preview {%- endcomment -%}
+    <div class="color-showcase__dots" data-aos="fade-up" data-aos-delay="100" aria-hidden="true">
+      {%- for block in section.blocks -%}
+        <button
+          class="color-showcase__dot"
+          style="background:{{ block.settings.color | default: '#F4A7B3' }};"
+          aria-label="{{ block.settings.name }}"
+          data-index="{{ forloop.index0 }}"
+          tabindex="-1"
+        ></button>
+      {%- endfor -%}
+    </div>
+
     <div class="color-showcase__grid">
       {%- for block in section.blocks -%}
         <a
@@ -17,33 +39,46 @@
           class="color-card"
           {{ block.shopify_attributes }}
           data-aos="fade-up"
-          data-aos-delay="{{ forloop.index0 | times: 80 }}ms"
-          aria-label="{{ block.settings.name }}"
+          data-aos-delay="{{ forloop.index0 | times: 90 }}ms"
+          aria-label="Découvrir le coloris {{ block.settings.name }}"
         >
           {%- if block.settings.image != blank -%}
             <img
               class="color-card__image"
-              src="{{ block.settings.image | image_url: width: 500 }}"
+              src="{{ block.settings.image | image_url: width: 600 }}"
               alt="{{ block.settings.name }}"
               loading="lazy"
-              width="500"
+              width="600"
             >
           {%- else -%}
-            <div style="width:100%;height:100%;background:{{ block.settings.color | default: 'var(--color-secondary)' }};"></div>
+            <div class="color-card__swatch" style="background:{{ block.settings.color | default: 'var(--color-secondary)' }};"></div>
           {%- endif -%}
+
           <div class="color-card__overlay" aria-hidden="true"></div>
+
+          {%- comment -%} Shimmer sweep {%- endcomment -%}
+          <div class="color-card__shimmer" aria-hidden="true"></div>
+
           <div class="color-card__info">
+            <div class="color-card__dot" style="background:{{ block.settings.color | default: 'var(--color-secondary)' }};" aria-hidden="true"></div>
             <div class="color-card__name">{{ block.settings.name }}</div>
-            <div class="color-card__link">Voir le coloris →</div>
+            <div class="color-card__link">
+              Voir le coloris
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
           </div>
+
+          {%- comment -%} Corner badge {%- endcomment -%}
+          <div class="color-card__badge" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
         </a>
       {%- endfor -%}
     </div>
 
     {%- if section.settings.cta_label != blank -%}
-      <div style="text-align:center;margin-top:48px;" data-aos="fade-up">
-        <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="btn btn-outline">
+      <div class="color-showcase__cta" data-aos="fade-up" data-aos-delay="200">
+        <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="btn btn-primary">
           {{ section.settings.cta_label }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
     {%- endif -%}

@@ -1,24 +1,66 @@
 <section class="how-it-works">
+
+  {%- comment -%} Decorative blobs {%- endcomment -%}
+  <div class="how-it-works__blob how-it-works__blob--1" aria-hidden="true"></div>
+  <div class="how-it-works__blob how-it-works__blob--2" aria-hidden="true"></div>
+
   <div class="container">
+
     <div class="section-header" data-aos="fade-up">
       {%- if section.settings.eyebrow != blank -%}
-        <span class="section-eyebrow" style="color:var(--color-primary);">{{ section.settings.eyebrow }}</span>
+        <span class="section-eyebrow">{{ section.settings.eyebrow }}</span>
       {%- endif -%}
-      <h2 class="section-title" style="color:var(--color-background);">{{ section.settings.title }}</h2>
+      <h2 class="section-title">{{ section.settings.title }}</h2>
       {%- if section.settings.description != blank -%}
-        <p class="section-desc" style="color:rgba(250,247,244,0.7);">{{ section.settings.description }}</p>
+        <p class="section-desc">{{ section.settings.description }}</p>
       {%- endif -%}
     </div>
 
     <div class="steps-grid">
+
+      {%- comment -%} Connecting animated line {%- endcomment -%}
+      <div class="steps-line" aria-hidden="true">
+        <div class="steps-line__fill"></div>
+      </div>
+
       {%- for block in section.blocks -%}
         <div class="step" {{ block.shopify_attributes }} data-aos="fade-up" data-aos-delay="{{ forloop.index0 | times: 150 }}ms">
-          <div class="step__number" aria-hidden="true">{{ forloop.index }}</div>
-          <h3 class="step__title">{{ block.settings.title }}</h3>
-          <p class="step__desc">{{ block.settings.description }}</p>
+          <div class="step__number-wrap">
+            <div class="step__number-ring" aria-hidden="true"></div>
+            <div class="step__number" aria-label="Étape {{ forloop.index }}">{{ forloop.index }}</div>
+          </div>
+          <div class="step__body">
+            {%- case block.settings.icon -%}
+              {%- when 'plug' -%}
+                <div class="step__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18.36 6.64A9 9 0 0 1 20.77 15"/><path d="M6.16 6.16a9 9 0 1 0 12.68 12.68"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"/></svg>
+                </div>
+              {%- when 'swipe' -%}
+                <div class="step__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+              {%- when 'star' -%}
+                <div class="step__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              {%- else -%}
+                <div class="step__icon step__icon--number" aria-hidden="true">{{ forloop.index }}</div>
+            {%- endcase -%}
+            <h3 class="step__title">{{ block.settings.title }}</h3>
+            <p class="step__desc">{{ block.settings.description }}</p>
+          </div>
         </div>
       {%- endfor -%}
     </div>
+
+    {%- if section.settings.cta_label != blank -%}
+      <div style="text-align:center;margin-top:56px;" data-aos="fade-up" data-aos-delay="300">
+        <a href="{{ section.settings.cta_url | default: '/products' }}" class="btn btn-primary btn-lg">
+          {{ section.settings.cta_label }}
+        </a>
+      </div>
+    {%- endif -%}
+
   </div>
 </section>
 
@@ -42,6 +84,16 @@
       "type": "textarea",
       "id": "description",
       "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Texte du bouton (optionnel)"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Lien du bouton"
     }
   ],
   "blocks": [
@@ -49,6 +101,18 @@
       "type": "step",
       "name": "Étape",
       "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "none", "label": "Aucune" },
+            { "value": "plug", "label": "Branchement" },
+            { "value": "swipe", "label": "Glissement" },
+            { "value": "star", "label": "Étoile" }
+          ],
+          "default": "none"
+        },
         {
           "type": "text",
           "id": "title",
@@ -71,6 +135,7 @@
         {
           "type": "step",
           "settings": {
+            "icon": "plug",
             "title": "Préchauffez",
             "description": "Branchez votre Lisora et attendez 30 secondes. La DEL vous indique quand la température idéale est atteinte."
           }
@@ -78,6 +143,7 @@
         {
           "type": "step",
           "settings": {
+            "icon": "swipe",
             "title": "Lissez",
             "description": "Passez doucement les plaques céramique sur vos cheveux par sections. Le résultat est immédiat."
           }
@@ -85,6 +151,7 @@
         {
           "type": "step",
           "settings": {
+            "icon": "star",
             "title": "Brillez",
             "description": "Profitez de cheveux parfaitement lisses, brillants et sans frisottis toute la journée."
           }

@@ -1,4 +1,5 @@
 <header class="site-header" role="banner">
+  <div class="site-header__topline" aria-hidden="true"></div>
   <div class="container">
     <div class="site-header__inner">
 
@@ -6,18 +7,29 @@
       <nav class="site-header__nav" role="navigation" aria-label="Navigation principale">
         {%- for link in section.settings.menu.links -%}
           {%- if link.links != blank -%}
-            <div class="nav-dropdown" style="position:relative;">
-              <a href="{{ link.url }}" aria-haspopup="true">{{ link.title }}</a>
+            <div class="nav-item nav-item--dropdown">
+              <a href="{{ link.url }}" class="nav-link{% if link.active %} is-active{% endif %}" aria-haspopup="true" aria-expanded="false">
+                {{ link.title }}
+                <svg class="nav-arrow" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 1l5 5 5-5"/></svg>
+              </a>
+              <div class="nav-dropdown" role="menu">
+                {%- for child in link.links -%}
+                  <a href="{{ child.url }}" class="nav-dropdown__link" role="menuitem">{{ child.title }}</a>
+                {%- endfor -%}
+              </div>
             </div>
           {%- else -%}
-            <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>{{ link.title }}</a>
+            <a href="{{ link.url }}" class="nav-link{% if link.active %} is-active{% endif %}"
+               {% if link.active %}aria-current="page"{% endif %}>
+              {{ link.title }}
+            </a>
           {%- endif -%}
         {%- endfor -%}
       </nav>
 
       {%- comment -%} Center: Logo {%- endcomment -%}
       <div class="site-header__logo">
-        <a href="/" aria-label="{{ shop.name }}">
+        <a href="/" class="site-header__logo-link" aria-label="{{ shop.name }} — Retour à l'accueil">
           {%- if settings.logo -%}
             <img
               src="{{ settings.logo | image_url: width: 300 }}"
@@ -34,6 +46,7 @@
 
       {%- comment -%} Right: Actions {%- endcomment -%}
       <div class="site-header__actions">
+
         <a href="{{ routes.search_url }}" class="header-icon-btn" aria-label="Rechercher">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <circle cx="11" cy="11" r="8"/>
@@ -66,28 +79,41 @@
           <span></span>
           <span></span>
         </button>
-      </div>
 
+      </div>
     </div>
   </div>
 </header>
 
 {%- comment -%} Mobile Menu {%- endcomment -%}
 <div class="mobile-menu" role="dialog" aria-label="Menu mobile" aria-modal="true">
-  <button class="mobile-menu__close" data-mobile-close aria-label="Fermer le menu">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <line x1="18" y1="6" x2="6" y2="18"/>
-      <line x1="6" y1="6" x2="18" y2="18"/>
-    </svg>
-  </button>
-  <nav class="mobile-menu__nav">
+  <div class="mobile-menu__header">
+    <span class="mobile-menu__brand">{{ shop.name }}</span>
+    <button class="mobile-menu__close" data-mobile-close aria-label="Fermer le menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <nav class="mobile-menu__nav" aria-label="Menu mobile">
     {%- for link in section.settings.menu.links -%}
-      <a href="{{ link.url }}">{{ link.title }}</a>
+      <a href="{{ link.url }}" class="mobile-menu__link{% if link.active %} is-active{% endif %}">
+        <span>{{ link.title }}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+      </a>
     {%- endfor -%}
   </nav>
-  <div style="margin-top:auto;padding-top:32px;border-top:1px solid rgba(44,24,16,0.1);">
+  <div class="mobile-menu__footer">
+    <div class="mobile-menu__trust">
+      <span>🚚 Livraison offerte dès 50€</span>
+      <span>⭐ 4.9/5 · 50k+ clientes</span>
+    </div>
     {%- if shop.customer_accounts_enabled -%}
-      <a href="{{ routes.account_url }}" style="font-size:0.88rem;color:var(--color-text-light);">Mon compte</a>
+      <a href="{{ routes.account_url }}" class="mobile-menu__account">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Mon compte
+      </a>
     {%- endif -%}
   </div>
 </div>

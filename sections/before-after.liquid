@@ -1,0 +1,167 @@
+<section class="before-after">
+  <div class="container">
+
+    <div class="section-header" data-aos="fade-up">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      {%- if section.settings.description != blank -%}
+        <p class="section-desc">{{ section.settings.description }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="before-after__grid" data-aos="fade-up" data-aos-delay="100">
+
+      {%- comment -%} AVANT panel {%- endcomment -%}
+      <div class="before-after__panel before-after__panel--before">
+        <div class="before-after__panel-label">
+          <span class="before-after__panel-tag">Avant Lisora</span>
+        </div>
+        <ul class="before-after__list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'before_item' -%}
+              <li class="before-after__item before-after__item--before" {{ block.shopify_attributes }}>
+                <span class="before-after__icon before-after__icon--no" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </span>
+                {{ block.settings.text }}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      {%- comment -%} Central divider {%- endcomment -%}
+      <div class="before-after__divider" aria-hidden="true">
+        <div class="before-after__divider-ring">
+          <span class="before-after__divider-logo">{{ shop.name }}</span>
+        </div>
+      </div>
+
+      {%- comment -%} APRÈS panel {%- endcomment -%}
+      <div class="before-after__panel before-after__panel--after">
+        <div class="before-after__panel-label">
+          <span class="before-after__panel-tag">Après Lisora</span>
+        </div>
+        <ul class="before-after__list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'after_item' -%}
+              <li class="before-after__item before-after__item--after" {{ block.shopify_attributes }}>
+                <span class="before-after__icon before-after__icon--yes" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                {{ block.settings.text }}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+
+    </div>
+
+    {%- comment -%} Stats bar {%- endcomment -%}
+    {%- assign stat_blocks = section.blocks | where: "type", "stat" -%}
+    {%- if stat_blocks.size > 0 -%}
+      <div class="before-after__stats" data-aos="fade-up" data-aos-delay="200">
+        {%- for block in stat_blocks -%}
+          <div class="before-after__stat" {{ block.shopify_attributes }}>
+            <div class="before-after__stat-number">{{ block.settings.number }}</div>
+            <div class="before-after__stat-label">{{ block.settings.label }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Avant / Après",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte au-dessus du titre",
+      "default": "La différence Lisora"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Avant vs Après — La transformation est réelle"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "before_item",
+      "name": "Problème (Avant)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Cheveux frisés et indisciplinés"
+        }
+      ]
+    },
+    {
+      "type": "after_item",
+      "name": "Résultat (Après)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Cheveux lisses et brillants en 5 min"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "name": "Statistique",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Chiffre",
+          "default": "50k+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Clientes satisfaites"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Avant / Après",
+      "blocks": [
+        { "type": "before_item", "settings": { "text": "Cheveux frisés et incontrôlables dès le matin" } },
+        { "type": "before_item", "settings": { "text": "1 heure de coiffage pour un résultat décevant" } },
+        { "type": "before_item", "settings": { "text": "Chaleur agressive qui abîme et casse les cheveux" } },
+        { "type": "before_item", "settings": { "text": "Plaques qui tirent, brûlent et laissent des traces" } },
+        { "type": "before_item", "settings": { "text": "Frisottis qui reviennent dès la première humidité" } },
+        { "type": "after_item", "settings": { "text": "Cheveux parfaitement lisses en seulement 5 minutes" } },
+        { "type": "after_item", "settings": { "text": "Brillance miroir qui dure toute la journée" } },
+        { "type": "after_item", "settings": { "text": "Céramique infrarouge — zéro casse, zéro dommage" } },
+        { "type": "after_item", "settings": { "text": "Glissement soyeux pour un résultat salon à domicile" } },
+        { "type": "after_item", "settings": { "text": "Protection anti-frisottis longue durée, même par temps humide" } },
+        { "type": "stat", "settings": { "number": "50 000+", "label": "Clientes transformées" } },
+        { "type": "stat", "settings": { "number": "4,9 ★", "label": "Note certifiée" } },
+        { "type": "stat", "settings": { "number": "5 min", "label": "Pour un résultat parfait" } },
+        { "type": "stat", "settings": { "number": "2 ans", "label": "De garantie incluse" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

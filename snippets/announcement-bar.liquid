@@ -1,10 +1,29 @@
-<div class="announcement-bar" style="background:{{ settings.announcement_bg }};color:{{ settings.announcement_color }};">
-  <div class="container">
+{%- if settings.announcement_enabled -%}
+<div class="announcement-bar" role="region" aria-label="Informations importantes" style="background:{{ settings.announcement_bg }};color:{{ settings.announcement_color }};">
+  <div class="announcement-bar__marquee" aria-live="off">
     <div class="announcement-bar__track">
-      {%- assign items = settings.announcement_text | split: '·' -%}
-      {%- for item in items -%}
-        <span class="announcement-bar__item">{{ item | strip }}</span>
-      {%- endfor -%}
+      <span class="announcement-bar__item">🚚 Livraison offerte dès 50€</span>
+      <span class="announcement-bar__sep" aria-hidden="true">✦</span>
+      <span class="announcement-bar__item">✨ Plus de 50 000 clientes ravies</span>
+      <span class="announcement-bar__sep" aria-hidden="true">✦</span>
+      <span class="announcement-bar__item">↩️ Retours gratuits sous 30 jours</span>
+      <span class="announcement-bar__sep" aria-hidden="true">✦</span>
+      <span class="announcement-bar__item">🌸 Édition limitée disponible maintenant</span>
+      <span class="announcement-bar__sep" aria-hidden="true">✦</span>
+      <span class="announcement-bar__item">⭐ Note moyenne 4,9/5 — certifié vérifié</span>
+      <span class="announcement-bar__sep" aria-hidden="true">✦</span>
+      {%- comment -%} Duplicate for seamless infinite loop {%- endcomment -%}
+      <span class="announcement-bar__item" aria-hidden="true">🚚 Livraison offerte dès 50€</span>
+      <span class="announcement-bar__sep" aria-hidden="true">✦</span>
+      <span class="announcement-bar__item" aria-hidden="true">✨ Plus de 50 000 clientes ravies</span>
+      <span class="announcement-bar__sep" aria-hidden="true">✦</span>
+      <span class="announcement-bar__item" aria-hidden="true">↩️ Retours gratuits sous 30 jours</span>
+      <span class="announcement-bar__sep" aria-hidden="true">✦</span>
+      <span class="announcement-bar__item" aria-hidden="true">🌸 Édition limitée disponible maintenant</span>
+      <span class="announcement-bar__sep" aria-hidden="true">✦</span>
+      <span class="announcement-bar__item" aria-hidden="true">⭐ Note moyenne 4,9/5 — certifié vérifié</span>
+      <span class="announcement-bar__sep" aria-hidden="true">✦</span>
     </div>
   </div>
 </div>
+{%- endif -%}

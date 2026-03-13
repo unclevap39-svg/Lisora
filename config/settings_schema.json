@@ -70,8 +70,8 @@
     "settings": [
       {
         "type": "checkbox",
-        "id": "announcement_bar_enabled",
-        "label": "Show announcement bar",
+        "id": "announcement_enabled",
+        "label": "Afficher la barre d'annonce",
         "default": true
       },
       {

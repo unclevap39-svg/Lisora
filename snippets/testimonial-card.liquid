@@ -1,0 +1,47 @@
+<article class="testimonial-card" {{ block.shopify_attributes }}>
+
+  {%- comment -%} Decorative quote mark {%- endcomment -%}
+  <div class="testimonial-card__quote" aria-hidden="true">"</div>
+
+  {%- comment -%} Stars {%- endcomment -%}
+  <div class="testimonial-card__stars" aria-label="{{ block.settings.rating | default: 5 }} étoiles sur 5">
+    {%- assign rating = block.settings.rating | default: 5 -%}
+    {%- for i in (1..5) -%}
+      <svg viewBox="0 0 24 24" width="15" height="15" style="color:{% if i <= rating %}#F4A020{% else %}#DDD{% endif %};fill:currentColor;" aria-hidden="true">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Title {%- endcomment -%}
+  {%- if block.settings.title != blank -%}
+    <h3 class="testimonial-card__title">{{ block.settings.title }}</h3>
+  {%- endif -%}
+
+  {%- comment -%} Text {%- endcomment -%}
+  <blockquote class="testimonial-card__text">{{ block.settings.text }}</blockquote>
+
+  {%- comment -%} Author {%- endcomment -%}
+  <div class="testimonial-card__author">
+    <div class="testimonial-card__avatar" aria-hidden="true">
+      {%- if block.settings.avatar != blank -%}
+        <img src="{{ block.settings.avatar | image_url: width: 88 }}" alt="{{ block.settings.name }}" width="44" height="44" loading="lazy">
+      {%- else -%}
+        {{ block.settings.name | slice: 0 }}
+      {%- endif -%}
+    </div>
+    <div class="testimonial-card__author-info">
+      <div class="testimonial-card__name">{{ block.settings.name }}</div>
+      <div class="testimonial-card__verified">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Achat vérifié
+        {%- if block.settings.location != blank -%}
+          · {{ block.settings.location }}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+</article>
