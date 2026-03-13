@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "contact": {
+      "type": "contact-page",
+      "settings": {
+        "eyebrow": "💬 Nous sommes là",
+        "title": "Une question ? Un doute ? On vous répond.",
+        "subtitle": "Notre équipe est disponible du lundi au vendredi, de 9h à 18h. Nous répondons à chaque message avec attention — généralement en moins d'une heure.",
+        "email": "contact@lisora.fr",
+        "hours": "Lun – Ven, 9h – 18h"
+      }
+    }
+  },
+  "order": ["contact"]
+}

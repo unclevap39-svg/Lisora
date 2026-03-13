@@ -1,0 +1,139 @@
+<section class="product-faq" id="product-faq">
+  <div class="container">
+    <div class="product-faq__inner">
+
+      <div class="product-faq__head" data-aos="fade-up">
+        <span class="section-eyebrow">{{ section.settings.eyebrow | default: 'On répond à tout' }}</span>
+        <h2 class="section-title">{{ section.settings.title | default: 'Questions fréquentes' }}</h2>
+        <p class="section-desc">{{ section.settings.subtitle | default: 'Tout ce que vous voulez savoir sur Lisora — en toute transparence.' }}</p>
+      </div>
+
+      <div class="faq-list" data-aos="fade-up" data-aos-delay="80">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'faq_item' -%}
+            <details class="faq-item" {{ block.shopify_attributes }}>
+              <summary class="faq-item__question">
+                <span>{{ block.settings.question }}</span>
+                <span class="faq-item__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </span>
+              </summary>
+              <div class="faq-item__answer">
+                <p>{{ block.settings.answer }}</p>
+              </div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="product-faq__cta" data-aos="fade-up">
+        <p>Vous avez d'autres questions ? <a href="/pages/contact" class="product-faq__contact-link">Contactez notre équipe</a> — nous répondons en moins d'une heure. 💬</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ Produit",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "On répond à tout"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Questions fréquentes"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Tout ce que vous voulez savoir sur Lisora — en toute transparence."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Est-ce que Lisora convient à tous les types de cheveux ?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Réponse",
+          "default": "Oui ! Lisora est conçu pour fonctionner sur tous les types de cheveux : fins, épais, bouclés, frisés ou ondulés. Grâce à ses 5 niveaux de température ajustables (160°C à 230°C), vous choisissez l'intensité adaptée à votre type capillaire."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Produit",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Est-ce que Lisora convient à tous les types de cheveux ?",
+            "answer": "Oui ! Lisora est conçu pour fonctionner sur tous les types de cheveux : fins, épais, bouclés, frisés ou ondulés. Grâce à ses 5 niveaux de température ajustables (160°C à 230°C), vous choisissez l'intensité adaptée à votre type capillaire."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Combien de temps dure le lissage avec Lisora ?",
+            "answer": "En général, le lissage dure toute la journée — parfois jusqu'à 24 à 48h selon votre type de cheveux et les conditions météo. La technologie ions négatifs scelle les écailles du cheveu pour un résultat longue durée même par temps humide."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Est-ce que Lisora abîme les cheveux ?",
+            "answer": "Absolument pas. C'est précisément pour ça que nous avons choisi la technologie céramique infrarouge. Contrairement aux lisseurs classiques, Lisora chauffe les cheveux de l'intérieur vers l'extérieur, en respectant la structure de la tige capillaire. Résultat : zéro casse, zéro brûlure."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Quelle est la durée de la garantie ?",
+            "answer": "Lisora est garanti 2 ans pièces et main d'œuvre. Si votre lisseur présente un défaut de fabrication dans ce délai, nous le remplaçons ou remboursons sans questions. Aucune procédure compliquée — nous faisons confiance à nos clientes."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Puis-je retourner mon Lisora si je ne suis pas satisfaite ?",
+            "answer": "Bien sûr. Vous disposez de 30 jours pour changer d'avis — sans avoir à justifier votre décision. Le retour est entièrement gratuit. Nous remboursons 100% du montant payé dans les 48h suivant la réception du colis retour."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Combien de temps avant la livraison ?",
+            "answer": "Toutes les commandes passées avant 14h sont expédiées le jour même. Vous recevez votre Lisora en 2 à 3 jours ouvrés en France métropolitaine. Un email de suivi vous est envoyé dès l'expédition."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Lisora s'arrête-t-il automatiquement ?",
+            "answer": "Oui ! La sécurité est une priorité. Lisora s'éteint automatiquement après 60 minutes d'inactivité. Idéal pour les matins pressés où on peut oublier d'éteindre son lisseur."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

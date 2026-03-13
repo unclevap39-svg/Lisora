@@ -1,0 +1,213 @@
+<section class="contact-hero">
+  <div class="contact-hero__deco" aria-hidden="true"></div>
+  <div class="container">
+    <div class="contact-hero__inner" data-aos="fade-up">
+      <span class="section-eyebrow">{{ section.settings.eyebrow | default: '💬 Nous sommes là' }}</span>
+      <h1 class="contact-hero__title">{{ section.settings.title | default: 'Une question ? Un doute ? On vous répond.' }}</h1>
+      <p class="contact-hero__desc">{{ section.settings.subtitle | default: 'Notre équipe est disponible du lundi au vendredi, de 9h à 18h. Nous répondons à chaque message avec attention — généralement en moins d\'une heure.' }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section">
+  <div class="container">
+    <div class="contact-layout">
+
+      {%- comment -%} LEFT — Form {%- endcomment -%}
+      <div class="contact-form-wrap" data-aos="fade-right">
+        <div class="contact-form-card">
+          <h2 class="contact-form-card__title">Envoyez-nous un message</h2>
+          <p class="contact-form-card__sub">Nous répondons en moins d'une heure en semaine.</p>
+
+          {%- form 'contact', id: 'contact-form' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="contact-success" role="alert">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <div>
+                  <strong>Message envoyé avec succès !</strong>
+                  <p>Merci de nous avoir contactées. Nous vous répondrons dans les plus brefs délais. 🌸</p>
+                </div>
+              </div>
+            {%- endif -%}
+
+            {%- if form.errors -%}
+              <div class="contact-error" role="alert">
+                {{ form.errors | default_errors }}
+              </div>
+            {%- endif -%}
+
+            <div class="contact-form__row">
+              <div class="contact-field">
+                <label class="contact-field__label" for="contact-name">Votre prénom *</label>
+                <input
+                  type="text"
+                  id="contact-name"
+                  name="contact[name]"
+                  class="contact-field__input"
+                  placeholder="Sophie"
+                  value="{{ form.name }}"
+                  required
+                  autocomplete="name"
+                >
+              </div>
+              <div class="contact-field">
+                <label class="contact-field__label" for="contact-email">Votre email *</label>
+                <input
+                  type="email"
+                  id="contact-email"
+                  name="contact[email]"
+                  class="contact-field__input"
+                  placeholder="sophie@email.com"
+                  value="{{ form.email }}"
+                  required
+                  autocomplete="email"
+                >
+              </div>
+            </div>
+
+            <div class="contact-field">
+              <label class="contact-field__label" for="contact-subject">Sujet</label>
+              <select id="contact-subject" name="contact[subject]" class="contact-field__select">
+                <option value="">Choisissez un sujet</option>
+                <option value="commande">Ma commande</option>
+                <option value="produit">Question sur le produit</option>
+                <option value="retour">Retour / Remboursement</option>
+                <option value="garantie">Garantie</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+
+            <div class="contact-field">
+              <label class="contact-field__label" for="contact-message">Votre message *</label>
+              <textarea
+                id="contact-message"
+                name="contact[body]"
+                class="contact-field__textarea"
+                placeholder="Décrivez votre demande en quelques lignes..."
+                rows="5"
+                required
+              >{{ form.body }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary contact-form__submit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+              Envoyer mon message
+            </button>
+
+          {%- endform -%}
+        </div>
+      </div>
+
+      {%- comment -%} RIGHT — Info cards {%- endcomment -%}
+      <div class="contact-info" data-aos="fade-left">
+
+        <div class="contact-info-card">
+          <div class="contact-info-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="contact-info-card__title">Email</h3>
+            <a href="mailto:{{ section.settings.email | default: 'contact@lisora.fr' }}" class="contact-info-card__value">
+              {{ section.settings.email | default: 'contact@lisora.fr' }}
+            </a>
+            <p class="contact-info-card__note">Réponse garantie sous 1h en semaine</p>
+          </div>
+        </div>
+
+        <div class="contact-info-card">
+          <div class="contact-info-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="contact-info-card__title">Horaires</h3>
+            <p class="contact-info-card__value">{{ section.settings.hours | default: 'Lun – Ven, 9h – 18h' }}</p>
+            <p class="contact-info-card__note">Fermé les week-ends et jours fériés</p>
+          </div>
+        </div>
+
+        <div class="contact-info-card">
+          <div class="contact-info-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="contact-info-card__title">Réseaux sociaux</h3>
+            <p class="contact-info-card__note">Retrouvez-nous sur Instagram & TikTok pour des conseils beauté et inspirations coiffure quotidiennes.</p>
+          </div>
+        </div>
+
+        {%- comment -%} Quick FAQ links {%- endcomment -%}
+        <div class="contact-quick-faq">
+          <h3 class="contact-quick-faq__title">Questions fréquentes</h3>
+          <a href="/products" class="contact-quick-faq__link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+            Suivre ma commande
+          </a>
+          <a href="/policies/refund-policy" class="contact-quick-faq__link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+            Comment retourner un article ?
+          </a>
+          <a href="/products" class="contact-quick-faq__link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+            Délais de livraison
+          </a>
+          <a href="/products" class="contact-quick-faq__link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+            Activer ma garantie
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page Contact",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "💬 Nous sommes là"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Une question ? Un doute ? On vous répond."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Notre équipe est disponible du lundi au vendredi, de 9h à 18h. Nous répondons à chaque message avec attention — généralement en moins d'une heure."
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email de contact",
+      "default": "contact@lisora.fr"
+    },
+    {
+      "type": "text",
+      "id": "hours",
+      "label": "Horaires",
+      "default": "Lun – Ven, 9h – 18h"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page Contact"
+    }
+  ]
+}
+{% endschema %}

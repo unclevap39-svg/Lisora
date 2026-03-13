@@ -1,16 +1,23 @@
-<header class="site-header" role="banner">
+<header class="site-header" role="banner" id="site-header">
+  {%- comment -%} Pink gradient top accent line {%- endcomment -%}
   <div class="site-header__topline" aria-hidden="true"></div>
+
   <div class="container">
     <div class="site-header__inner">
 
-      {%- comment -%} Left: Navigation {%- endcomment -%}
+      {%- comment -%} LEFT — Navigation {%- endcomment -%}
       <nav class="site-header__nav" role="navigation" aria-label="Navigation principale">
         {%- for link in section.settings.menu.links -%}
           {%- if link.links != blank -%}
             <div class="nav-item nav-item--dropdown">
-              <a href="{{ link.url }}" class="nav-link{% if link.active %} is-active{% endif %}" aria-haspopup="true" aria-expanded="false">
+              <a href="{{ link.url }}"
+                 class="nav-link{% if link.active %} is-active{% endif %}"
+                 aria-haspopup="true"
+                 aria-expanded="false">
                 {{ link.title }}
-                <svg class="nav-arrow" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 1l5 5 5-5"/></svg>
+                <svg class="nav-arrow" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M1 1l4 4 4-4"/>
+                </svg>
               </a>
               <div class="nav-dropdown" role="menu">
                 {%- for child in link.links -%}
@@ -19,7 +26,8 @@
               </div>
             </div>
           {%- else -%}
-            <a href="{{ link.url }}" class="nav-link{% if link.active %} is-active{% endif %}"
+            <a href="{{ link.url }}"
+               class="nav-link{% if link.active %} is-active{% endif %}"
                {% if link.active %}aria-current="page"{% endif %}>
               {{ link.title }}
             </a>
@@ -27,9 +35,9 @@
         {%- endfor -%}
       </nav>
 
-      {%- comment -%} Center: Logo {%- endcomment -%}
-      <div class="site-header__logo">
-        <a href="/" class="site-header__logo-link" aria-label="{{ shop.name }} — Retour à l'accueil">
+      {%- comment -%} CENTER — Logo (absolute pour centrage parfait) {%- endcomment -%}
+      <div class="site-header__logo" aria-label="{{ shop.name }} — Retour à l'accueil">
+        <a href="/" class="site-header__logo-link">
           {%- if settings.logo -%}
             <img
               src="{{ settings.logo | image_url: width: 300 }}"
@@ -37,6 +45,7 @@
               width="{{ settings.logo_width }}"
               height="auto"
               loading="eager"
+              class="site-header__logo-img"
             >
           {%- else -%}
             <span class="site-header__logo-text">{{ shop.name }}</span>
@@ -44,13 +53,20 @@
         </a>
       </div>
 
-      {%- comment -%} Right: Actions {%- endcomment -%}
+      {%- comment -%} RIGHT — Actions {%- endcomment -%}
       <div class="site-header__actions">
+
+        {%- comment -%} CTA pill — desktop only {%- endcomment -%}
+        <a href="/products" class="header-cta-btn" aria-label="Commander Lisora">
+          Commander
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
 
         <a href="{{ routes.search_url }}" class="header-icon-btn" aria-label="Rechercher">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.35-4.35"/>
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
         </a>
 
@@ -83,38 +99,55 @@
       </div>
     </div>
   </div>
+
+  {%- comment -%} Scroll progress bar {%- endcomment -%}
+  <div class="site-header__progress" id="scroll-progress" aria-hidden="true"></div>
 </header>
 
-{%- comment -%} Mobile Menu {%- endcomment -%}
-<div class="mobile-menu" role="dialog" aria-label="Menu mobile" aria-modal="true">
-  <div class="mobile-menu__header">
-    <span class="mobile-menu__brand">{{ shop.name }}</span>
-    <button class="mobile-menu__close" data-mobile-close aria-label="Fermer le menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <line x1="18" y1="6" x2="6" y2="18"/>
-        <line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-  </div>
-  <nav class="mobile-menu__nav" aria-label="Menu mobile">
-    {%- for link in section.settings.menu.links -%}
-      <a href="{{ link.url }}" class="mobile-menu__link{% if link.active %} is-active{% endif %}">
-        <span>{{ link.title }}</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
-      </a>
-    {%- endfor -%}
-  </nav>
-  <div class="mobile-menu__footer">
-    <div class="mobile-menu__trust">
-      <span>🚚 Livraison offerte dès 50€</span>
-      <span>⭐ 4.9/5 · 50k+ clientes</span>
+{%- comment -%} Mobile Menu — full-screen overlay {%- endcomment -%}
+<div class="mobile-menu" role="dialog" aria-label="Menu mobile" aria-modal="true" id="mobile-menu">
+  <div class="mobile-menu__backdrop" data-mobile-close></div>
+  <div class="mobile-menu__panel">
+    <div class="mobile-menu__header">
+      <a href="/" class="mobile-menu__brand" data-mobile-close>{{ shop.name }}</a>
+      <button class="mobile-menu__close" data-mobile-close aria-label="Fermer le menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
     </div>
-    {%- if shop.customer_accounts_enabled -%}
-      <a href="{{ routes.account_url }}" class="mobile-menu__account">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Mon compte
+
+    <nav class="mobile-menu__nav" aria-label="Menu mobile">
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}"
+           class="mobile-menu__link{% if link.active %} is-active{% endif %}"
+           style="--delay: {{ forloop.index0 | times: 60 }}ms">
+          <span class="mobile-menu__link-text">{{ link.title }}</span>
+          <span class="mobile-menu__link-num">0{{ forloop.index }}</span>
+        </a>
+      {%- endfor -%}
+    </nav>
+
+    <div class="mobile-menu__cta">
+      <a href="/products" class="btn btn-primary btn-full">
+        Commander Lisora
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-    {%- endif -%}
+    </div>
+
+    <div class="mobile-menu__footer">
+      <div class="mobile-menu__trust">
+        <span>🚚 Livraison offerte dès 50€</span>
+        <span>⭐ 4,9/5 · 50k+ clientes</span>
+      </div>
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="mobile-menu__account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Mon compte
+        </a>
+      {%- endif -%}
+    </div>
   </div>
 </div>
 

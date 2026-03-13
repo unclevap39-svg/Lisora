@@ -385,26 +385,67 @@ const Header = {
     const header = document.querySelector('.site-header');
     if (!header) return;
 
+    // Scroll: scrolled class + hide-on-scroll + progress bar
+    const progressBar = document.getElementById('scroll-progress');
     let lastScroll = 0;
+    let ticking = false;
+
     window.addEventListener('scroll', () => {
-      const scroll = window.scrollY;
-      header.classList.toggle('scrolled', scroll > 20);
-      lastScroll = scroll;
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scroll = window.scrollY;
+          header.classList.toggle('scrolled', scroll > 20);
+
+          // Hide on scroll down, show on scroll up (only after 80px)
+          if (scroll > 80) {
+            if (scroll > lastScroll + 4) {
+              header.classList.add('site-header--hidden');
+            } else if (scroll < lastScroll - 4) {
+              header.classList.remove('site-header--hidden');
+            }
+          } else {
+            header.classList.remove('site-header--hidden');
+          }
+          lastScroll = scroll;
+
+          // Scroll progress bar
+          if (progressBar) {
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = maxScroll > 0 ? (scroll / maxScroll) * 100 : 0;
+            progressBar.style.width = pct + '%';
+          }
+
+          ticking = false;
+        });
+        ticking = true;
+      }
     }, { passive: true });
 
     // Mobile menu
     const menuBtn = document.querySelector('[data-mobile-menu]');
     const menu = document.querySelector('.mobile-menu');
-    const closeBtn = menu?.querySelector('[data-mobile-close]');
 
-    menuBtn?.addEventListener('click', () => {
+    const openMenu = () => {
       menu?.classList.add('is-open');
+      menuBtn?.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
+    };
+    const closeMenu = () => {
+      menu?.classList.remove('is-open');
+      menuBtn?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+
+    menuBtn?.addEventListener('click', openMenu);
+
+    // All close triggers (backdrop + close button + nav links)
+    menu?.querySelectorAll('[data-mobile-close]').forEach(el => {
+      el.addEventListener('click', closeMenu);
     });
 
-    closeBtn?.addEventListener('click', () => {
-      menu?.classList.remove('is-open');
-      document.body.style.overflow = '';
+    // Escape key closes menu
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu?.classList.contains('is-open')) closeMenu();
     });
   }
 };
@@ -514,7 +555,9 @@ const StickyATC = {
 
     observer.observe(productForm);
 
-    stickyBar.querySelector('button')?.addEventListener('click', () => {
+    // Sticky ATC button triggers main form add-to-cart
+    const stickyBtn = stickyBar.querySelector('[data-sticky-atc-btn]') || stickyBar.querySelector('button');
+    stickyBtn?.addEventListener('click', () => {
       productForm.querySelector('[data-add-to-cart]')?.click();
     });
   }
