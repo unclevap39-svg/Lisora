@@ -1,0 +1,79 @@
+<section class="trust-bar" aria-label="Garanties">
+  <div class="container">
+    <div class="trust-bar__grid">
+      {%- for block in section.blocks -%}
+        <div class="trust-bar__item" {{ block.shopify_attributes }} data-aos="fade-up" data-aos-delay="{{ forloop.index0 | times: 100 }}ms">
+          <div class="trust-bar__icon" aria-hidden="true">
+            {%- case block.settings.icon -%}
+              {%- when 'truck' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              {%- when 'shield' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              {%- when 'refresh' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              {%- when 'star' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              {%- when 'credit-card' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            {%- endcase -%}
+          </div>
+          <div class="trust-bar__label">{{ block.settings.label }}</div>
+          {%- if block.settings.sub != blank -%}
+            <div class="trust-bar__sub">{{ block.settings.sub }}</div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Barre de confiance",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Élément",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "truck", "label": "Livraison" },
+            { "value": "shield", "label": "Garantie" },
+            { "value": "refresh", "label": "Retour" },
+            { "value": "star", "label": "Qualité" },
+            { "value": "credit-card", "label": "Paiement" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Titre",
+          "default": "Livraison offerte"
+        },
+        {
+          "type": "text",
+          "id": "sub",
+          "label": "Sous-titre",
+          "default": "Dès 50€ d'achat"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barre de confiance",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "truck", "label": "Livraison offerte", "sub": "Dès 50€ d'achat" } },
+        { "type": "item", "settings": { "icon": "shield", "label": "Garantie 2 ans", "sub": "Satisfait ou remboursé" } },
+        { "type": "item", "settings": { "icon": "refresh", "label": "Retour 30 jours", "sub": "Sans condition" } },
+        { "type": "item", "settings": { "icon": "credit-card", "label": "Paiement sécurisé", "sub": "3x sans frais" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

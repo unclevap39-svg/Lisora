@@ -1,0 +1,43 @@
+{
+  "general": {
+    "password_page": {
+      "login_form_heading": "Enter with a password",
+      "login_form_password_label": "Password",
+      "login_form_password_placeholder": "Your password",
+      "login_form_submit": "Enter",
+      "admin_link_html": "Are you the store owner? <a href=\"/admin\" target=\"_blank\">Log in here</a>"
+    },
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    }
+  },
+  "accessibility": {
+    "skip_to_text": "Skip to content"
+  },
+  "cart": {
+    "general": {
+      "title": "Cart",
+      "empty": "Your cart is empty",
+      "checkout": "Checkout",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "remove": "Remove"
+    }
+  },
+  "products": {
+    "general": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "sale": "Sale",
+      "new": "New"
+    }
+  },
+  "collections": {
+    "general": {
+      "no_matches": "No products found."
+    }
+  }
+}

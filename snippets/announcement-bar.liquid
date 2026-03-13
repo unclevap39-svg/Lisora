@@ -1,0 +1,10 @@
+<div class="announcement-bar" style="background:{{ settings.announcement_bg }};color:{{ settings.announcement_color }};">
+  <div class="container">
+    <div class="announcement-bar__track">
+      {%- assign items = settings.announcement_text | split: '·' -%}
+      {%- for item in items -%}
+        <span class="announcement-bar__item">{{ item | strip }}</span>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

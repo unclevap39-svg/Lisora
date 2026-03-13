@@ -1,0 +1,219 @@
+<section class="testimonials" id="reviews">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="section-desc">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+
+      {%- comment -%} Overall rating {%- endcomment -%}
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:16px;">
+        <div style="display:flex;gap:3px;">
+          {%- for i in (1..5) -%}
+            <svg class="star" viewBox="0 0 24 24" width="20" height="20" style="color:#F4A020;fill:currentColor;">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          {%- endfor -%}
+        </div>
+        <span style="font-family:var(--font-heading);font-size:2rem;color:var(--color-text);">{{ section.settings.avg_rating | default: '4.9' }}</span>
+        <span style="font-size:0.85rem;color:var(--color-text-light);">sur {{ section.settings.total_reviews | default: '847' }} avis</span>
+      </div>
+    </div>
+
+    <div class="testimonials-grid">
+      {%- for block in section.blocks -%}
+        <article class="testimonial-card" {{ block.shopify_attributes }} data-aos="fade-up" data-aos-delay="{{ forloop.index0 | times: 100 }}ms">
+          <div class="testimonial-card__stars" aria-label="{{ block.settings.rating }} étoiles sur 5">
+            {%- assign rating = block.settings.rating | default: 5 -%}
+            {%- for i in (1..5) -%}
+              <svg viewBox="0 0 24 24" width="16" height="16" style="color:{% if i <= rating %}#F4A020{% else %}#e0d6d0{% endif %};fill:currentColor;" aria-hidden="true">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            {%- endfor -%}
+          </div>
+
+          {%- if block.settings.title != blank -%}
+            <h3 style="font-size:1rem;margin-bottom:8px;font-family:var(--font-body);font-weight:600;">{{ block.settings.title }}</h3>
+          {%- endif -%}
+
+          <blockquote class="testimonial-card__text">"{{ block.settings.text }}"</blockquote>
+
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar" aria-hidden="true">
+              {%- if block.settings.avatar != blank -%}
+                <img src="{{ block.settings.avatar | image_url: width: 88 }}" alt="{{ block.settings.name }}" width="44" height="44">
+              {%- else -%}
+                {{ block.settings.name | slice: 0 }}
+              {%- endif -%}
+            </div>
+            <div>
+              <div class="testimonial-card__name">{{ block.settings.name }}</div>
+              <div class="testimonial-card__verified">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Achat vérifié
+                {%- if block.settings.location != blank -%}
+                  · {{ block.settings.location }}
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Témoignages",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte au-dessus du titre",
+      "default": "Avis clients"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Elles adorent Lisora"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre"
+    },
+    {
+      "type": "text",
+      "id": "avg_rating",
+      "label": "Note moyenne",
+      "default": "4.9"
+    },
+    {
+      "type": "number",
+      "id": "total_reviews",
+      "label": "Nombre total d'avis",
+      "default": 847
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Témoignage",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "label": "Note"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre de l'avis",
+          "default": "Incroyable !"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Texte de l'avis",
+          "default": "Je suis complètement conquise par ce lisseur ! Mes cheveux sont parfaitement lisses en 5 minutes et restent brillants toute la journée."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Prénom",
+          "default": "Sophie M."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Ville",
+          "default": "Paris"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Photo de profil"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Témoignages",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "Le meilleur lisseur que j'ai eu !",
+            "text": "Incroyable ! Mes cheveux sont lisses et brillants en 5 minutes. La qualité est au rendez-vous et le design est magnifique.",
+            "name": "Sophie M.",
+            "location": "Paris"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "Parfait pour mes cheveux bouclés",
+            "text": "J'ai des cheveux très bouclés et difficiles à coiffer. Depuis que j'utilise Lisora, je gagne 20 minutes chaque matin !",
+            "name": "Camille R.",
+            "location": "Lyon"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "Design sublime et efficace",
+            "text": "Le coloris rose est absolument adorable. Mes cheveux n'ont jamais été aussi lisses. Je recommande à 100% !",
+            "name": "Emma L.",
+            "location": "Bordeaux"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "Cadeau parfait",
+            "text": "Je l'ai offert à ma sœur pour son anniversaire. Elle l'utilise tous les jours et ne peut plus s'en passer !",
+            "name": "Juliette B.",
+            "location": "Marseille"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "Rapport qualité/prix imbattable",
+            "text": "Pour ce prix, la qualité est vraiment impressionnante. La chauffe est rapide, le glissement parfait. Très satisfaite !",
+            "name": "Laura V.",
+            "location": "Nantes"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "Livraison rapide et produit parfait",
+            "text": "Reçu en 2 jours, emballage soigné et produit exactement comme décrit. Mes cheveux sont méconnaissables !",
+            "name": "Chloé D.",
+            "location": "Toulouse"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

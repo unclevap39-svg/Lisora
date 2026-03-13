@@ -1,0 +1,144 @@
+<section class="hero" aria-label="Bannière principale">
+  <div class="hero__content" data-aos="fade-up">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="hero__eyebrow">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+
+    <h1 class="hero__title">
+      {%- if section.settings.title_line1 != blank -%}
+        {{ section.settings.title_line1 }}<br>
+      {%- endif -%}
+      {%- if section.settings.title_italic != blank -%}
+        <em>{{ section.settings.title_italic }}</em>
+      {%- endif -%}
+    </h1>
+
+    {%- if section.settings.description != blank -%}
+      <p class="hero__description">{{ section.settings.description }}</p>
+    {%- endif -%}
+
+    <div class="hero__cta">
+      {%- if section.settings.cta_primary_label != blank -%}
+        <a href="{{ section.settings.cta_primary_url }}" class="btn btn-primary btn-lg">
+          {{ section.settings.cta_primary_label }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      {%- endif -%}
+      {%- if section.settings.cta_secondary_label != blank -%}
+        <a href="{{ section.settings.cta_secondary_url }}" class="btn btn-outline">
+          {{ section.settings.cta_secondary_label }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="hero__trust">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      <span style="margin-left:4px;">{{ section.settings.trust_text | default: '+2000 clientes satisfaites' }}</span>
+    </div>
+  </div>
+
+  <div class="hero__image">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1200 }}"
+        alt="{{ section.settings.image.alt | default: shop.name }}"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- else -%}
+      <div style="width:100%;height:100%;min-height:500px;background:linear-gradient(135deg,var(--color-primary),var(--color-secondary));display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:var(--font-heading);font-size:3rem;color:var(--color-text);opacity:0.4;">{{ shop.name }}</span>
+      </div>
+    {%- endif -%}
+    <div class="hero__image-overlay"></div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bannière hero",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte au-dessus du titre",
+      "default": "Lisseur professionnel"
+    },
+    {
+      "type": "text",
+      "id": "title_line1",
+      "label": "Titre - ligne 1",
+      "default": "Sublimez vos"
+    },
+    {
+      "type": "text",
+      "id": "title_italic",
+      "label": "Titre - mot en italique",
+      "default": "cheveux"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Le lisseur Lisora allie technologie céramique et design élégant pour des cheveux parfaits en quelques minutes."
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Bouton principal - texte",
+      "default": "Découvrir Lisora"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Bouton principal - lien"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Bouton secondaire - texte",
+      "default": "Voir les coloris"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Bouton secondaire - lien"
+    },
+    {
+      "type": "text",
+      "id": "trust_text",
+      "label": "Texte de confiance",
+      "default": "+2000 clientes satisfaites"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image principale"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bannière hero"
+    }
+  ]
+}
+{% endschema %}

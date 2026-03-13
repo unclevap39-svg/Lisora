@@ -1,0 +1,103 @@
+<aside
+  id="cart-drawer"
+  class="cart-drawer"
+  role="dialog"
+  aria-label="Votre panier"
+  aria-modal="true"
+>
+  <div class="cart-drawer__header">
+    <h2 class="cart-drawer__title">
+      Mon panier
+      <span class="cart-drawer__count" data-cart-count aria-live="polite">{{ cart.item_count }}</span>
+    </h2>
+    <button class="header-icon-btn" data-cart-close aria-label="Fermer le panier">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="cart-drawer__body">
+
+    {%- comment -%} Empty state {%- endcomment -%}
+    <div
+      data-cart-empty
+      style="display:{% if cart.item_count == 0 %}flex{% else %}none{% endif %};flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:40px 0;"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="width:64px;height:64px;color:var(--color-secondary);margin-bottom:20px;" aria-hidden="true">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <h3 style="font-family:var(--font-heading);font-size:1.5rem;margin-bottom:8px;">Votre panier est vide</h3>
+      <p style="font-size:0.88rem;margin-bottom:24px;">Découvrez nos produits et ajoutez-les à votre panier.</p>
+      <a href="/collections/all" class="btn btn-primary" onclick="document.querySelector('[data-cart-close]').click();">
+        Voir les produits
+      </a>
+    </div>
+
+    {%- comment -%} Cart items {%- endcomment -%}
+    <div data-cart-items>
+      {%- for item in cart.items -%}
+        <div class="cart-item" data-line="{{ forloop.index }}">
+          <div class="cart-item__image">
+            {%- if item.image -%}
+              <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title }}" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div>
+            <div class="cart-item__title">{{ item.product.title }}</div>
+            {%- if item.variant.title != 'Default Title' -%}
+              <div class="cart-item__variant">{{ item.variant.title }}</div>
+            {%- endif -%}
+            <div class="cart-item__quantity">
+              <button class="cart-item__qty-btn" data-action="decrease" aria-label="Diminuer la quantité">−</button>
+              <span class="cart-item__qty-num">{{ item.quantity }}</span>
+              <button class="cart-item__qty-btn" data-action="increase" aria-label="Augmenter la quantité">+</button>
+            </div>
+            <button class="cart-item__remove" data-action="remove">Supprimer</button>
+          </div>
+          <div class="cart-item__price">{{ item.line_price | money }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- comment -%} Footer {%- endcomment -%}
+  <div
+    data-cart-footer
+    style="display:{% if cart.item_count > 0 %}block{% else %}none{% endif %};"
+  >
+    {%- comment -%} Free shipping progress {%- endcomment -%}
+    {%- assign free_shipping_threshold = 5000 -%}
+    {%- assign remaining = free_shipping_threshold | minus: cart.total_price -%}
+    {%- if remaining > 0 -%}
+      <div class="cart-upsell">
+        <span class="cart-upsell__icon">🚚</span>
+        <span>Plus que <strong>{{ remaining | money }}</strong> pour la livraison offerte !</span>
+      </div>
+    {%- else -%}
+      <div class="cart-upsell" style="background:var(--color-primary);">
+        <span class="cart-upsell__icon">🎉</span>
+        <span><strong>Félicitations !</strong> Vous avez la livraison offerte.</span>
+      </div>
+    {%- endif -%}
+
+    <div class="cart-drawer__footer">
+      <div class="cart-drawer__total">
+        <span>Total</span>
+        <span class="cart-drawer__total-price" data-cart-total>{{ cart.total_price | money }}</span>
+      </div>
+      <p style="font-size:0.78rem;color:var(--color-text-light);margin-bottom:16px;text-align:center;">
+        Taxes incluses. Frais de livraison calculés à l'étape suivante.
+      </p>
+      <a href="/checkout" class="btn btn-primary btn-full btn-lg">
+        Passer commande →
+      </a>
+      <a href="/cart" style="display:block;text-align:center;margin-top:12px;font-size:0.82rem;color:var(--color-text-light);text-decoration:underline;">
+        Voir le panier
+      </a>
+    </div>
+  </div>
+</aside>

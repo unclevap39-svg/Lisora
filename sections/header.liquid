@@ -1,0 +1,108 @@
+<header class="site-header" role="banner">
+  <div class="container">
+    <div class="site-header__inner">
+
+      {%- comment -%} Left: Navigation {%- endcomment -%}
+      <nav class="site-header__nav" role="navigation" aria-label="Navigation principale">
+        {%- for link in section.settings.menu.links -%}
+          {%- if link.links != blank -%}
+            <div class="nav-dropdown" style="position:relative;">
+              <a href="{{ link.url }}" aria-haspopup="true">{{ link.title }}</a>
+            </div>
+          {%- else -%}
+            <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>{{ link.title }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </nav>
+
+      {%- comment -%} Center: Logo {%- endcomment -%}
+      <div class="site-header__logo">
+        <a href="/" aria-label="{{ shop.name }}">
+          {%- if settings.logo -%}
+            <img
+              src="{{ settings.logo | image_url: width: 300 }}"
+              alt="{{ shop.name }}"
+              width="{{ settings.logo_width }}"
+              height="auto"
+              loading="eager"
+            >
+          {%- else -%}
+            <span class="site-header__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+
+      {%- comment -%} Right: Actions {%- endcomment -%}
+      <div class="site-header__actions">
+        <a href="{{ routes.search_url }}" class="header-icon-btn" aria-label="Rechercher">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </a>
+
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{{ routes.account_url }}" class="header-icon-btn" aria-label="Mon compte">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </a>
+        {%- endif -%}
+
+        <button class="header-icon-btn cart-icon-btn" data-cart-trigger aria-label="Panier ({{ cart.item_count }} articles)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="cart-count" data-cart-count aria-hidden="true" data-count="{{ cart.item_count }}">
+            {{ cart.item_count }}
+          </span>
+        </button>
+
+        <button class="mobile-menu-btn" data-mobile-menu aria-label="Ouvrir le menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+{%- comment -%} Mobile Menu {%- endcomment -%}
+<div class="mobile-menu" role="dialog" aria-label="Menu mobile" aria-modal="true">
+  <button class="mobile-menu__close" data-mobile-close aria-label="Fermer le menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="18" y1="6" x2="6" y2="18"/>
+      <line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+  <nav class="mobile-menu__nav">
+    {%- for link in section.settings.menu.links -%}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+    {%- endfor -%}
+  </nav>
+  <div style="margin-top:auto;padding-top:32px;border-top:1px solid rgba(44,24,16,0.1);">
+    {%- if shop.customer_accounts_enabled -%}
+      <a href="{{ routes.account_url }}" style="font-size:0.88rem;color:var(--color-text-light);">Mon compte</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Menu de navigation"
+    }
+  ]
+}
+{% endschema %}

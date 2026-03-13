@@ -1,0 +1,148 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "eyebrow": "Lisseur professionnel",
+        "title_line1": "Sublimez vos",
+        "title_italic": "cheveux",
+        "description": "Le lisseur Lisora allie technologie céramique et design élégant pour des cheveux parfaits en quelques minutes.",
+        "cta_primary_label": "Découvrir Lisora",
+        "cta_secondary_label": "Voir les coloris",
+        "trust_text": "+2000 clientes satisfaites"
+      }
+    },
+    "trust": {
+      "type": "trust-bar",
+      "blocks": {
+        "trust-1": {
+          "type": "item",
+          "settings": { "icon": "truck", "label": "Livraison offerte", "sub": "Dès 50€ d'achat" }
+        },
+        "trust-2": {
+          "type": "item",
+          "settings": { "icon": "shield", "label": "Garantie 2 ans", "sub": "Satisfait ou remboursé" }
+        },
+        "trust-3": {
+          "type": "item",
+          "settings": { "icon": "refresh", "label": "Retour 30 jours", "sub": "Sans condition" }
+        },
+        "trust-4": {
+          "type": "item",
+          "settings": { "icon": "credit-card", "label": "Paiement sécurisé", "sub": "3x sans frais" }
+        }
+      },
+      "block_order": ["trust-1", "trust-2", "trust-3", "trust-4"]
+    },
+    "featured_product": {
+      "type": "featured-product",
+      "settings": {
+        "badge": "Nouveauté · Édition limitée",
+        "review_count": 247,
+        "show_buy_now": true
+      }
+    },
+    "benefits": {
+      "type": "product-benefits",
+      "settings": {
+        "eyebrow": "Technologie",
+        "title": "Conçu pour vous sublimer",
+        "description": "Chaque détail du Lisora a été pensé pour vous offrir la meilleure expérience de coiffure."
+      },
+      "blocks": {
+        "b1": { "type": "feature", "settings": { "icon": "zap", "title": "Chauffage en 30s", "description": "Atteint la température idéale en 30 secondes pour ne jamais perdre de temps." } },
+        "b2": { "type": "feature", "settings": { "icon": "thermometer", "title": "Jusqu'à 230°C", "description": "Contrôle précis de la chaleur pour s'adapter à tous les types de cheveux." } },
+        "b3": { "type": "feature", "settings": { "icon": "droplet", "title": "Plaques céramique", "description": "Technologie céramique pour un glissement parfait et sans dommages." } },
+        "b4": { "type": "feature", "settings": { "icon": "wind", "title": "Ions négatifs", "description": "Émission d'ions négatifs pour des cheveux brillants et sans frisottis." } },
+        "b5": { "type": "feature", "settings": { "icon": "clock", "title": "Arrêt automatique", "description": "Extinction après 30 minutes d'inactivité pour votre sécurité." } },
+        "b6": { "type": "feature", "settings": { "icon": "lock", "title": "Verrouillage auto", "description": "Système de verrouillage pour un rangement sécurisé et pratique." } },
+        "b7": { "type": "feature", "settings": { "icon": "heart", "title": "Design ergonomique", "description": "Poignée confortable et légère pour une utilisation prolongée." } },
+        "b8": { "type": "feature", "settings": { "icon": "star", "title": "Qualité premium", "description": "Matériaux haut de gamme certifiés pour une durabilité exceptionnelle." } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8"]
+    },
+    "colors": {
+      "type": "color-showcase",
+      "settings": {
+        "eyebrow": "Nos coloris",
+        "title": "Choisissez votre couleur",
+        "description": "5 coloris exclusifs pour correspondre à votre personnalité et votre style.",
+        "cta_label": "Voir tous les coloris"
+      },
+      "blocks": {
+        "c1": { "type": "color", "settings": { "name": "Rose Poudré", "color": "#F4A7B3" } },
+        "c2": { "type": "color", "settings": { "name": "Blanc Ivoire", "color": "#FAF0E6" } },
+        "c3": { "type": "color", "settings": { "name": "Lilas Doux", "color": "#D8B4E2" } },
+        "c4": { "type": "color", "settings": { "name": "Noir Minuit", "color": "#2C2C2C" } },
+        "c5": { "type": "color", "settings": { "name": "Or Rosé", "color": "#C9856A" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5"]
+    },
+    "how": {
+      "type": "how-it-works",
+      "settings": {
+        "eyebrow": "Simple & efficace",
+        "title": "Des cheveux parfaits en 3 étapes"
+      },
+      "blocks": {
+        "s1": { "type": "step", "settings": { "title": "Préchauffez", "description": "Branchez votre Lisora et attendez 30 secondes. La DEL indique quand c'est prêt." } },
+        "s2": { "type": "step", "settings": { "title": "Lissez", "description": "Passez les plaques céramique sur vos cheveux par sections. Résultat immédiat." } },
+        "s3": { "type": "step", "settings": { "title": "Brillez", "description": "Profitez de cheveux parfaitement lisses et brillants toute la journée." } }
+      },
+      "block_order": ["s1", "s2", "s3"]
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "eyebrow": "Avis clients",
+        "title": "Elles adorent Lisora",
+        "avg_rating": "4.9",
+        "total_reviews": 847
+      },
+      "blocks": {
+        "t1": { "type": "testimonial", "settings": { "rating": 5, "title": "Le meilleur lisseur !", "text": "Incroyable ! Mes cheveux sont lisses et brillants en 5 minutes. La qualité est au rendez-vous et le design est magnifique.", "name": "Sophie M.", "location": "Paris" } },
+        "t2": { "type": "testimonial", "settings": { "rating": 5, "title": "Parfait pour mes cheveux bouclés", "text": "J'ai des cheveux très bouclés et difficiles à coiffer. Depuis que j'utilise Lisora, je gagne 20 minutes chaque matin !", "name": "Camille R.", "location": "Lyon" } },
+        "t3": { "type": "testimonial", "settings": { "rating": 5, "title": "Design sublime et efficace", "text": "Le coloris rose est absolument adorable. Mes cheveux n'ont jamais été aussi lisses. Je recommande à 100% !", "name": "Emma L.", "location": "Bordeaux" } },
+        "t4": { "type": "testimonial", "settings": { "rating": 5, "title": "Cadeau parfait", "text": "Je l'ai offert à ma sœur pour son anniversaire. Elle l'utilise tous les jours et ne peut plus s'en passer !", "name": "Juliette B.", "location": "Marseille" } },
+        "t5": { "type": "testimonial", "settings": { "rating": 5, "title": "Rapport qualité/prix imbattable", "text": "Pour ce prix, la qualité est vraiment impressionnante. La chauffe est rapide, le glissement parfait. Très satisfaite !", "name": "Laura V.", "location": "Nantes" } },
+        "t6": { "type": "testimonial", "settings": { "rating": 5, "title": "Livraison rapide et produit parfait", "text": "Reçu en 2 jours, emballage soigné et produit exactement comme décrit. Mes cheveux sont méconnaissables !", "name": "Chloé D.", "location": "Toulouse" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4", "t5", "t6"]
+    },
+    "results": {
+      "type": "results-section",
+      "settings": {
+        "eyebrow": "Les chiffres parlent",
+        "title": "La marque qui fait confiance",
+        "description": "Des milliers de femmes font confiance à Lisora pour leurs rituels beauté quotidiens. Rejoignez notre communauté.",
+        "cta_label": "Commander maintenant"
+      },
+      "blocks": {
+        "r1": { "type": "stat", "settings": { "number": "50k+", "label": "Clientes satisfaites" } },
+        "r2": { "type": "stat", "settings": { "number": "4.9★", "label": "Note moyenne" } },
+        "r3": { "type": "stat", "settings": { "number": "30s", "label": "Temps de chauffe" } },
+        "r4": { "type": "stat", "settings": { "number": "2 ans", "label": "De garantie" } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4"]
+    },
+    "cta": {
+      "type": "cta-banner",
+      "settings": {
+        "title": "Prête à sublimer vos cheveux ?",
+        "description": "Rejoignez des milliers de femmes qui font confiance à Lisora. Livraison offerte dès 50€.",
+        "cta_primary": "Commander maintenant",
+        "cta_secondary": "Voir les coloris"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Newsletter",
+        "title": "Restez dans la tendance",
+        "description": "Inscrivez-vous pour recevoir nos offres exclusives et nos conseils beauté en avant-première.",
+        "button_label": "S'inscrire"
+      }
+    }
+  },
+  "order": ["hero", "trust", "featured_product", "benefits", "colors", "how", "testimonials", "results", "cta", "newsletter"]
+}

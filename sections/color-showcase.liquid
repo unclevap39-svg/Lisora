@@ -1,0 +1,130 @@
+<section class="color-showcase">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      {%- if section.settings.description != blank -%}
+        <p class="section-desc">{{ section.settings.description }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="color-showcase__grid">
+      {%- for block in section.blocks -%}
+        <a
+          href="{{ block.settings.url | default: '#' }}"
+          class="color-card"
+          {{ block.shopify_attributes }}
+          data-aos="fade-up"
+          data-aos-delay="{{ forloop.index0 | times: 80 }}ms"
+          aria-label="{{ block.settings.name }}"
+        >
+          {%- if block.settings.image != blank -%}
+            <img
+              class="color-card__image"
+              src="{{ block.settings.image | image_url: width: 500 }}"
+              alt="{{ block.settings.name }}"
+              loading="lazy"
+              width="500"
+            >
+          {%- else -%}
+            <div style="width:100%;height:100%;background:{{ block.settings.color | default: 'var(--color-secondary)' }};"></div>
+          {%- endif -%}
+          <div class="color-card__overlay" aria-hidden="true"></div>
+          <div class="color-card__info">
+            <div class="color-card__name">{{ block.settings.name }}</div>
+            <div class="color-card__link">Voir le coloris →</div>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.cta_label != blank -%}
+      <div style="text-align:center;margin-top:48px;" data-aos="fade-up">
+        <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="btn btn-outline">
+          {{ section.settings.cta_label }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vitrine des coloris",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte au-dessus du titre",
+      "default": "Nos coloris"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Choisissez votre couleur"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "5 coloris exclusifs pour correspondre à votre personnalité."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Texte du bouton",
+      "default": "Voir tous les coloris"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Lien du bouton"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "color",
+      "name": "Coloris",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nom du coloris",
+          "default": "Rose Poudré"
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Couleur (si pas d'image)",
+          "default": "#F4A7B3"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Lien vers le produit"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vitrine des coloris",
+      "blocks": [
+        { "type": "color", "settings": { "name": "Rose Poudré", "color": "#F4A7B3" } },
+        { "type": "color", "settings": { "name": "Blanc Ivoire", "color": "#FAF0E6" } },
+        { "type": "color", "settings": { "name": "Lilas Doux", "color": "#D8B4E2" } },
+        { "type": "color", "settings": { "name": "Noir Minuit", "color": "#2C2C2C" } },
+        { "type": "color", "settings": { "name": "Or Rosé", "color": "#C9856A" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

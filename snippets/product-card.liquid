@@ -1,0 +1,65 @@
+{%- comment -%}
+  Renders a product card.
+  Usage: {% render 'product-card', product: product %}
+{%- endcomment -%}
+
+{%- liquid
+  assign card_product = product
+  assign show_badge = show_badge | default: true
+-%}
+
+<article class="product-card" aria-label="{{ card_product.title }}">
+  <a href="{{ card_product.url }}" class="product-card__image-wrap" aria-hidden="true" tabindex="-1">
+    {%- if show_badge -%}
+      {%- if card_product.available == false -%}
+        <span class="product-card__badge">Épuisé</span>
+      {%- elsif card_product.compare_at_price > card_product.price -%}
+        {%- assign discount = card_product.compare_at_price | minus: card_product.price | times: 100 | divided_by: card_product.compare_at_price -%}
+        <span class="product-card__badge">-{{ discount }}%</span>
+      {%- elsif card_product.created_at > 'now' | date: '%s' | minus: 2592000 | date: '%Y-%m-%d' -%}
+        <span class="product-card__badge">Nouveau</span>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if card_product.featured_image -%}
+      <img
+        class="product-card__image"
+        src="{{ card_product.featured_image | image_url: width: 600 }}"
+        alt="{{ card_product.featured_image.alt | default: card_product.title }}"
+        loading="lazy"
+        width="600"
+      >
+    {%- else -%}
+      <div style="width:100%;height:100%;background:var(--color-secondary);"></div>
+    {%- endif -%}
+
+    <div class="product-card__quick-add" aria-hidden="true">Ajouter au panier</div>
+  </a>
+
+  <div style="padding:4px 0;">
+    <a href="{{ card_product.url }}">
+      <h3 class="product-card__title">{{ card_product.title }}</h3>
+    </a>
+
+    <div class="product-card__price-wrap">
+      <span class="product-card__price">{{ card_product.price | money }}</span>
+      {%- if card_product.compare_at_price > card_product.price -%}
+        <span class="product-card__compare">{{ card_product.compare_at_price | money }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- assign color_option = card_product.options_by_name['Couleur'] | default: card_product.options_by_name['Color'] -%}
+    {%- if color_option -%}
+      <div class="product-card__swatches" aria-label="Coloris disponibles">
+        {%- for value in color_option.values limit: 6 -%}
+          <span
+            class="product-card__swatch"
+            style="background-color:{{ value | handle | replace: '-', '' }};"
+            title="{{ value }}"
+            aria-label="{{ value }}"
+          ></span>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</article>

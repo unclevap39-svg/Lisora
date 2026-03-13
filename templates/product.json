@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {}
+    },
+    "benefits": {
+      "type": "product-benefits",
+      "settings": {
+        "eyebrow": "Technologie",
+        "title": "Ce qui rend Lisora unique"
+      },
+      "blocks": {
+        "b1": { "type": "feature", "settings": { "icon": "zap", "title": "Chauffage en 30s", "description": "Atteint la température idéale en 30 secondes." } },
+        "b2": { "type": "feature", "settings": { "icon": "thermometer", "title": "Jusqu'à 230°C", "description": "Contrôle précis de la chaleur." } },
+        "b3": { "type": "feature", "settings": { "icon": "droplet", "title": "Plaques céramique", "description": "Glissement parfait sans dommages." } },
+        "b4": { "type": "feature", "settings": { "icon": "wind", "title": "Ions négatifs", "description": "Cheveux brillants, sans frisottis." } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"]
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "eyebrow": "Elles l'ont essayé",
+        "title": "Ce qu'elles en pensent",
+        "avg_rating": "4.9",
+        "total_reviews": 247
+      },
+      "blocks": {
+        "t1": { "type": "testimonial", "settings": { "rating": 5, "title": "Absolument parfait !", "text": "Je ne peux plus m'en passer. Mes cheveux sont lisses et brillants toute la journée.", "name": "Sophie M.", "location": "Paris" } },
+        "t2": { "type": "testimonial", "settings": { "rating": 5, "title": "Qualité exceptionnelle", "text": "La chauffe est vraiment rapide et le glissement des plaques est impeccable.", "name": "Camille R.", "location": "Lyon" } },
+        "t3": { "type": "testimonial", "settings": { "rating": 5, "title": "Je recommande vivement", "text": "Super produit, le design est magnifique et l'efficacité est au rendez-vous.", "name": "Emma L.", "location": "Bordeaux" } }
+      },
+      "block_order": ["t1", "t2", "t3"]
+    },
+    "cta": {
+      "type": "cta-banner",
+      "settings": {
+        "title": "Prête à changer de routine ?",
+        "description": "Commandez votre Lisora aujourd'hui et profitez de la livraison offerte.",
+        "cta_primary": "Commander maintenant"
+      }
+    }
+  },
+  "order": ["main", "benefits", "testimonials", "cta"]
+}

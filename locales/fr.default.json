@@ -1,0 +1,43 @@
+{
+  "general": {
+    "password_page": {
+      "login_form_heading": "Entrez en avant-première",
+      "login_form_password_label": "Mot de passe",
+      "login_form_password_placeholder": "Votre mot de passe",
+      "login_form_submit": "Entrer",
+      "admin_link_html": "Êtes-vous propriétaire du magasin ? <a href=\"/admin\" target=\"_blank\">Connectez-vous ici</a>"
+    },
+    "meta": {
+      "tags": "Étiqueté \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    }
+  },
+  "accessibility": {
+    "skip_to_text": "Passer au contenu"
+  },
+  "cart": {
+    "general": {
+      "title": "Panier",
+      "empty": "Votre panier est vide",
+      "checkout": "Passer commande",
+      "subtotal": "Sous-total",
+      "total": "Total",
+      "remove": "Supprimer"
+    }
+  },
+  "products": {
+    "general": {
+      "add_to_cart": "Ajouter au panier",
+      "sold_out": "Rupture de stock",
+      "unavailable": "Non disponible",
+      "quantity": "Quantité",
+      "sale": "Solde",
+      "new": "Nouveau"
+    }
+  },
+  "collections": {
+    "general": {
+      "no_matches": "Aucun produit trouvé."
+    }
+  }
+}

@@ -1,0 +1,96 @@
+<section class="results-section">
+  <div class="container">
+    <div class="results-section__inner">
+      <div data-aos="fade-right">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="section-eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h2 class="section-title" style="margin-bottom:20px;">{{ section.settings.title }}</h2>
+        <p style="font-size:1rem;color:var(--color-text-light);line-height:1.8;margin-bottom:32px;">{{ section.settings.description }}</p>
+
+        {%- if section.settings.cta_label != blank -%}
+          <a href="{{ section.settings.cta_url | default: '#' }}" class="btn btn-primary">
+            {{ section.settings.cta_label }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="results-section__stats" data-aos="fade-left">
+        {%- for block in section.blocks -%}
+          <div class="stat-card" {{ block.shopify_attributes }}>
+            <div class="stat-card__number">{{ block.settings.number }}</div>
+            <div class="stat-card__label">{{ block.settings.label }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Section résultats",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte au-dessus",
+      "default": "Les chiffres parlent"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "La marque qui fait confiance"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Des milliers de femmes font confiance à Lisora pour leurs rituels beauté quotidiens."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Bouton",
+      "default": "Commander maintenant"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Lien bouton"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Statistique",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Chiffre",
+          "default": "50k+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Clientes satisfaites"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Section résultats",
+      "blocks": [
+        { "type": "stat", "settings": { "number": "50k+", "label": "Clientes satisfaites" } },
+        { "type": "stat", "settings": { "number": "4.9★", "label": "Note moyenne" } },
+        { "type": "stat", "settings": { "number": "30s", "label": "Temps de chauffe" } },
+        { "type": "stat", "settings": { "number": "2 ans", "label": "De garantie" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

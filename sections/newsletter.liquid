@@ -1,0 +1,82 @@
+<section class="newsletter">
+  <div class="container">
+    <div class="newsletter__inner">
+      <div class="newsletter__text" data-aos="fade-right">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="section-eyebrow" style="display:block;margin-bottom:8px;">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);margin-bottom:8px;">{{ section.settings.title }}</h2>
+        {%- if section.settings.description != blank -%}
+          <p style="font-size:0.9rem;">{{ section.settings.description }}</p>
+        {%- endif -%}
+      </div>
+
+      <form
+        method="post"
+        action="/contact#contact_form"
+        class="newsletter__form"
+        data-newsletter-form
+        data-aos="fade-left"
+      >
+        <input type="hidden" name="form_type" value="customer">
+        <input type="hidden" name="utf8" value="✓">
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input
+          type="email"
+          name="contact[email]"
+          class="newsletter__input"
+          placeholder="{{ section.settings.placeholder | default: 'Votre adresse email' }}"
+          required
+          autocomplete="email"
+          aria-label="Votre adresse email"
+        >
+        <button type="submit" class="btn btn-primary">
+          {{ section.settings.button_label | default: "S'inscrire" }}
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte au-dessus",
+      "default": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Restez dans la tendance"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Inscrivez-vous pour recevoir nos offres exclusives et conseils beauté."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder input",
+      "default": "Votre adresse email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texte du bouton",
+      "default": "S'inscrire"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

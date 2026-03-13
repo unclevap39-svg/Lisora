@@ -1,0 +1,20 @@
+{
+  "current": {
+    "color_primary": "#F4A7B3",
+    "color_secondary": "#E8D5C4",
+    "color_accent": "#C9856A",
+    "color_background": "#FAF7F4",
+    "color_text": "#2C1810",
+    "color_text_light": "#7A6860",
+    "font_heading": "cormorant_garamond_n4",
+    "font_body": "jost_n4",
+    "announcement_bar_enabled": true,
+    "announcement_text": "Livraison offerte dès 50€ · Paiement en 3x sans frais · Retour 30 jours",
+    "announcement_bg": "#2C1810",
+    "announcement_color": "#FAF7F4",
+    "logo_width": 120,
+    "sticky_header": true,
+    "cart_type": "drawer",
+    "footer_about": "<p>Lisora - L'outil de coiffure qui sublime chaque femme.</p>"
+  }
+}

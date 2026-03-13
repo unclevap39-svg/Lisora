@@ -1,0 +1,65 @@
+<section class="cta-banner">
+  <div class="container" data-aos="fade-up">
+    <h2 class="cta-banner__title">{{ section.settings.title }}</h2>
+    <p class="cta-banner__desc">{{ section.settings.description }}</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      {%- if section.settings.cta_primary != blank -%}
+        <a href="{{ section.settings.cta_primary_url | default: '/collections/all' }}" class="btn btn-primary btn-lg">
+          {{ section.settings.cta_primary }}
+        </a>
+      {%- endif -%}
+      {%- if section.settings.cta_secondary != blank -%}
+        <a href="{{ section.settings.cta_secondary_url | default: '#' }}" class="btn btn-outline btn-lg">
+          {{ section.settings.cta_secondary }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bannière CTA",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Prête à sublimer vos cheveux ?"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Rejoignez des milliers de femmes qui font confiance à Lisora. Livraison offerte dès 50€."
+    },
+    {
+      "type": "text",
+      "id": "cta_primary",
+      "label": "Bouton principal",
+      "default": "Commander maintenant"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Lien bouton principal"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary",
+      "label": "Bouton secondaire",
+      "default": "En savoir plus"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Lien bouton secondaire"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bannière CTA"
+    }
+  ]
+}
+{% endschema %}

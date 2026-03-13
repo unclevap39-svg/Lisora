@@ -1,0 +1,96 @@
+<section class="how-it-works">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-eyebrow" style="color:var(--color-primary);">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="section-title" style="color:var(--color-background);">{{ section.settings.title }}</h2>
+      {%- if section.settings.description != blank -%}
+        <p class="section-desc" style="color:rgba(250,247,244,0.7);">{{ section.settings.description }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="steps-grid">
+      {%- for block in section.blocks -%}
+        <div class="step" {{ block.shopify_attributes }} data-aos="fade-up" data-aos-delay="{{ forloop.index0 | times: 150 }}ms">
+          <div class="step__number" aria-hidden="true">{{ forloop.index }}</div>
+          <h3 class="step__title">{{ block.settings.title }}</h3>
+          <p class="step__desc">{{ block.settings.description }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Comment ça marche",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte au-dessus du titre",
+      "default": "Simple & efficace"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Des cheveux parfaits en 3 étapes"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Étape",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Branchez"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Branchez votre Lisora et choisissez votre température."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comment ça marche",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "Préchauffez",
+            "description": "Branchez votre Lisora et attendez 30 secondes. La DEL vous indique quand la température idéale est atteinte."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Lissez",
+            "description": "Passez doucement les plaques céramique sur vos cheveux par sections. Le résultat est immédiat."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Brillez",
+            "description": "Profitez de cheveux parfaitement lisses, brillants et sans frisottis toute la journée."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

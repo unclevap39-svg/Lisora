@@ -1,0 +1,118 @@
+<section class="features-section">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      {%- if section.settings.description != blank -%}
+        <p class="section-desc">{{ section.settings.description }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="features-grid">
+      {%- for block in section.blocks -%}
+        <div class="feature-card" {{ block.shopify_attributes }} data-aos="fade-up" data-aos-delay="{{ forloop.index0 | times: 80 }}ms">
+          <div class="feature-card__icon" aria-hidden="true">
+            {%- case block.settings.icon -%}
+              {%- when 'zap' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              {%- when 'droplet' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+              {%- when 'thermometer' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+              {%- when 'wind' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+              {%- when 'lock' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              {%- when 'star' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              {%- when 'heart' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              {%- when 'clock' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            {%- endcase -%}
+          </div>
+          <h3 class="feature-card__title">{{ block.settings.title }}</h3>
+          <p class="feature-card__desc">{{ block.settings.description }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Caractéristiques produit",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte au-dessus du titre",
+      "default": "Technologie"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Conçu pour vous sublimer"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Caractéristique",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "zap", "label": "Éclair" },
+            { "value": "droplet", "label": "Goutte" },
+            { "value": "thermometer", "label": "Thermomètre" },
+            { "value": "wind", "label": "Vent" },
+            { "value": "lock", "label": "Cadenas" },
+            { "value": "star", "label": "Étoile" },
+            { "value": "heart", "label": "Cœur" },
+            { "value": "clock", "label": "Horloge" }
+          ],
+          "default": "zap"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Chauffage rapide"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Atteint 230°C en seulement 30 secondes."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Caractéristiques produit",
+      "blocks": [
+        { "type": "feature", "settings": { "icon": "zap", "title": "Chauffage en 30s", "description": "Atteint la température idéale en 30 secondes pour ne jamais perdre de temps." } },
+        { "type": "feature", "settings": { "icon": "thermometer", "title": "Température 230°C", "description": "Contrôle précis de la chaleur pour s'adapter à tous les types de cheveux." } },
+        { "type": "feature", "settings": { "icon": "droplet", "title": "Plaques céramique", "description": "Technologie céramique pour un glissement parfait sans endommager les cheveux." } },
+        { "type": "feature", "settings": { "icon": "lock", "title": "Verrouillage auto", "description": "Système de verrouillage pour un rangement sécurisé et pratique." } },
+        { "type": "feature", "settings": { "icon": "wind", "title": "Ions négatifs", "description": "Émission d'ions négatifs pour des cheveux brillants et sans frisottis." } },
+        { "type": "feature", "settings": { "icon": "clock", "title": "Arrêt automatique", "description": "Extinction automatique après 30 minutes d'inactivité pour votre sécurité." } },
+        { "type": "feature", "settings": { "icon": "heart", "title": "Design ergonomique", "description": "Poignée confortable et légère pour une utilisation prolongée sans fatigue." } },
+        { "type": "feature", "settings": { "icon": "star", "title": "Qualité premium", "description": "Matériaux haut de gamme certifiés pour une durabilité exceptionnelle." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
