@@ -19,9 +19,9 @@
 
     <div class="hero__cta">
       {%- if section.settings.cta_primary_label != blank -%}
-        <a href="{{ section.settings.cta_primary_url }}" class="btn btn-primary btn-lg">
+        <a href="{{ section.settings.cta_primary_url }}" class="btn btn-primary">
           {{ section.settings.cta_primary_label }}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>
@@ -33,23 +33,13 @@
       {%- endif -%}
     </div>
 
-    <div class="hero__trust">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-      <span style="margin-left:4px;">{{ section.settings.trust_text | default: '+2000 clientes satisfaites' }}</span>
+    <div class="hero__trust" aria-label="{{ section.settings.trust_text | default: '+2000 clientes satisfaites' }}">
+      {%- for i in (1..5) -%}
+        <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      {%- endfor -%}
+      <span>{{ section.settings.trust_text | default: '+2000 clientes satisfaites' }}</span>
     </div>
   </div>
 

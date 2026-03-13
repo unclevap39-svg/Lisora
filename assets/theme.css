@@ -118,10 +118,25 @@ body::after {
    --bg-accent : gradient rose → or rosé (CTA)
    ============================================= */
 
-/* 1 — Hero : crème (transparent laisse le blob de fond) */
+/* 1 — Hero */
 .hero {
   background: #FAF7F4;
   position: relative;
+}
+
+/* Fondu doux côté gauche vers l'image — supprime la coupure brutale */
+@media (min-width: 768px) {
+  .hero__image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 120px;
+    background: linear-gradient(to right, #FAF7F4, transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
 }
 
 /* 2 — Trust bar : beige sable bien distinct + séparateurs nets */
@@ -634,73 +649,125 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 60px 24px;
+  padding: 60px 32px;
   order: 2;
 }
 @media (min-width: 768px) {
   .hero__content {
-    padding: 80px 60px;
+    padding: 100px 72px 100px 64px;
     order: 1;
   }
 }
 
+/* Eyebrow tag — pill arrondie */
 .hero__eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-accent);
-  margin-bottom: 20px;
+  background: rgba(201,133,106,0.1);
+  border: 1px solid rgba(201,133,106,0.25);
+  border-radius: 100px;
+  padding: 6px 16px;
+  width: fit-content;
+  margin-bottom: 28px;
 }
-.hero__eyebrow::before {
-  content: '';
-  width: 28px;
-  height: 1px;
-  background: var(--color-accent);
-}
+.hero__eyebrow::before { display: none; }
 
 .hero__title {
-  font-size: clamp(2.8rem, 6vw, 5rem);
-  line-height: 1.05;
-  margin-bottom: 24px;
+  font-size: clamp(3rem, 5.5vw, 5.2rem);
+  line-height: 1.0;
+  margin-bottom: 20px;
   color: var(--color-text);
 }
 .hero__title em {
   font-style: italic;
   color: var(--color-accent);
+  display: block;
 }
 
 .hero__description {
-  font-size: 1rem;
-  max-width: 440px;
+  font-size: 1.0rem;
+  max-width: 400px;
   margin-bottom: 40px;
-  line-height: 1.75;
+  line-height: 1.8;
+  color: var(--color-text-light);
 }
 
+/* Boutons CTA — vrais boutons bien visibles */
 .hero__cta {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 14px;
   align-items: center;
+  margin-bottom: 36px;
 }
 
-.hero__trust {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.hero__cta .btn-primary {
+  background: var(--color-text);
+  color: #FAF7F4;
+  border: 2px solid var(--color-text);
+  padding: 16px 32px;
   font-size: 0.82rem;
-  color: var(--color-text-light);
-  margin-top: 24px;
+  border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(44,24,16,0.18);
+  transition: all 0.3s;
+}
+.hero__cta .btn-primary:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(201,133,106,0.35);
 }
 
+.hero__cta .btn-outline {
+  background: rgba(250,247,244,0.6);
+  color: var(--color-text);
+  border: 2px solid rgba(44,24,16,0.2);
+  padding: 16px 32px;
+  font-size: 0.82rem;
+  border-radius: 100px;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s;
+}
+.hero__cta .btn-outline:hover {
+  background: var(--color-text);
+  color: #FAF7F4;
+  border-color: var(--color-text);
+  transform: translateY(-2px);
+}
+
+/* Social proof */
+.hero__trust {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-text);
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(44,24,16,0.1);
+  border-radius: 100px;
+  padding: 8px 16px;
+  width: fit-content;
+  backdrop-filter: blur(4px);
+}
+.hero__trust svg { color: #F4A020; fill: currentColor; }
+
+/* Image côté droit */
 .hero__image {
   position: relative;
   overflow: hidden;
   order: 1;
-  min-height: 50vh;
+  min-height: 52vh;
 }
 @media (min-width: 768px) {
   .hero__image { order: 2; min-height: auto; }
@@ -710,11 +777,23 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
   height: 100%;
   object-fit: cover;
   object-position: center;
+  transition: transform 8s ease;
 }
+.hero:hover .hero__image img {
+  transform: scale(1.03);
+}
+
+/* Overlay image : fondu gauche pour fusionner avec le contenu */
 .hero__image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(244, 167, 179, 0.15) 0%, transparent 60%);
+  background: linear-gradient(
+    to right,
+    rgba(250,247,244,0.45) 0%,
+    rgba(250,247,244,0.1) 25%,
+    transparent 55%
+  );
+  z-index: 1;
 }
 
 /* === TRUST BAR === */
