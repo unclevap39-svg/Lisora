@@ -56,14 +56,9 @@ p { line-height: 1.7; color: var(--color-text-light, #7A6860); }
 
 /* === DYNAMIC BACKGROUNDS === */
 
-/* Global animated gradient background */
+/* Global base background */
 body {
-  background-color: var(--color-background, #FAF7F4);
-  background-image:
-    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(244,167,179,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 90% 100%, rgba(201,133,106,0.12) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(232,213,196,0.1) 0%, transparent 70%);
-  background-attachment: fixed;
+  background-color: #FAF7F4;
 }
 
 /* Floating decorative blobs */
@@ -114,146 +109,106 @@ body::after {
 /* All direct children of main stay above the fixed blobs */
 #MainContent > * { position: relative; z-index: 1; }
 
-/* Section backgrounds — alternating rhythm */
+/* =============================================
+   SECTION ALTERNATING BACKGROUNDS
+   Palette :
+   --bg-light  : #FAF7F4  (crème — sections impaires)
+   --bg-warm   : #EFE4DA  (beige sable — sections paires)
+   --bg-dark   : #2C1810  (brun sombre — comment ça marche)
+   --bg-accent : gradient rose → or rosé (CTA)
+   ============================================= */
+
+/* 1 — Hero : crème (transparent laisse le blob de fond) */
 .hero {
-  background: transparent;
+  background: #FAF7F4;
+  position: relative;
 }
 
-/* Trust bar gets a warm subtle gradient */
+/* 2 — Trust bar : beige sable bien distinct + séparateurs nets */
 .trust-bar {
-  background: linear-gradient(135deg, rgba(232,213,196,0.6) 0%, rgba(244,167,179,0.2) 100%);
-  backdrop-filter: blur(2px);
-  border-top: 1px solid rgba(244,167,179,0.25);
-  border-bottom: 1px solid rgba(244,167,179,0.25);
+  background: #EFE4DA;
+  border-top: 1px solid rgba(201,133,106,0.18);
+  border-bottom: 1px solid rgba(201,133,106,0.18);
 }
 
-/* Product section: clean white-ish with a faint pink glow */
+/* 3 — Produit vedette : crème */
 .product-section {
-  background: linear-gradient(160deg, rgba(250,247,244,0.97) 0%, rgba(244,167,179,0.06) 100%);
+  background: #FAF7F4;
   position: relative;
-  overflow: hidden;
-}
-.product-section::before {
-  content: '';
-  position: absolute;
-  top: -100px;
-  right: -100px;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(244,167,179,0.15) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
 }
 
-/* Features: warm beige gradient, feels different */
+/* 4 — Caractéristiques produit : beige sable */
 .features-section {
-  background: linear-gradient(170deg, #EDE0D4 0%, #F5EDE6 40%, #EAD5D0 100%);
+  background: #EFE4DA;
   position: relative;
-  overflow: hidden;
-}
-.features-section::after {
-  content: '';
-  position: absolute;
-  bottom: -80px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 600px;
-  height: 200px;
-  background: radial-gradient(ellipse, rgba(244,167,179,0.18) 0%, transparent 70%);
-  pointer-events: none;
 }
 
-/* Color showcase: very light, almost white with a hint of pink */
+/* 5 — Vitrine des coloris : crème */
 .color-showcase {
-  background: linear-gradient(145deg, rgba(250,247,244,1) 0%, rgba(244,231,228,0.5) 100%);
+  background: #FAF7F4;
+  position: relative;
 }
 
-/* How it works: stays dark but with a subtle warm tint */
+/* 6 — Comment ça marche : sombre (contraste maximal) */
 .how-it-works {
-  background: linear-gradient(135deg, #1E0F0A 0%, #2C1810 50%, #3A2218 100%);
+  background: #2C1810;
   position: relative;
   overflow: hidden;
 }
 .how-it-works::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(244,167,179,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 80% 50%, rgba(201,133,106,0.07) 0%, transparent 60%);
+    radial-gradient(ellipse 60% 50% at 15% 50%, rgba(244,167,179,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 50%, rgba(201,133,106,0.05) 0%, transparent 60%);
   pointer-events: none;
 }
 
-/* Testimonials: soft pink-to-cream diagonal */
+/* 7 — Témoignages : beige sable */
 .testimonials {
-  background: linear-gradient(155deg, rgba(250,247,244,1) 0%, rgba(244,229,225,0.6) 50%, rgba(250,247,244,1) 100%);
+  background: #EFE4DA;
   position: relative;
 }
-.testimonials::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(244,167,179,0.4), transparent);
-}
 
-/* Results section */
+/* 8 — Résultats / stats : crème */
 .results-section {
-  background: linear-gradient(135deg, #F0E4DC 0%, #EDD5C8 40%, #F5E8E2 100%);
+  background: #FAF7F4;
+  position: relative;
 }
 
-/* CTA banner: vibrant gradient upgrade */
+/* 9 — CTA banner : rose accent (unique, très différent) */
 .cta-banner {
-  background: linear-gradient(135deg,
-    rgba(244,167,179,0.9) 0%,
-    rgba(232,213,196,0.85) 40%,
-    rgba(201,133,106,0.5) 100%
-  );
+  background: linear-gradient(120deg, #F4A7B3 0%, #E8D5C4 55%, #C9856A 100%);
   position: relative;
   overflow: hidden;
 }
 .cta-banner::before {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -10%;
-  width: 50%;
-  height: 200%;
-  background: rgba(255,255,255,0.07);
-  transform: rotate(-15deg);
-  pointer-events: none;
-}
-.cta-banner::after {
-  content: '';
-  position: absolute;
-  bottom: -50%;
-  right: -5%;
-  width: 40%;
-  height: 200%;
-  background: rgba(255,255,255,0.05);
-  transform: rotate(-15deg);
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
   pointer-events: none;
 }
 
-/* Newsletter: stays clean but gets a border gradient top */
+/* 10 — Newsletter : beige sable */
 .newsletter {
-  background: linear-gradient(180deg, rgba(244,229,225,0.4) 0%, rgba(250,247,244,1) 30%);
+  background: #EFE4DA;
   border-top: none;
   position: relative;
 }
-.newsletter::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(244,167,179,0.5), rgba(201,133,106,0.3), transparent);
+
+/* Séparateur visuel entre chaque section (fine ligne gradient) */
+.trust-bar,
+.product-section,
+.features-section,
+.color-showcase,
+.how-it-works,
+.testimonials,
+.results-section,
+.cta-banner,
+.newsletter {
+  box-shadow: inset 0 1px 0 rgba(44,24,16,0.07);
 }
 
 /* Feature cards: glassmorphism effect */
@@ -764,10 +719,7 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
 
 /* === TRUST BAR === */
 .trust-bar {
-  background: var(--color-secondary);
   padding: 24px 0;
-  border-top: 1px solid rgba(44,24,16,0.06);
-  border-bottom: 1px solid rgba(44,24,16,0.06);
 }
 .trust-bar__grid {
   display: grid;
@@ -1146,7 +1098,6 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
 /* === FEATURES SECTION === */
 .features-section {
   padding: 100px 0;
-  background: var(--color-secondary);
 }
 .section-header {
   text-align: center;
@@ -1270,7 +1221,6 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
 /* === HOW IT WORKS === */
 .how-it-works {
   padding: 100px 0;
-  background: var(--color-text);
   color: var(--color-background);
 }
 .how-it-works .section-header { color: var(--color-background); }
@@ -1331,7 +1281,6 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
 /* === TESTIMONIALS === */
 .testimonials {
   padding: 100px 0;
-  background: var(--color-background);
 }
 .testimonials-grid {
   display: grid;
@@ -1403,7 +1352,6 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
 /* === BEFORE AFTER / RESULTS === */
 .results-section {
   padding: 100px 0;
-  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-background) 100%);
 }
 .results-section__inner {
   display: grid;
@@ -1441,7 +1389,6 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
 /* === CTA BANNER === */
 .cta-banner {
   padding: 100px 0;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   text-align: center;
 }
 .cta-banner__title {
@@ -1460,7 +1407,6 @@ body::after  { transform: translateY(calc(var(--blob-y, 0) * -0.6)); }
 /* === NEWSLETTER === */
 .newsletter {
   padding: 80px 0;
-  border-top: 1px solid rgba(44, 24, 16, 0.08);
 }
 .newsletter__inner {
   display: flex;
