@@ -69,20 +69,32 @@
     data-cart-footer
     style="display:{% if cart.item_count > 0 %}block{% else %}none{% endif %};"
   >
-    {%- comment -%} Free shipping progress {%- endcomment -%}
+    {%- comment -%} Free shipping progress — updated by JS on cart refresh {%- endcomment -%}
     {%- assign free_shipping_threshold = 5000 -%}
     {%- assign remaining = free_shipping_threshold | minus: cart.total_price -%}
-    {%- if remaining > 0 -%}
-      <div class="cart-upsell">
-        <span class="cart-upsell__icon">🚚</span>
-        <span>Plus que <strong>{{ remaining | money }}</strong> pour la livraison offerte !</span>
-      </div>
-    {%- else -%}
-      <div class="cart-upsell" style="background:var(--color-primary);">
-        <span class="cart-upsell__icon">🎉</span>
-        <span><strong>Félicitations !</strong> Vous avez la livraison offerte.</span>
-      </div>
-    {%- endif -%}
+    {%- assign progress_pct = cart.total_price | times: 100 | divided_by: free_shipping_threshold -%}
+    {%- if progress_pct > 100 -%}{%- assign progress_pct = 100 -%}{%- endif -%}
+    <div class="cart-shipping" data-cart-shipping data-threshold="{{ free_shipping_threshold }}">
+      {%- if remaining > 0 -%}
+        <div class="cart-shipping__text">
+          <span class="cart-shipping__icon">🚚</span>
+          <span>Plus que <strong class="cart-shipping__remaining">{{ remaining | money }}</strong> pour la livraison offerte !</span>
+        </div>
+        <div class="cart-shipping__bar">
+          <div class="cart-shipping__fill" style="width: {{ progress_pct }}%;" data-shipping-fill></div>
+        </div>
+      {%- else -%}
+        <div class="cart-shipping cart-shipping--unlocked">
+          <div class="cart-shipping__text">
+            <span class="cart-shipping__icon">🎉</span>
+            <span><strong>Félicitations !</strong> Vous bénéficiez de la livraison offerte.</span>
+          </div>
+          <div class="cart-shipping__bar">
+            <div class="cart-shipping__fill" style="width:100%;" data-shipping-fill></div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
 
     <div class="cart-drawer__footer">
       <div class="cart-drawer__total">

@@ -172,6 +172,34 @@ const CartDrawer = {
 
     const subtotalEl = this.drawer?.querySelector('[data-cart-subtotal]');
     if (subtotalEl) subtotalEl.textContent = this.formatMoney(cart.total_price);
+
+    this.updateShipping(cart);
+  },
+
+  updateShipping(cart) {
+    const shippingEl = this.drawer?.querySelector('[data-cart-shipping]');
+    if (!shippingEl) return;
+
+    const threshold = parseInt(shippingEl.dataset.threshold) || 5000;
+    const remaining = threshold - cart.total_price;
+    const pct = Math.min(100, Math.round((cart.total_price / threshold) * 100));
+
+    const fillEl = shippingEl.querySelector('[data-shipping-fill]');
+    if (fillEl) fillEl.style.width = pct + '%';
+
+    if (remaining <= 0) {
+      shippingEl.classList.add('cart-shipping--unlocked');
+      shippingEl.querySelector('.cart-shipping__text').innerHTML = `
+        <span class="cart-shipping__icon">🎉</span>
+        <span><strong>Félicitations !</strong> Vous bénéficiez de la livraison offerte.</span>
+      `;
+    } else {
+      shippingEl.classList.remove('cart-shipping--unlocked');
+      shippingEl.querySelector('.cart-shipping__text').innerHTML = `
+        <span class="cart-shipping__icon">🚚</span>
+        <span>Plus que <strong class="cart-shipping__remaining">${this.formatMoney(remaining)}</strong> pour la livraison offerte !</span>
+      `;
+    }
   },
 
   bindItemEvents() {
@@ -261,6 +289,10 @@ const VariantSelector = {
     document.querySelectorAll('[data-color-swatch]').forEach(swatch => {
       swatch.addEventListener('click', (e) => this.onSwatchClick(e.currentTarget));
     });
+
+    document.querySelectorAll('[data-variant-btn]').forEach(btn => {
+      btn.addEventListener('click', (e) => this.onVariantBtnClick(e.currentTarget));
+    });
   },
 
   onSwatchClick(swatch) {
@@ -271,8 +303,8 @@ const VariantSelector = {
       s.classList.toggle('is-active', s === swatch);
     });
 
-    // Update selected label
-    const label = swatch.closest('.color-swatches')?.querySelector('.color-swatches__selected');
+    // Update selected label (both class names)
+    const label = swatch.closest('[data-option]')?.querySelector('[data-color-selected]');
     if (label) label.textContent = value;
 
     // Sync hidden select
@@ -282,6 +314,25 @@ const VariantSelector = {
       select.dispatchEvent(new Event('change'));
     }
 
+    this.onVariantChange();
+  },
+
+  onVariantBtnClick(btn) {
+    const optionName = btn.closest('[data-option]')?.dataset.option;
+    const value = btn.dataset.value;
+
+    btn.closest('[data-option]')?.querySelectorAll('[data-variant-btn]').forEach(b => {
+      b.classList.toggle('is-active', b === btn);
+    });
+
+    const label = btn.closest('[data-option]')?.querySelector('[data-option-selected]');
+    if (label) label.textContent = value;
+
+    const select = document.querySelector(`[data-variant-select][data-option="${optionName}"]`);
+    if (select) {
+      select.value = value;
+      select.dispatchEvent(new Event('change'));
+    }
     this.onVariantChange();
   },
 
@@ -427,23 +478,25 @@ const Header = {
 
     const openMenu = () => {
       menu?.classList.add('is-open');
+      menuBtn?.classList.add('is-active');
       menuBtn?.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     };
     const closeMenu = () => {
       menu?.classList.remove('is-open');
+      menuBtn?.classList.remove('is-active');
       menuBtn?.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     };
 
     menuBtn?.addEventListener('click', openMenu);
 
-    // All close triggers (backdrop + close button + nav links)
+    // All close triggers
     menu?.querySelectorAll('[data-mobile-close]').forEach(el => {
       el.addEventListener('click', closeMenu);
     });
 
-    // Escape key closes menu
+    // Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && menu?.classList.contains('is-open')) closeMenu();
     });

@@ -18,7 +18,7 @@
         <span class="product-card__badge">-{{ discount }}%</span>
       {%- else -%}
         {%- assign thirty_days_ago = 'now' | date: '%s' | minus: 2592000 -%}
-        {%- assign product_created = card_product.created_at | date: '%s' -%}
+        {%- assign product_created = card_product.created_at | date: '%s' | plus: 0 -%}
         {%- if product_created > thirty_days_ago -%}
           <span class="product-card__badge">Nouveau</span>
         {%- endif -%}

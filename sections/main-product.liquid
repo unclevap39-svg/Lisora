@@ -1,15 +1,36 @@
 {%- assign product = product -%}
 {%- assign selected_variant = product.selected_or_first_available_variant -%}
 
-<section class="product-section" data-product-section>
+{%- comment -%}
+  Build color map from section blocks (type: color_swatch)
+  Each block has: color_name (text) and color_hex (color picker)
+{%- endcomment -%}
+
+{%- comment -%} ═══════════════════════════════════════════════
+    A — ATTENTION: Produit hero (dessus du pli)
+═══════════════════════════════════════════════ {%- endcomment -%}
+
+<section class="product-section" data-product-section aria-label="{{ product.title }}">
   <div class="container">
+
+    {%- comment -%} Breadcrumb {%- endcomment -%}
+    <nav class="product-breadcrumb" aria-label="Fil d'Ariane">
+      <a href="/">Accueil</a>
+      <span aria-hidden="true">›</span>
+      <a href="/collections/all">Produits</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">{{ product.title }}</span>
+    </nav>
+
     <div class="product-layout">
 
-      {%- comment -%} LEFT — Gallery {%- endcomment -%}
+      {%- comment -%} ──── GALERIE ──── {%- endcomment -%}
       <div class="product-gallery" data-aos="fade-right">
-        <div class="product-gallery__main" data-gallery-main>
+
+        {%- comment -%} Main image {%- endcomment -%}
+        <div class="product-gallery__main">
           {%- assign featured_image = selected_variant.featured_image | default: product.featured_image -%}
-          <div class="product-gallery__img-wrap">
+          <div class="product-gallery__img-wrap" id="gallery-main-wrap">
             <img
               src="{{ featured_image | image_url: width: 1000 }}"
               alt="{{ featured_image.alt | default: product.title }}"
@@ -21,11 +42,16 @@
             {%- if section.settings.badge != blank -%}
               <div class="product-gallery__badge">{{ section.settings.badge }}</div>
             {%- endif -%}
+            {%- if selected_variant.compare_at_price > selected_variant.price -%}
+              {%- assign savings_pct = selected_variant.compare_at_price | minus: selected_variant.price | times: 100 | divided_by: selected_variant.compare_at_price -%}
+              <div class="product-gallery__sale-badge">-{{ savings_pct }}%</div>
+            {%- endif -%}
           </div>
         </div>
 
+        {%- comment -%} Thumbnails {%- endcomment -%}
         {%- if product.images.size > 1 -%}
-          <div class="product-gallery__thumbs">
+          <div class="product-gallery__thumbs" role="list">
             {%- for image in product.images limit: 8 -%}
               <button
                 class="product-gallery__thumb{% if forloop.first %} is-active{% endif %}"
@@ -33,302 +59,470 @@
                 data-src="{{ image | image_url: width: 1000 }}"
                 data-alt="{{ image.alt | default: product.title }}"
                 aria-label="Image {{ forloop.index }}"
+                role="listitem"
               >
                 <img src="{{ image | image_url: width: 200 }}" alt="{{ image.alt | default: product.title }}" loading="lazy">
               </button>
             {%- endfor -%}
           </div>
         {%- endif -%}
+
       </div>
 
-      {%- comment -%} RIGHT — Product info {%- endcomment -%}
+      {%- comment -%} ──── INFOS PRODUIT ──── {%- endcomment -%}
       <div class="product-info" data-aos="fade-left">
 
-        {%- comment -%} Eyebrow badge {%- endcomment -%}
-        <div class="product-info__eyebrow">
-          <span class="product-info__eyebrow-dot" aria-hidden="true"></span>
-          {{ section.settings.badge | default: '⚡ Bestseller · Édition limitée' }}
-        </div>
-
-        <h1 class="product-info__title">{{ product.title }}</h1>
-
-        {%- comment -%} Rating {%- endcomment -%}
-        <div class="product-info__rating" aria-label="{{ section.settings.avg_rating | default: '4.9' }} sur 5 étoiles">
-          <div class="stars stars--filled" aria-hidden="true">
-            {%- for i in (1..5) -%}
-              <svg class="star" viewBox="0 0 24 24" aria-hidden="true">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-              </svg>
-            {%- endfor -%}
+        {%- comment -%} ── A.1 Eyebrow badge ── {%- endcomment -%}
+        {%- if section.settings.badge != blank or section.settings.show_badge_default -%}
+          <div class="product-info__eyebrow">
+            <span class="product-info__eyebrow-dot" aria-hidden="true"></span>
+            {{ section.settings.badge | default: '⚡ Bestseller · Édition limitée' }}
           </div>
-          <span class="product-info__rating-text">
-            <strong>{{ section.settings.avg_rating | default: '4.9' }}</strong>
-            <a href="#product-reviews" class="product-info__rating-link">({{ section.settings.review_count | default: 847 }} avis vérifiés)</a>
-          </span>
+        {%- endif -%}
+
+        {%- comment -%} ── A.2 Titre ── {%- endcomment -%}
+        <h1 class="product-info__title">
+          {%- if section.settings.product_headline != blank -%}
+            {{ section.settings.product_headline }}
+          {%- else -%}
+            {{ product.title }}
+          {%- endif -%}
+        </h1>
+
+        {%- comment -%} ── A.3 Évaluation + preuve sociale ── {%- endcomment -%}
+        <div class="product-info__social-proof">
+          <div class="product-info__rating" aria-label="{{ section.settings.avg_rating | default: '4.9' }} sur 5">
+            <div class="stars stars--filled" aria-hidden="true">
+              {%- for i in (1..5) -%}
+                <svg class="star" viewBox="0 0 24 24" aria-hidden="true">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              {%- endfor -%}
+            </div>
+            <span class="product-info__rating-score">{{ section.settings.avg_rating | default: '4.9' }}</span>
+            <a href="#product-reviews" class="product-info__rating-count">{{ section.settings.review_count | default: 847 }} avis</a>
+          </div>
+          {%- if section.settings.customers_count != blank -%}
+            <span class="product-info__proof-separator" aria-hidden="true">·</span>
+            <span class="product-info__customers">{{ section.settings.customers_count }}</span>
+          {%- endif -%}
         </div>
 
-        {%- comment -%} Price {%- endcomment -%}
+        {%- comment -%} ── A.4 Prix ── {%- endcomment -%}
         <div class="product-info__price-row">
           <span class="product-info__price" data-product-price>{{ selected_variant.price | money }}</span>
           {%- if selected_variant.compare_at_price > selected_variant.price -%}
             <span class="product-info__compare" data-compare-price>{{ selected_variant.compare_at_price | money }}</span>
-            {%- assign savings = selected_variant.compare_at_price | minus: selected_variant.price | times: 100 | divided_by: selected_variant.compare_at_price -%}
-            <span class="product-info__savings-badge">-{{ savings }}%</span>
+            <span class="product-info__savings-badge" data-savings-badge>-{{ savings_pct | default: 0 }}%</span>
           {%- endif -%}
         </div>
 
-        {%- comment -%} Short selling description {%- endcomment -%}
-        <p class="product-info__tagline">{{ section.settings.short_desc | default: 'Le lisseur céramique infrarouge qui transforme vos cheveux en 5 minutes. Résultat salon à domicile — garanti ou remboursé.' }}</p>
+        {%- comment -%} ── A.5 Accroche courte (hook) ── {%- endcomment -%}
+        {%- if section.settings.short_desc != blank -%}
+          <p class="product-info__hook">{{ section.settings.short_desc }}</p>
+        {%- endif -%}
 
-        {%- comment -%} Feature pills {%- endcomment -%}
-        <div class="product-features-pills">
-          <span class="product-feature-pill">⚡ Chauffe en 30s</span>
-          <span class="product-feature-pill">💎 Céramique infrarouge</span>
-          <span class="product-feature-pill">✨ Anti-frisottis</span>
-          <span class="product-feature-pill">🌡️ Jusqu'à 230°C</span>
-        </div>
+        {%- comment -%} ── I.1 Feature pills (INTEREST) ── {%- endcomment -%}
+        {%- assign pills = section.blocks | where: 'type', 'feature_pill' -%}
+        {%- if pills.size > 0 -%}
+          <div class="product-features-pills">
+            {%- for block in pills -%}
+              <span class="product-feature-pill" {{ block.shopify_attributes }}>{{ block.settings.label }}</span>
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <div class="product-features-pills">
+            <span class="product-feature-pill">⚡ Chauffe en 30s</span>
+            <span class="product-feature-pill">💎 Céramique infrarouge</span>
+            <span class="product-feature-pill">✨ Anti-frisottis</span>
+            <span class="product-feature-pill">🌡️ Jusqu'à 230°C</span>
+          </div>
+        {%- endif -%}
 
         <script>window.__LISORA_PRODUCT__ = {{ product | json }};</script>
 
-        <form action="/cart/add" method="post" data-product-form>
+        {%- comment -%} ── Formulaire (ACTION) ── {%- endcomment -%}
+        <form action="/cart/add" method="post" data-product-form novalidate>
           <input type="hidden" name="id" value="{{ selected_variant.id }}" data-variant-id>
 
           {%- unless product.has_only_default_variant -%}
             {%- for option in product.options_with_values -%}
-              {%- assign opt_lower = option.name | downcase -%}
-              {%- if opt_lower == 'couleur' or opt_lower == 'color' or opt_lower == 'colour' -%}
-                <div class="color-picker" data-option="{{ option.name }}">
-                  <div class="color-picker__label">
-                    {{ option.name }} :
-                    <span class="color-picker__selected" data-color-selected>{{ option.selected_value }}</span>
-                  </div>
-                  <div class="color-picker__swatches">
-                    {%- assign color_map = 'Rose Poudré:#F4A7B3,Blanc Ivoire:#FAF0E6,Lilas Doux:#D8B4E2,Noir Minuit:#2C2C2C,Or Rosé:#C9856A' -%}
+
+              {%- comment -%} Chercher la config de cet option dans les blocks {%- endcomment -%}
+              {%- assign opt_style = 'auto' -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'option_config' -%}
+                  {%- assign block_name_lower = block.settings.option_name | downcase -%}
+                  {%- assign opt_name_lower = option.name | downcase -%}
+                  {%- if block_name_lower == opt_name_lower -%}
+                    {%- assign opt_style = block.settings.display_style -%}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- comment -%} Auto-détection: couleur → swatches, sinon → buttons {%- endcomment -%}
+              {%- if opt_style == 'auto' -%}
+                {%- assign opt_lower = option.name | downcase -%}
+                {%- if opt_lower == 'couleur' or opt_lower == 'color' or opt_lower == 'colour' -%}
+                  {%- assign opt_style = 'swatches' -%}
+                {%- else -%}
+                  {%- assign opt_style = 'buttons' -%}
+                {%- endif -%}
+              {%- endif -%}
+
+              <div class="variant-option" data-option="{{ option.name }}">
+                <div class="variant-option__label">
+                  <span class="variant-option__name">{{ option.name }}</span>
+                  <span class="variant-option__selected" data-color-selected data-option-selected>{{ option.selected_value }}</span>
+                </div>
+
+                {%- if opt_style == 'swatches' -%}
+                  {%- comment -%} Pastilles couleurs {%- endcomment -%}
+                  <div class="variant-swatches">
                     {%- for value in option.values -%}
                       {%- assign is_active = false -%}
                       {%- if option.selected_value == value -%}{%- assign is_active = true -%}{%- endif -%}
-                      {%- assign swatch_color = '#F4A7B3' -%}
-                      {%- for pair in color_map | split: ',' -%}
-                        {%- assign kv = pair | split: ':' -%}
-                        {%- if kv[0] == value -%}{%- assign swatch_color = kv[1] -%}{%- endif -%}
+
+                      {%- comment -%} Chercher la couleur hex dans les blocks {%- endcomment -%}
+                      {%- assign swatch_hex = '#F4A7B3' -%}
+                      {%- for block in section.blocks -%}
+                        {%- if block.type == 'color_swatch' -%}
+                          {%- if block.settings.color_name == value -%}
+                            {%- assign swatch_hex = block.settings.color_hex -%}
+                          {%- endif -%}
+                        {%- endif -%}
                       {%- endfor -%}
+
                       <button
                         type="button"
                         class="color-swatch{% if is_active %} is-active{% endif %}"
                         data-color-swatch
-                        data-value="{{ value }}"
-                        style="--swatch-bg: {{ swatch_color }};"
+                        data-value="{{ value | escape }}"
+                        style="--swatch-bg: {{ swatch_hex }};"
                         aria-label="{{ value }}"
                         title="{{ value }}"
                       >
-                        <span class="color-swatch__inner" style="background: {{ swatch_color }};"></span>
+                        <span class="color-swatch__inner" style="background: {{ swatch_hex }};"></span>
                         <span class="color-swatch__check" aria-hidden="true">✓</span>
-                        <span class="color-swatch__tooltip">{{ value }}</span>
+                        <span class="color-swatch__tooltip" aria-hidden="true">{{ value }}</span>
                       </button>
                     {%- endfor -%}
                   </div>
-                  <select name="options[{{ option.name | escape }}]" data-variant-select data-option="{{ option.name }}" class="visually-hidden">
+
+                {%- elsif opt_style == 'buttons' -%}
+                  {%- comment -%} Boutons texte {%- endcomment -%}
+                  <div class="variant-buttons">
+                    {%- for value in option.values -%}
+                      {%- assign is_active = false -%}
+                      {%- if option.selected_value == value -%}{%- assign is_active = true -%}{%- endif -%}
+                      <button
+                        type="button"
+                        class="variant-btn{% if is_active %} is-active{% endif %}"
+                        data-variant-btn
+                        data-value="{{ value | escape }}"
+                        aria-label="{{ option.name }}: {{ value }}"
+                        aria-pressed="{{ is_active }}"
+                      >
+                        {{ value }}
+                      </button>
+                    {%- endfor -%}
+                  </div>
+
+                {%- else -%}
+                  {%- comment -%} Menu déroulant {%- endcomment -%}
+                  <select
+                    name="options[{{ option.name | escape }}]"
+                    data-variant-select
+                    data-option="{{ option.name }}"
+                    class="variant-dropdown"
+                    aria-label="{{ option.name }}"
+                  >
+                    {%- for value in option.values -%}
+                      <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>
+                        {{ value }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+
+                {%- endif -%}
+
+                {%- comment -%} Select caché pour synchronisation {%- endcomment -%}
+                {%- unless opt_style == 'dropdown' -%}
+                  <select
+                    name="options[{{ option.name | escape }}]"
+                    data-variant-select
+                    data-option="{{ option.name }}"
+                    class="visually-hidden"
+                    aria-hidden="true"
+                  >
                     {%- for value in option.values -%}
                       <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
                     {%- endfor -%}
                   </select>
-                </div>
-              {%- else -%}
-                <div class="product-option">
-                  <label class="product-option__label">
-                    {{ option.name }} :
-                    <span class="product-option__value" data-option-value="{{ option.name }}">{{ option.selected_value }}</span>
-                  </label>
-                  <select name="options[{{ option.name | escape }}]" data-variant-select data-option="{{ option.name }}" class="product-option__select">
-                    {%- for value in option.values -%}
-                      <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
-                    {%- endfor -%}
-                  </select>
-                </div>
-              {%- endif -%}
+                {%- endunless -%}
+
+              </div>
             {%- endfor -%}
           {%- endunless -%}
 
-          {%- comment -%} Quantity {%- endcomment -%}
+          {%- comment -%} Quantité {%- endcomment -%}
           <div class="product-qty-row">
-            <label class="product-qty-row__label" for="qty-{{ product.id }}">Quantité</label>
+            <label class="product-qty-row__label" for="qty-{{ product.id }}">Qté</label>
             <div class="quantity-selector">
               <button type="button" class="quantity-btn" data-qty-minus aria-label="Diminuer">−</button>
-              <input type="number" id="qty-{{ product.id }}" name="quantity" value="1" min="1" class="quantity-input">
+              <input type="number" id="qty-{{ product.id }}" name="quantity" value="1" min="1" max="99" class="quantity-input" aria-label="Quantité">
               <button type="button" class="quantity-btn" data-qty-plus aria-label="Augmenter">+</button>
             </div>
           </div>
 
-          {%- comment -%} Urgency signal {%- endcomment -%}
+          {%- comment -%} Signal d'urgence (D — Desire) {%- endcomment -%}
           {%- if section.settings.show_urgency -%}
             <div class="product-urgency">
               <span class="product-urgency__dot" aria-hidden="true"></span>
-              🔥 <strong>{{ section.settings.viewers | default: 23 }} personnes</strong> regardent ce produit en ce moment
+              🔥 <strong>{{ section.settings.viewers | default: 23 }} personnes</strong> regardent ce produit
             </div>
           {%- endif -%}
 
-          {%- comment -%} CTA buttons {%- endcomment -%}
+          {%- comment -%} Bouton ATC — ACTION {%- endcomment -%}
           <div class="product-form__btns">
-            <button type="submit" class="btn btn-atc" data-add-to-cart {% unless selected_variant.available %}disabled{% endunless %}>
+            <button
+              type="submit"
+              class="btn btn-atc"
+              data-add-to-cart
+              {% unless selected_variant.available %}disabled aria-disabled="true"{% endunless %}
+            >
               {%- if selected_variant.available -%}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18" aria-hidden="true">
                   <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
                   <line x1="3" y1="6" x2="21" y2="6"/>
                   <path d="M16 10a4 4 0 0 1-8 0"/>
                 </svg>
-                Ajouter au panier
+                {{ section.settings.atc_text | default: 'Ajouter au panier' }}
               {%- else -%}
                 Rupture de stock
               {%- endif -%}
             </button>
             {%- if section.settings.show_buy_now -%}
-              {{ form | payment_button }}
+              <div class="product-buy-now">{{ form | payment_button }}</div>
             {%- endif -%}
           </div>
 
         </form>
 
-        {%- comment -%} Trust icons row {%- endcomment -%}
+        {%- comment -%} Icônes de confiance (ACTION — rassurance) {%- endcomment -%}
         <div class="product-trust">
-          <div class="product-trust__item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18" aria-hidden="true">
-              <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-              <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
-            </svg>
-            <span>Livraison offerte dès 50€</span>
-          </div>
-          <div class="product-trust__item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18" aria-hidden="true">
-              <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-            </svg>
-            <span>Retour gratuit 30 jours</span>
-          </div>
-          <div class="product-trust__item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18" aria-hidden="true">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            <span>Garantie 2 ans incluse</span>
-          </div>
-          <div class="product-trust__item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18" aria-hidden="true">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
-            </svg>
-            <span>Paiement 100% sécurisé</span>
-          </div>
+          {%- assign trust_blocks = section.blocks | where: 'type', 'trust_item' -%}
+          {%- if trust_blocks.size > 0 -%}
+            {%- for block in trust_blocks -%}
+              <div class="product-trust__item" {{ block.shopify_attributes }}>
+                <span class="product-trust__icon" aria-hidden="true">{{ block.settings.icon }}</span>
+                <span>{{ block.settings.label }}</span>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="product-trust__item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              <span>Livraison offerte 50€</span>
+            </div>
+            <div class="product-trust__item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              <span>Retour 30 jours</span>
+            </div>
+            <div class="product-trust__item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Garantie 2 ans</span>
+            </div>
+            <div class="product-trust__item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              <span>Paiement sécurisé</span>
+            </div>
+          {%- endif -%}
         </div>
 
-        {%- comment -%} Accordions: description + specs {%- endcomment -%}
+        {%- comment -%} ── I.2 Accordéons (INTEREST — specs, description) ── {%- endcomment -%}
         <div class="product-accordions">
-          {%- if product.description != blank -%}
+
+          {%- comment -%} Description éditeur de thème (priorité) OU description produit {%- endcomment -%}
+          {%- assign display_description = section.settings.product_description -%}
+          {%- if display_description == blank -%}
+            {%- assign display_description = product.description -%}
+          {%- endif -%}
+          {%- if display_description != blank -%}
+            <details class="product-accordion" open>
+              <summary class="product-accordion__trigger">
+                <span>{{ section.settings.desc_label | default: 'Description' }}</span>
+                <svg class="product-accordion__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="product-accordion__body">{{ display_description }}</div>
+            </details>
+          {%- endif -%}
+
+          {%- comment -%} Specs techniques — éditable via blocks {%- endcomment -%}
+          {%- assign spec_blocks = section.blocks | where: 'type', 'spec_item' -%}
+          {%- if spec_blocks.size > 0 -%}
             <details class="product-accordion">
               <summary class="product-accordion__trigger">
-                <span>Description complète</span>
-                <svg class="product-accordion__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+                <span>{{ section.settings.specs_label | default: 'Caractéristiques' }}</span>
+                <svg class="product-accordion__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
               </summary>
-              <div class="product-accordion__body">{{ product.description }}</div>
+              <div class="product-accordion__body">
+                <ul class="product-specs">
+                  {%- for block in spec_blocks -%}
+                    <li {{ block.shopify_attributes }}><strong>{{ block.settings.label }}</strong> : {{ block.settings.value }}</li>
+                  {%- endfor -%}
+                </ul>
+              </div>
             </details>
           {%- endif -%}
 
           <details class="product-accordion">
             <summary class="product-accordion__trigger">
-              <span>Caractéristiques techniques</span>
-              <svg class="product-accordion__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+              <span>{{ section.settings.shipping_label | default: 'Livraison & Retours' }}</span>
+              <svg class="product-accordion__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
             </summary>
             <div class="product-accordion__body">
-              <ul class="product-specs">
-                <li><strong>Technologie</strong> : Céramique infrarouge avancée</li>
-                <li><strong>Températures</strong> : 160°C – 230°C (ajustable)</li>
-                <li><strong>Temps de chauffe</strong> : 30 secondes</li>
-                <li><strong>Largeur des plaques</strong> : 32 mm — idéal tous types de cheveux</li>
-                <li><strong>Longueur du câble</strong> : 2,5 m pivotant 360°</li>
-                <li><strong>Arrêt automatique</strong> : Après 60 min d'inactivité</li>
-                <li><strong>Compatible</strong> : Tous types de prises (EU/UK/US)</li>
-                <li><strong>Garantie</strong> : 2 ans pièces & main d'œuvre</li>
-              </ul>
+              {%- if section.settings.shipping_text != blank -%}
+                {{ section.settings.shipping_text }}
+              {%- else -%}
+                <ul class="product-specs">
+                  <li>🚚 <strong>Livraison offerte</strong> dès 50€ · 2–3 jours ouvrés</li>
+                  <li>🔄 <strong>30 jours</strong> pour changer d'avis — retour gratuit</li>
+                  <li>💰 Remboursement intégral sous 48h</li>
+                </ul>
+              {%- endif -%}
             </div>
           </details>
 
-          <details class="product-accordion">
-            <summary class="product-accordion__trigger">
-              <span>Livraison & Retours</span>
-              <svg class="product-accordion__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="product-accordion__body">
-              <ul class="product-specs">
-                <li>🚚 <strong>Livraison offerte</strong> dès 50€ d'achat (France métropolitaine)</li>
-                <li>📦 Expédition sous 24h – livraison en 2–3 jours ouvrés</li>
-                <li>🔄 <strong>30 jours pour changer d'avis</strong> — retour gratuit et sans questions</li>
-                <li>💰 Remboursement intégral sous 48h après réception du retour</li>
-              </ul>
-            </div>
-          </details>
         </div>
 
-      </div>{%- comment -%} end .product-info {%- endcomment -%}
-    </div>{%- comment -%} end .product-layout {%- endcomment -%}
+      </div>{%- comment -%} /product-info {%- endcomment -%}
+    </div>{%- comment -%} /product-layout {%- endcomment -%}
   </div>
 </section>
 
-{%- comment -%} ========== PRODUCT HIGHLIGHTS STRIP ========== {%- endcomment -%}
-<section class="product-highlights">
+{%- comment -%} ═══════════════════════════════════════════════
+    I — INTEREST: Bénéfices clés (strip iconique)
+═══════════════════════════════════════════════ {%- endcomment -%}
+{%- assign highlight_blocks = section.blocks | where: 'type', 'highlight' -%}
+{%- if highlight_blocks.size > 0 or section.settings.show_default_highlights -%}
+<section class="product-highlights" aria-label="Avantages clés">
   <div class="container">
+    {%- if section.settings.highlights_title != blank -%}
+      <div class="product-highlights__head" data-aos="fade-up">
+        <h2 class="section-title--sm">{{ section.settings.highlights_title }}</h2>
+      </div>
+    {%- endif -%}
     <div class="product-highlights__grid">
-      <div class="product-highlight" data-aos="fade-up" data-aos-delay="0">
-        <div class="product-highlight__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-          </svg>
+      {%- if highlight_blocks.size > 0 -%}
+        {%- for block in highlight_blocks -%}
+          <div class="product-highlight" data-aos="fade-up" data-aos-delay="{{ forloop.index0 | times: 80 }}" {{ block.shopify_attributes }}>
+            <div class="product-highlight__icon" aria-hidden="true">{{ block.settings.icon }}</div>
+            <h3 class="product-highlight__title">{{ block.settings.title }}</h3>
+            <p class="product-highlight__desc">{{ block.settings.description }}</p>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <div class="product-highlight" data-aos="fade-up">
+          <div class="product-highlight__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3 class="product-highlight__title">Prêt en 30 secondes</h3>
+          <p class="product-highlight__desc">Température de salon atteinte en 30s. Zéro attente le matin.</p>
         </div>
-        <h3 class="product-highlight__title">Prêt en 30 secondes</h3>
-        <p class="product-highlight__desc">Allumez, attendez 30s que la DEL passe au vert — température de salon atteinte. Zéro patience requise.</p>
-      </div>
-      <div class="product-highlight" data-aos="fade-up" data-aos-delay="80">
-        <div class="product-highlight__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
+        <div class="product-highlight" data-aos="fade-up" data-aos-delay="80">
+          <div class="product-highlight__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 class="product-highlight__title">Zéro casse</h3>
+          <p class="product-highlight__desc">Céramique infrarouge : chauffe de l'intérieur, aucune agression.</p>
         </div>
-        <h3 class="product-highlight__title">Zéro casse, zéro brûlure</h3>
-        <p class="product-highlight__desc">La céramique infrarouge chauffe les cheveux de l'intérieur vers l'extérieur. Lissage parfait sans agression.</p>
-      </div>
-      <div class="product-highlight" data-aos="fade-up" data-aos-delay="160">
-        <div class="product-highlight__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-          </svg>
+        <div class="product-highlight" data-aos="fade-up" data-aos-delay="160">
+          <div class="product-highlight__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3 class="product-highlight__title">Brillance miroir</h3>
+          <p class="product-highlight__desc">Ions négatifs actifs — vos cheveux réfléchissent la lumière.</p>
         </div>
-        <h3 class="product-highlight__title">Ions négatifs actifs</h3>
-        <p class="product-highlight__desc">Scellent les écailles de la tige capillaire pour une brillance miroir. Vos cheveux reflètent littéralement la lumière.</p>
-      </div>
-      <div class="product-highlight" data-aos="fade-up" data-aos-delay="240">
-        <div class="product-highlight__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
+        <div class="product-highlight" data-aos="fade-up" data-aos-delay="240">
+          <div class="product-highlight__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="product-highlight__title">Résultat toute la journée</h3>
+          <p class="product-highlight__desc">Anti-frisottis longue durée, même par temps humide.</p>
         </div>
-        <h3 class="product-highlight__title">Résultat qui tient</h3>
-        <p class="product-highlight__desc">Anti-frisottis longue durée. Même par temps humide, vos cheveux restent lisses et brillants toute la journée.</p>
-      </div>
+      {%- endif -%}
     </div>
   </div>
 </section>
+{%- endif -%}
 
-{%- comment -%} ========== STICKY ATC ========== {%- endcomment -%}
-<div class="sticky-atc" data-sticky-atc>
+{%- comment -%} ═══════════════════════════════════════════════
+    D — DESIRE: Mini-témoignages produit
+═══════════════════════════════════════════════ {%- endcomment -%}
+{%- assign review_blocks = section.blocks | where: 'type', 'mini_review' -%}
+{%- if review_blocks.size > 0 -%}
+<section class="product-reviews-mini" aria-label="Avis clients">
+  <div class="container">
+    <div class="product-reviews-mini__head" data-aos="fade-up">
+      <h2 class="section-title--sm">{{ section.settings.reviews_title | default: 'Ce qu\'elles en pensent' }}</h2>
+      <div class="product-reviews-mini__avg">
+        <div class="stars stars--filled" aria-hidden="true">
+          {%- for i in (1..5) -%}
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          {%- endfor -%}
+        </div>
+        <strong>{{ section.settings.avg_rating | default: '4.9' }}/5</strong>
+        <span>— {{ section.settings.review_count | default: 847 }} avis vérifiés</span>
+      </div>
+    </div>
+    <div class="product-reviews-mini__grid">
+      {%- for block in review_blocks -%}
+        <div class="product-review-card" data-aos="fade-up" data-aos-delay="{{ forloop.index0 | times: 80 }}" {{ block.shopify_attributes }}>
+          <div class="product-review-card__top">
+            <div class="stars stars--filled stars--sm" aria-hidden="true">
+              {%- for i in (1..5) -%}
+                <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              {%- endfor -%}
+            </div>
+            <span class="product-review-card__verified">✓ Achat vérifié</span>
+          </div>
+          {%- if block.settings.title != blank -%}
+            <h3 class="product-review-card__title">{{ block.settings.title }}</h3>
+          {%- endif -%}
+          <p class="product-review-card__text">"{{ block.settings.text }}"</p>
+          <div class="product-review-card__author">
+            <strong>{{ block.settings.author }}</strong>
+            {%- if block.settings.location != blank -%} · {{ block.settings.location }}{%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{%- comment -%} ═══════════════════════════════════════════════
+    A — ACTION: Sticky ATC bar
+═══════════════════════════════════════════════ {%- endcomment -%}
+<div class="sticky-atc" data-sticky-atc role="complementary" aria-label="Ajouter au panier rapide">
   {%- if product.featured_image -%}
-    <img src="{{ product.featured_image | image_url: width: 120 }}" alt="{{ product.title }}" width="56" height="56" class="sticky-atc__img" loading="lazy">
+    <img
+      src="{{ product.featured_image | image_url: width: 120 }}"
+      alt="{{ product.title }}"
+      width="56" height="56"
+      class="sticky-atc__img"
+      loading="lazy"
+    >
   {%- endif -%}
   <div class="sticky-atc__info">
     <div class="sticky-atc__title">{{ product.title }}</div>
     <div class="sticky-atc__price" data-sticky-price>{{ selected_variant.price | money }}</div>
   </div>
   <div class="stars stars--sm" aria-hidden="true">
-    {%- for i in (1..5) -%}
-      <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-    {%- endfor -%}
+    {%- for i in (1..5) -%}<svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>{%- endfor -%}
   </div>
-  <button class="btn btn-atc sticky-atc__btn" data-sticky-atc-btn>
-    Ajouter au panier
+  <button class="btn btn-atc sticky-atc__btn" data-sticky-atc-btn type="button">
+    {{ section.settings.atc_text | default: 'Ajouter au panier' }}
   </button>
 </div>
 
@@ -337,16 +531,70 @@
   "name": "Produit principal",
   "settings": [
     {
+      "type": "header",
+      "content": "🎯 Identité produit"
+    },
+    {
       "type": "text",
       "id": "badge",
-      "label": "Badge",
+      "label": "Badge bestseller",
       "default": "⚡ Bestseller · Édition limitée"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge_default",
+      "label": "Afficher le badge même si vide",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "product_headline",
+      "label": "Titre affiché (laissez vide = titre Shopify)",
+      "info": "Remplace le titre du produit dans l'affichage"
     },
     {
       "type": "textarea",
       "id": "short_desc",
-      "label": "Description courte (accroche)",
+      "label": "Accroche courte (hook)",
       "default": "Le lisseur céramique infrarouge qui transforme vos cheveux en 5 minutes. Résultat salon à domicile — garanti ou remboursé."
+    },
+    {
+      "type": "header",
+      "content": "📝 Description complète"
+    },
+    {
+      "type": "richtext",
+      "id": "product_description",
+      "label": "Description (éditeur de thème)",
+      "info": "Si renseignée, remplace la description Shopify. Modifiable directement ici sans passer par l'admin produit."
+    },
+    {
+      "type": "text",
+      "id": "desc_label",
+      "label": "Titre accordéon description",
+      "default": "Description"
+    },
+    {
+      "type": "text",
+      "id": "specs_label",
+      "label": "Titre accordéon caractéristiques",
+      "default": "Caractéristiques"
+    },
+    {
+      "type": "text",
+      "id": "shipping_label",
+      "label": "Titre accordéon livraison",
+      "default": "Livraison & Retours"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_text",
+      "label": "Texte livraison & retours personnalisé",
+      "info": "Laissez vide pour utiliser le texte par défaut"
+    },
+    {
+      "type": "header",
+      "content": "⭐ Avis & Preuve sociale"
     },
     {
       "type": "text",
@@ -361,6 +609,28 @@
       "default": 847
     },
     {
+      "type": "text",
+      "id": "customers_count",
+      "label": "Texte clients (ex: 50 000+ clientes)",
+      "default": "50 000+ clientes satisfaites"
+    },
+    {
+      "type": "text",
+      "id": "reviews_title",
+      "label": "Titre section mini-avis",
+      "default": "Ce qu'elles en pensent"
+    },
+    {
+      "type": "header",
+      "content": "🛒 Boutons & Achat"
+    },
+    {
+      "type": "text",
+      "id": "atc_text",
+      "label": "Texte bouton Ajouter au panier",
+      "default": "Ajouter au panier"
+    },
+    {
       "type": "checkbox",
       "id": "show_buy_now",
       "label": "Afficher le bouton Acheter maintenant",
@@ -369,14 +639,279 @@
     {
       "type": "checkbox",
       "id": "show_urgency",
-      "label": "Afficher le signal d'urgence",
+      "label": "Afficher le compteur de visiteurs",
       "default": true
     },
     {
       "type": "number",
       "id": "viewers",
-      "label": "Nombre de visiteurs (urgency)",
+      "label": "Nombre de visiteurs (urgence)",
       "default": 23
+    },
+    {
+      "type": "header",
+      "content": "✨ Section bénéfices"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_default_highlights",
+      "label": "Afficher les bénéfices par défaut si aucun bloc",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "highlights_title",
+      "label": "Titre section bénéfices",
+      "default": "Pourquoi Lisora ?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_pill",
+      "name": "Pill fonctionnalité",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texte",
+          "default": "⚡ Chauffe en 30s"
+        }
+      ]
+    },
+    {
+      "type": "option_config",
+      "name": "Configuration option variante",
+      "settings": [
+        {
+          "type": "text",
+          "id": "option_name",
+          "label": "Nom exact de l'option (ex: Couleur, Taille)",
+          "default": "Couleur"
+        },
+        {
+          "type": "select",
+          "id": "display_style",
+          "label": "Style d'affichage",
+          "options": [
+            { "value": "swatches", "label": "Pastilles couleurs" },
+            { "value": "buttons", "label": "Boutons texte" },
+            { "value": "dropdown", "label": "Menu déroulant" }
+          ],
+          "default": "swatches"
+        }
+      ]
+    },
+    {
+      "type": "color_swatch",
+      "name": "Pastille couleur",
+      "settings": [
+        {
+          "type": "text",
+          "id": "color_name",
+          "label": "Nom exact de la variante (identique à Shopify)",
+          "default": "Rose Poudré",
+          "info": "Doit correspondre exactement au nom de variante dans Shopify"
+        },
+        {
+          "type": "color",
+          "id": "color_hex",
+          "label": "Couleur",
+          "default": "#F4A7B3"
+        }
+      ]
+    },
+    {
+      "type": "spec_item",
+      "name": "Caractéristique technique",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Libellé",
+          "default": "Technologie"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Valeur",
+          "default": "Céramique infrarouge"
+        }
+      ]
+    },
+    {
+      "type": "trust_item",
+      "name": "Icône de confiance",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji ou texte icône",
+          "default": "🚚"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texte",
+          "default": "Livraison offerte dès 50€"
+        }
+      ]
+    },
+    {
+      "type": "highlight",
+      "name": "Bénéfice clé",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji icône",
+          "default": "⚡"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Prêt en 30 secondes"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Température de salon atteinte en 30 secondes."
+        }
+      ]
+    },
+    {
+      "type": "mini_review",
+      "name": "Mini avis client",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre de l'avis",
+          "default": "Absolument parfait !"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Texte de l'avis",
+          "default": "Je ne reviendrai jamais en arrière. Mes cheveux sont lisses et brillants toute la journée."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Prénom",
+          "default": "Sophie M."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Ville",
+          "default": "Paris"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Produit principal",
+      "blocks": [
+        {
+          "type": "feature_pill",
+          "settings": { "label": "⚡ Chauffe en 30s" }
+        },
+        {
+          "type": "feature_pill",
+          "settings": { "label": "💎 Céramique infrarouge" }
+        },
+        {
+          "type": "feature_pill",
+          "settings": { "label": "✨ Anti-frisottis" }
+        },
+        {
+          "type": "feature_pill",
+          "settings": { "label": "🌡️ Jusqu'à 230°C" }
+        },
+        {
+          "type": "option_config",
+          "settings": { "option_name": "Couleur", "display_style": "swatches" }
+        },
+        {
+          "type": "color_swatch",
+          "settings": { "color_name": "Rose Poudré", "color_hex": "#F4A7B3" }
+        },
+        {
+          "type": "color_swatch",
+          "settings": { "color_name": "Blanc Ivoire", "color_hex": "#FAF0E6" }
+        },
+        {
+          "type": "color_swatch",
+          "settings": { "color_name": "Lilas Doux", "color_hex": "#D8B4E2" }
+        },
+        {
+          "type": "color_swatch",
+          "settings": { "color_name": "Noir Minuit", "color_hex": "#2C2C2C" }
+        },
+        {
+          "type": "color_swatch",
+          "settings": { "color_name": "Or Rosé", "color_hex": "#C9856A" }
+        },
+        {
+          "type": "spec_item",
+          "settings": { "label": "Technologie", "value": "Céramique infrarouge avancée" }
+        },
+        {
+          "type": "spec_item",
+          "settings": { "label": "Températures", "value": "160°C – 230°C (5 niveaux)" }
+        },
+        {
+          "type": "spec_item",
+          "settings": { "label": "Temps de chauffe", "value": "30 secondes" }
+        },
+        {
+          "type": "spec_item",
+          "settings": { "label": "Largeur plaques", "value": "32 mm" }
+        },
+        {
+          "type": "spec_item",
+          "settings": { "label": "Câble", "value": "2,5 m pivotant 360°" }
+        },
+        {
+          "type": "spec_item",
+          "settings": { "label": "Arrêt auto", "value": "Après 60 min d'inactivité" }
+        },
+        {
+          "type": "spec_item",
+          "settings": { "label": "Garantie", "value": "2 ans pièces & main d'œuvre" }
+        },
+        {
+          "type": "highlight",
+          "settings": { "icon": "⚡", "title": "Prêt en 30 secondes", "description": "Allumez, attendez que la DEL vire au vert — température de salon atteinte. Zéro patience requise." }
+        },
+        {
+          "type": "highlight",
+          "settings": { "icon": "💎", "title": "Zéro casse, zéro brûlure", "description": "La céramique infrarouge chauffe de l'intérieur vers l'extérieur. Lissage parfait sans agression." }
+        },
+        {
+          "type": "highlight",
+          "settings": { "icon": "✨", "title": "Brillance miroir", "description": "Ions négatifs actifs — vos cheveux scellent leur brillance et réfléchissent littéralement la lumière." }
+        },
+        {
+          "type": "highlight",
+          "settings": { "icon": "🌿", "title": "Résultat toute la journée", "description": "Anti-frisottis longue durée. Même par temps humide, vos cheveux restent lisses." }
+        },
+        {
+          "type": "mini_review",
+          "settings": { "title": "Je ne reviendrai jamais en arrière !", "text": "Depuis que j'ai reçu mon Lisora, je n'utilise plus rien d'autre. Mes cheveux sont lisses, brillants, comme après un soin en salon.", "author": "Sophie M.", "location": "Paris" }
+        },
+        {
+          "type": "mini_review",
+          "settings": { "title": "Fini les matins catastrophiques", "text": "J'avais des cheveux frisés ingérables. Maintenant je me lève, je branche mon Lisora, et en 10 minutes je pars au travail impeccable.", "author": "Camille R.", "location": "Lyon" }
+        },
+        {
+          "type": "mini_review",
+          "settings": { "title": "Le coloris lilas est DIVIN", "text": "Beau et efficace. Le résultat est aussi bon qu'en salon. Je recommande les yeux fermés !", "author": "Emma L.", "location": "Bordeaux" }
+        }
+      ]
     }
   ]
 }

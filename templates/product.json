@@ -4,13 +4,51 @@
       "type": "main-product",
       "settings": {
         "badge": "⚡ Bestseller · Édition limitée",
+        "show_badge_default": true,
+        "product_headline": "",
         "short_desc": "Le lisseur céramique infrarouge qui transforme vos cheveux en 5 minutes. Résultat salon à domicile — garanti ou remboursé.",
+        "product_description": "",
+        "desc_label": "Description",
+        "specs_label": "Caractéristiques techniques",
+        "shipping_label": "Livraison & Retours",
         "avg_rating": "4.9",
         "review_count": 847,
+        "customers_count": "50 000+ clientes satisfaites",
+        "reviews_title": "Ce qu'elles en pensent",
+        "atc_text": "Ajouter au panier",
         "show_buy_now": true,
         "show_urgency": true,
-        "viewers": 23
-      }
+        "viewers": 23,
+        "show_default_highlights": true,
+        "highlights_title": "Pourquoi Lisora ?"
+      },
+      "blocks": {
+        "pill1": { "type": "feature_pill", "settings": { "label": "⚡ Chauffe en 30s" } },
+        "pill2": { "type": "feature_pill", "settings": { "label": "💎 Céramique infrarouge" } },
+        "pill3": { "type": "feature_pill", "settings": { "label": "✨ Anti-frisottis" } },
+        "pill4": { "type": "feature_pill", "settings": { "label": "🌡️ Jusqu'à 230°C" } },
+        "opt1": { "type": "option_config", "settings": { "option_name": "Couleur", "display_style": "swatches" } },
+        "swatch1": { "type": "color_swatch", "settings": { "color_name": "Rose Poudré", "color_hex": "#F4A7B3" } },
+        "swatch2": { "type": "color_swatch", "settings": { "color_name": "Blanc Ivoire", "color_hex": "#FAF0E6" } },
+        "swatch3": { "type": "color_swatch", "settings": { "color_name": "Lilas Doux", "color_hex": "#D8B4E2" } },
+        "swatch4": { "type": "color_swatch", "settings": { "color_name": "Noir Minuit", "color_hex": "#2C2C2C" } },
+        "swatch5": { "type": "color_swatch", "settings": { "color_name": "Or Rosé", "color_hex": "#C9856A" } },
+        "spec1": { "type": "spec_item", "settings": { "label": "Technologie", "value": "Céramique infrarouge avancée" } },
+        "spec2": { "type": "spec_item", "settings": { "label": "Températures", "value": "160°C – 230°C (5 niveaux)" } },
+        "spec3": { "type": "spec_item", "settings": { "label": "Temps de chauffe", "value": "30 secondes" } },
+        "spec4": { "type": "spec_item", "settings": { "label": "Largeur plaques", "value": "32 mm" } },
+        "spec5": { "type": "spec_item", "settings": { "label": "Câble", "value": "2,5 m pivotant 360°" } },
+        "spec6": { "type": "spec_item", "settings": { "label": "Arrêt auto", "value": "Après 60 min d'inactivité" } },
+        "spec7": { "type": "spec_item", "settings": { "label": "Garantie", "value": "2 ans pièces & main d'œuvre" } },
+        "h1": { "type": "highlight", "settings": { "icon": "⚡", "title": "Prêt en 30 secondes", "description": "Allumez, attendez que la DEL vire au vert — température de salon atteinte. Zéro patience requise." } },
+        "h2": { "type": "highlight", "settings": { "icon": "💎", "title": "Zéro casse, zéro brûlure", "description": "La céramique infrarouge chauffe de l'intérieur vers l'extérieur. Lissage parfait sans agression." } },
+        "h3": { "type": "highlight", "settings": { "icon": "✨", "title": "Brillance miroir", "description": "Ions négatifs actifs — vos cheveux scellent leur brillance et réfléchissent littéralement la lumière." } },
+        "h4": { "type": "highlight", "settings": { "icon": "🌿", "title": "Résultat toute la journée", "description": "Anti-frisottis longue durée. Même par temps humide, vos cheveux restent lisses." } },
+        "r1": { "type": "mini_review", "settings": { "title": "Je ne reviendrai jamais en arrière !", "text": "Depuis que j'ai reçu mon Lisora, je n'utilise plus rien d'autre. Mes cheveux sont lisses, brillants, comme après un soin en salon.", "author": "Sophie M.", "location": "Paris" } },
+        "r2": { "type": "mini_review", "settings": { "title": "Fini les matins catastrophiques", "text": "J'avais des cheveux frisés ingérables. Maintenant je me lève, je branche mon Lisora, et en 10 minutes je pars au travail impeccable.", "author": "Camille R.", "location": "Lyon" } },
+        "r3": { "type": "mini_review", "settings": { "title": "Le coloris lilas est DIVIN", "text": "Beau et efficace. Le résultat est aussi bon qu'en salon. Je recommande les yeux fermés !", "author": "Emma L.", "location": "Bordeaux" } }
+      },
+      "block_order": ["pill1","pill2","pill3","pill4","opt1","swatch1","swatch2","swatch3","swatch4","swatch5","spec1","spec2","spec3","spec4","spec5","spec6","spec7","h1","h2","h3","h4","r1","r2","r3"]
     },
     "faq": {
       "type": "product-faq",
@@ -21,40 +59,24 @@
       },
       "blocks": {
         "q1": { "type": "faq_item", "settings": { "question": "Est-ce que Lisora convient à tous les types de cheveux ?", "answer": "Oui ! Lisora est conçu pour fonctionner sur tous les types de cheveux : fins, épais, bouclés, frisés ou ondulés. Grâce à ses 5 niveaux de température ajustables (160°C à 230°C), vous choisissez l'intensité adaptée à votre type capillaire." } },
-        "q2": { "type": "faq_item", "settings": { "question": "Combien de temps dure le lissage avec Lisora ?", "answer": "En général, le lissage dure toute la journée — parfois jusqu'à 24 à 48h selon votre type de cheveux et les conditions météo. La technologie ions négatifs scelle les écailles du cheveu pour un résultat longue durée même par temps humide." } },
-        "q3": { "type": "faq_item", "settings": { "question": "Est-ce que Lisora abîme les cheveux ?", "answer": "Absolument pas. C'est précisément pour ça que nous avons choisi la technologie céramique infrarouge. Contrairement aux lisseurs classiques, Lisora chauffe les cheveux de l'intérieur vers l'extérieur, en respectant la structure de la tige capillaire. Résultat : zéro casse, zéro brûlure." } },
-        "q4": { "type": "faq_item", "settings": { "question": "Quelle est la durée de la garantie ?", "answer": "Lisora est garanti 2 ans pièces et main d'œuvre. Si votre lisseur présente un défaut de fabrication dans ce délai, nous le remplaçons ou remboursons sans questions. Aucune procédure compliquée — nous faisons confiance à nos clientes." } },
-        "q5": { "type": "faq_item", "settings": { "question": "Puis-je retourner mon Lisora si je ne suis pas satisfaite ?", "answer": "Bien sûr. Vous disposez de 30 jours pour changer d'avis — sans avoir à justifier votre décision. Le retour est entièrement gratuit. Nous remboursons 100% du montant payé dans les 48h suivant la réception du colis retour." } },
-        "q6": { "type": "faq_item", "settings": { "question": "Combien de temps avant la livraison ?", "answer": "Toutes les commandes passées avant 14h sont expédiées le jour même. Vous recevez votre Lisora en 2 à 3 jours ouvrés en France métropolitaine. Un email de suivi vous est envoyé dès l'expédition." } },
-        "q7": { "type": "faq_item", "settings": { "question": "Lisora s'arrête-t-il automatiquement ?", "answer": "Oui ! La sécurité est une priorité. Lisora s'éteint automatiquement après 60 minutes d'inactivité. Idéal pour les matins pressés où on peut oublier d'éteindre son lisseur." } }
+        "q2": { "type": "faq_item", "settings": { "question": "Combien de temps dure le lissage ?", "answer": "En général, le lissage dure toute la journée — parfois jusqu'à 48h selon votre type de cheveux. La technologie ions négatifs scelle les écailles pour un résultat longue durée." } },
+        "q3": { "type": "faq_item", "settings": { "question": "Est-ce que Lisora abîme les cheveux ?", "answer": "Absolument pas. La céramique infrarouge chauffe les cheveux de l'intérieur vers l'extérieur, en respectant la structure de la tige capillaire. Zéro casse, zéro brûlure." } },
+        "q4": { "type": "faq_item", "settings": { "question": "Quelle est la durée de la garantie ?", "answer": "Lisora est garanti 2 ans pièces et main d'œuvre. Si votre lisseur présente un défaut de fabrication, nous le remplaçons ou remboursons sans questions." } },
+        "q5": { "type": "faq_item", "settings": { "question": "Puis-je retourner mon Lisora si je ne suis pas satisfaite ?", "answer": "Bien sûr. Vous disposez de 30 jours pour changer d'avis — retour entièrement gratuit. Remboursement 100% sous 48h." } },
+        "q6": { "type": "faq_item", "settings": { "question": "Combien de temps avant la livraison ?", "answer": "Commandes avant 14h expédiées le jour même. Livraison en 2–3 jours ouvrés en France. Email de suivi envoyé dès l'expédition." } },
+        "q7": { "type": "faq_item", "settings": { "question": "Lisora s'arrête-t-il automatiquement ?", "answer": "Oui ! Arrêt automatique après 60 minutes d'inactivité pour votre sécurité." } }
       },
-      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6", "q7"]
-    },
-    "testimonials": {
-      "type": "testimonials",
-      "settings": {
-        "eyebrow": "Elles l'ont essayé",
-        "title": "Ce qu'elles en pensent",
-        "subtitle": "Des vraies clientes, de vraies transformations. Lisez leurs témoignages.",
-        "avg_rating": "4.9",
-        "total_reviews": 847
-      },
-      "blocks": {
-        "t1": { "type": "testimonial", "settings": { "rating": 5, "title": "Je ne reviendrai jamais en arrière !", "text": "Depuis que j'ai reçu mon Lisora Rose Poudré, je n'utilise plus rien d'autre. Mes cheveux sont lisses, brillants, comme après un soin en salon — mais en 5 minutes chez moi. C'est magique.", "name": "Sophie M.", "location": "Paris" } },
-        "t2": { "type": "testimonial", "settings": { "rating": 5, "title": "Fini les matins catastrophiques", "text": "J'avais des cheveux frisés ingérables. Maintenant je me lève, je branche mon Lisora, et en moins de 10 minutes je pars au travail avec une coiffure parfaite. Je gagne 30 minutes chaque matin !", "name": "Camille R.", "location": "Lyon" } },
-        "t3": { "type": "testimonial", "settings": { "rating": 5, "title": "Le coloris lilas est DIVIN", "text": "Je cherchais un lisseur qui soit à la fois beau et efficace. Le Lilas Doux est absolument magnifique dans ma salle de bain. Et question résultat, mes cheveux n'ont jamais été aussi lisses.", "name": "Emma L.", "location": "Bordeaux" } }
-      },
-      "block_order": ["t1", "t2", "t3"]
+      "block_order": ["q1","q2","q3","q4","q5","q6","q7"]
     },
     "cta": {
       "type": "cta-banner",
       "settings": {
         "title": "Prête à sublimer vos cheveux ?",
-        "description": "Rejoignez 50 000 femmes qui ont déjà transformé leur routine beauté. Livraison offerte · Satisfaite ou remboursée 30 jours.",
+        "description": "Rejoignez 50 000 femmes qui ont transformé leur routine beauté. Livraison offerte · Satisfaite ou remboursée 30 jours.",
         "cta_primary": "Commander Lisora maintenant",
         "cta_secondary": "Voir les coloris"
       }
     }
   },
-  "order": ["main", "faq", "testimonials", "cta"]
+  "order": ["main", "faq", "cta"]
 }

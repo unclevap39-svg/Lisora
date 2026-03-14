@@ -1,11 +1,12 @@
 <header class="site-header" role="banner" id="site-header">
-  {%- comment -%} Pink gradient top accent line {%- endcomment -%}
+
+  {%- comment -%} Animated gradient top accent {%- endcomment -%}
   <div class="site-header__topline" aria-hidden="true"></div>
 
   <div class="container">
     <div class="site-header__inner">
 
-      {%- comment -%} LEFT — Navigation {%- endcomment -%}
+      {%- comment -%} ─── LEFT: Nav (desktop) ─── {%- endcomment -%}
       <nav class="site-header__nav" role="navigation" aria-label="Navigation principale">
         {%- for link in section.settings.menu.links -%}
           {%- if link.links != blank -%}
@@ -15,8 +16,8 @@
                  aria-haspopup="true"
                  aria-expanded="false">
                 {{ link.title }}
-                <svg class="nav-arrow" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                  <path d="M1 1l4 4 4-4"/>
+                <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"/>
                 </svg>
               </a>
               <div class="nav-dropdown" role="menu">
@@ -35,14 +36,14 @@
         {%- endfor -%}
       </nav>
 
-      {%- comment -%} CENTER — Logo (absolute pour centrage parfait) {%- endcomment -%}
-      <div class="site-header__logo" aria-label="{{ shop.name }} — Retour à l'accueil">
-        <a href="/" class="site-header__logo-link">
+      {%- comment -%} ─── CENTER: Logo (absolute → toujours centré) ─── {%- endcomment -%}
+      <div class="site-header__logo">
+        <a href="/" class="site-header__logo-link" aria-label="{{ shop.name }} — Retour à l'accueil">
           {%- if settings.logo -%}
             <img
               src="{{ settings.logo | image_url: width: 300 }}"
               alt="{{ shop.name }}"
-              width="{{ settings.logo_width }}"
+              width="{{ settings.logo_width | default: 120 }}"
               height="auto"
               loading="eager"
               class="site-header__logo-img"
@@ -53,25 +54,28 @@
         </a>
       </div>
 
-      {%- comment -%} RIGHT — Actions {%- endcomment -%}
+      {%- comment -%} ─── RIGHT: Actions ─── {%- endcomment -%}
       <div class="site-header__actions">
 
-        {%- comment -%} CTA pill — desktop only {%- endcomment -%}
-        <a href="/products" class="header-cta-btn" aria-label="Commander Lisora">
-          Commander
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" aria-hidden="true">
+        {%- comment -%} CTA pill — desktop seulement {%- endcomment -%}
+        <a href="{{ section.settings.cta_link | default: '/products' }}" class="header-cta-btn" aria-label="{{ section.settings.cta_text | default: 'Commander' }}">
+          <span>{{ section.settings.cta_text | default: 'Commander' }}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>
 
-        <a href="{{ routes.search_url }}" class="header-icon-btn" aria-label="Rechercher">
+        {%- comment -%} Search {%- endcomment -%}
+        <a href="{{ routes.search_url }}" class="header-icon-btn" aria-label="Rechercher" title="Rechercher">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
           </svg>
         </a>
 
+        {%- comment -%} Account {%- endcomment -%}
         {%- if shop.customer_accounts_enabled -%}
-          <a href="{{ routes.account_url }}" class="header-icon-btn" aria-label="Mon compte">
+          <a href="{{ routes.account_url }}" class="header-icon-btn header-icon-btn--desktop" aria-label="Mon compte" title="Mon compte">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
@@ -79,7 +83,8 @@
           </a>
         {%- endif -%}
 
-        <button class="header-icon-btn cart-icon-btn" data-cart-trigger aria-label="Panier ({{ cart.item_count }} articles)">
+        {%- comment -%} Cart {%- endcomment -%}
+        <button class="header-icon-btn cart-icon-btn" data-cart-trigger aria-label="Panier — {{ cart.item_count }} articles">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
             <line x1="3" y1="6" x2="21" y2="6"/>
@@ -90,64 +95,119 @@
           </span>
         </button>
 
-        <button class="mobile-menu-btn" data-mobile-menu aria-label="Ouvrir le menu" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
+        {%- comment -%} Hamburger animé (mobile seulement) {%- endcomment -%}
+        <button
+          class="hamburger"
+          data-mobile-menu
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
         </button>
 
       </div>
     </div>
   </div>
 
-  {%- comment -%} Scroll progress bar {%- endcomment -%}
+  {%- comment -%} Barre de progression scroll {%- endcomment -%}
   <div class="site-header__progress" id="scroll-progress" aria-hidden="true"></div>
 </header>
 
-{%- comment -%} Mobile Menu — full-screen overlay {%- endcomment -%}
-<div class="mobile-menu" role="dialog" aria-label="Menu mobile" aria-modal="true" id="mobile-menu">
-  <div class="mobile-menu__backdrop" data-mobile-close></div>
+{%- comment -%} ═══════════════ MENU MOBILE ═══════════════ {%- endcomment -%}
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Menu mobile" aria-modal="true">
+
+  {%- comment -%} Backdrop semi-transparent {%- endcomment -%}
+  <div class="mobile-menu__backdrop" data-mobile-close aria-hidden="true"></div>
+
+  {%- comment -%} Panneau glissant depuis la droite {%- endcomment -%}
   <div class="mobile-menu__panel">
-    <div class="mobile-menu__header">
-      <a href="/" class="mobile-menu__brand" data-mobile-close>{{ shop.name }}</a>
+
+    {%- comment -%} En-tête panneau {%- endcomment -%}
+    <div class="mobile-menu__top">
+      <a href="/" class="mobile-menu__logo" data-mobile-close aria-label="{{ shop.name }}">
+        {%- if settings.logo -%}
+          <img src="{{ settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" width="90" height="auto">
+        {%- else -%}
+          <span class="mobile-menu__logo-text">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
       <button class="mobile-menu__close" data-mobile-close aria-label="Fermer le menu">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"/>
           <line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       </button>
     </div>
 
-    <nav class="mobile-menu__nav" aria-label="Menu mobile">
+    {%- comment -%} Liens de navigation {%- endcomment -%}
+    <nav class="mobile-menu__nav" aria-label="Menu mobile navigation">
       {%- for link in section.settings.menu.links -%}
-        <a href="{{ link.url }}"
-           class="mobile-menu__link{% if link.active %} is-active{% endif %}"
-           style="--delay: {{ forloop.index0 | times: 60 }}ms">
-          <span class="mobile-menu__link-text">{{ link.title }}</span>
+        <a
+          href="{{ link.url }}"
+          class="mobile-menu__link{% if link.active %} is-active{% endif %}"
+          style="--delay: {{ forloop.index0 | times: 55 }}ms"
+          data-mobile-close
+        >
           <span class="mobile-menu__link-num">0{{ forloop.index }}</span>
+          <span class="mobile-menu__link-text">{{ link.title }}</span>
+          <svg class="mobile-menu__link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
         </a>
       {%- endfor -%}
     </nav>
 
+    {%- comment -%} Bouton CTA {%- endcomment -%}
     <div class="mobile-menu__cta">
-      <a href="/products" class="btn btn-primary btn-full">
-        Commander Lisora
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <a href="{{ section.settings.cta_link | default: '/products' }}" class="btn btn-primary btn-full" data-mobile-close>
+        {{ section.settings.cta_text | default: 'Commander Lisora' }}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
       </a>
     </div>
 
+    {%- comment -%} Pied du panneau {%- endcomment -%}
     <div class="mobile-menu__footer">
       <div class="mobile-menu__trust">
-        <span>🚚 Livraison offerte dès 50€</span>
-        <span>⭐ 4,9/5 · 50k+ clientes</span>
+        <div class="mobile-menu__trust-item"><span aria-hidden="true">🚚</span> Livraison offerte dès 50€</div>
+        <div class="mobile-menu__trust-item"><span aria-hidden="true">⭐</span> 4,9/5 · 50 000+ clientes</div>
+        <div class="mobile-menu__trust-item"><span aria-hidden="true">🔄</span> Retours gratuits 30 jours</div>
       </div>
+
+      <div class="mobile-menu__social">
+        {%- if settings.social_instagram_link != blank -%}
+          <a href="{{ settings.social_instagram_link }}" class="mobile-menu__social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </a>
+        {%- endif -%}
+        {%- if settings.social_tiktok_link != blank -%}
+          <a href="{{ settings.social_tiktok_link }}" class="mobile-menu__social-link" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-6.12 6.3 6.34 6.34 0 0 0 12.67 0V9.07a8.19 8.19 0 0 0 4.79 1.53V7.16a4.84 4.84 0 0 1-1.03-.47z"/>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+
       {%- if shop.customer_accounts_enabled -%}
-        <a href="{{ routes.account_url }}" class="mobile-menu__account">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <a href="{{ routes.account_url }}" class="mobile-menu__account-link" data-mobile-close>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
           Mon compte
         </a>
       {%- endif -%}
     </div>
+
   </div>
 </div>
 
@@ -161,6 +221,18 @@
       "id": "menu",
       "default": "main-menu",
       "label": "Menu de navigation"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Texte du bouton CTA",
+      "default": "Commander"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Lien du bouton CTA",
+      "default": "/products"
     }
   ]
 }
