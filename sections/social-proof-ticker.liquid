@@ -1,0 +1,111 @@
+<div class="spt-section" id="social-proof-ticker">
+
+  {%- comment -%} ── Chiffres clés ── {%- endcomment -%}
+  <div class="spt-stats container">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'stat' -%}
+        <div class="spt-stat" {{ block.shopify_attributes }}>
+          <span class="spt-stat__number">{{ block.settings.number }}</span>
+          <span class="spt-stat__label">{{ block.settings.label }}</span>
+        </div>
+        {%- unless forloop.last -%}
+          <div class="spt-stat__divider" aria-hidden="true"></div>
+        {%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} ── Logos médias / partenaires ── {%- endcomment -%}
+  {%- assign media_blocks = section.blocks | where: 'type', 'media_logo' -%}
+  {%- if media_blocks.size > 0 -%}
+    <div class="spt-media">
+      <p class="spt-media__label container">{{ section.settings.media_label | default: 'Vu dans' }}</p>
+      <div class="spt-media__track-wrap" aria-hidden="true">
+        <div class="spt-media__track">
+          {%- for block in media_blocks -%}
+            <div class="spt-media__item" {{ block.shopify_attributes }}>
+              {%- if block.settings.logo -%}
+                <img
+                  src="{{ block.settings.logo | image_url: width: 160 }}"
+                  alt="{{ block.settings.name | escape }}"
+                  width="120"
+                  height="40"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <span class="spt-media__name">{{ block.settings.name }}</span>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+          {%- comment -%} Duplicate for seamless loop {%- endcomment -%}
+          {%- for block in media_blocks -%}
+            <div class="spt-media__item" aria-hidden="true">
+              {%- if block.settings.logo -%}
+                <img
+                  src="{{ block.settings.logo | image_url: width: 160 }}"
+                  alt="{{ block.settings.name | escape }}"
+                  width="120"
+                  height="40"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <span class="spt-media__name">{{ block.settings.name }}</span>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+</div>
+
+{% schema %}
+{
+  "name": "Preuve sociale",
+  "tag": "section",
+  "class": "section-spt",
+  "settings": [
+    {
+      "type": "text",
+      "id": "media_label",
+      "label": "Label médias",
+      "default": "Vu dans"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Chiffre clé",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Chiffre", "default": "50 000+" },
+        { "type": "text", "id": "label", "label": "Libellé", "default": "clientes satisfaites" }
+      ]
+    },
+    {
+      "type": "media_logo",
+      "name": "Logo média",
+      "settings": [
+        { "type": "image_picker", "id": "logo", "label": "Logo" },
+        { "type": "text", "id": "name", "label": "Nom du média", "default": "Vogue" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Preuve sociale",
+      "blocks": [
+        { "type": "stat", "settings": { "number": "50 000+", "label": "clientes satisfaites" } },
+        { "type": "stat", "settings": { "number": "4,9 / 5", "label": "note moyenne" } },
+        { "type": "stat", "settings": { "number": "98%", "label": "recommandent Lisora" } },
+        { "type": "stat", "settings": { "number": "30 jours", "label": "satisfaite ou remboursée" } },
+        { "type": "media_logo", "settings": { "name": "Elle" } },
+        { "type": "media_logo", "settings": { "name": "Vogue" } },
+        { "type": "media_logo", "settings": { "name": "Marie Claire" } },
+        { "type": "media_logo", "settings": { "name": "Cosmopolitan" } },
+        { "type": "media_logo", "settings": { "name": "Grazia" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "about": {
+      "type": "about-content",
+      "settings": {
+        "eyebrow": "💖 Notre histoire",
+        "title": "Née d'une frustration. Construite pour vous.",
+        "intro": "<p>Lisora est née d'une frustration simple : pourquoi les femmes devaient-elles payer 60€ en salon pour avoir de beaux cheveux lisses ?</p><p>En 2022, nous avons décidé de changer ça. Résultat : un lisseur céramique infrarouge professionnel, accessible à toutes.</p>",
+        "story_eyebrow": "📖 D'où on vient",
+        "story_title": "De l'idée au lisseur que toute la France s'arrache",
+        "story_body": "<p>Tout a commencé dans un petit appartement parisien. Léa, la fondatrice de Lisora, passait deux heures chaque matin à dompter ses cheveux bouclés — et des fortunes en salon.</p><p>Elle a cherché une alternative professionnelle. Introuvable à un prix raisonnable.</p><p>Alors elle l'a créée. Avec une équipe d'ingénieurs capillaires et trois ans de R&D, Lisora Pro est né.</p><p>Aujourd'hui, 50 000 femmes en France partagent son secret. Et elles ne reviendront plus jamais en arrière.</p>",
+        "values_title": "Ce qui nous guide chaque jour",
+        "cta_title": "Rejoignez la communauté Lisora",
+        "cta_subtitle": "50 000 femmes ont déjà transformé leur routine beauté.",
+        "cta_text": "Découvrir Lisora Pro",
+        "cta_link": "/products"
+      },
+      "blocks": {
+        "v1": { "type": "value", "settings": { "icon": "💎", "title": "Excellence", "description": "Chaque détail compte. Du câble pivotant à la céramique infrarouge — rien n'est laissé au hasard." } },
+        "v2": { "type": "value", "settings": { "icon": "💖", "title": "Bienveillance", "description": "Nous croyons que chaque femme mérite de se sentir belle, sans compromis sur sa santé capillaire." } },
+        "v3": { "type": "value", "settings": { "icon": "🌱", "title": "Responsabilité", "description": "Packaging recyclé, production éthique, livraison neutre en carbone. Beau et responsable." } },
+        "v4": { "type": "value", "settings": { "icon": "🔬", "title": "Innovation", "description": "3 ans de R&D avec des experts capillaires pour concevoir le lisseur le plus performant du marché." } }
+      },
+      "block_order": ["v1", "v2", "v3", "v4"]
+    }
+  },
+  "order": ["about"]
+}

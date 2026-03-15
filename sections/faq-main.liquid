@@ -1,0 +1,171 @@
+<section class="faq-main-section" id="faq-main">
+  <div class="container">
+
+    {%- comment -%} ── En-tête ── {%- endcomment -%}
+    <div class="faq-main__header text-center">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="section-eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h1 class="faq-main__title">{{ section.settings.title | default: 'Questions fréquentes' }}</h1>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="faq-main__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ── Filtres par catégorie ── {%- endcomment -%}
+    {%- assign categories = '' -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'faq_item' and block.settings.category != blank -%}
+        {%- unless categories contains block.settings.category -%}
+          {%- assign categories = categories | append: block.settings.category | append: '|||' -%}
+        {%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign category_list = categories | split: '|||' -%}
+    {%- if category_list.size > 1 -%}
+      <div class="faq-main__filters" role="tablist" aria-label="Filtrer par catégorie">
+        <button class="faq-filter-btn is-active" data-faq-filter="all" role="tab" aria-selected="true">Tout voir</button>
+        {%- for cat in category_list -%}
+          {%- if cat != blank -%}
+            <button class="faq-filter-btn" data-faq-filter="{{ cat | handle }}" role="tab" aria-selected="false">{{ cat }}</button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── Items FAQ ── {%- endcomment -%}
+    <div class="faq-main__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq_item' -%}
+          <div
+            class="faq-main__item"
+            data-faq-category="{{ block.settings.category | handle }}"
+            {{ block.shopify_attributes }}
+          >
+            <button
+              class="faq-main__question"
+              aria-expanded="false"
+              aria-controls="faq-answer-{{ block.id }}"
+              data-faq-toggle
+            >
+              <span class="faq-main__question-text">{{ block.settings.question }}</span>
+              <span class="faq-main__chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </span>
+            </button>
+            <div
+              class="faq-main__answer"
+              id="faq-answer-{{ block.id }}"
+              role="region"
+              aria-hidden="true"
+            >
+              <div class="faq-main__answer-inner rte">
+                {{ block.settings.answer }}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} ── Contact CTA ── {%- endcomment -%}
+    {%- if section.settings.contact_title != blank -%}
+      <div class="faq-main__contact text-center">
+        <div class="faq-main__contact-card">
+          <p class="faq-main__contact-emoji" aria-hidden="true">{{ section.settings.contact_icon | default: '💬' }}</p>
+          <h2 class="faq-main__contact-title">{{ section.settings.contact_title }}</h2>
+          <p class="faq-main__contact-text">{{ section.settings.contact_text }}</p>
+          {%- if section.settings.contact_btn != blank -%}
+            <a href="{{ section.settings.contact_link | default: '/pages/contact' }}" class="btn btn-primary">
+              {{ section.settings.contact_btn }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+(function() {
+  // FAQ accordion
+  document.querySelectorAll('[data-faq-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const answer = document.getElementById(btn.getAttribute('aria-controls'));
+      btn.setAttribute('aria-expanded', !expanded);
+      answer.setAttribute('aria-hidden', expanded);
+      btn.closest('.faq-main__item').classList.toggle('is-open', !expanded);
+    });
+  });
+
+  // Category filter
+  document.querySelectorAll('[data-faq-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.faqFilter;
+      document.querySelectorAll('[data-faq-filter]').forEach(b => {
+        b.classList.toggle('is-active', b === btn);
+        b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+      });
+      document.querySelectorAll('.faq-main__item').forEach(item => {
+        if (filter === 'all' || item.dataset.faqCategory === filter) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ — Page complète",
+  "tag": "section",
+  "class": "section-faq-main",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Accroche", "default": "💬 On répond à tout" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Questions fréquentes" },
+    { "type": "textarea", "id": "subtitle", "label": "Sous-titre", "default": "Tout ce que vous voulez savoir sur Lisora — en toute transparence." },
+    {
+      "type": "header",
+      "content": "Section contact"
+    },
+    { "type": "text", "id": "contact_icon", "label": "Emoji", "default": "💬" },
+    { "type": "text", "id": "contact_title", "label": "Titre", "default": "Vous n'avez pas trouvé votre réponse ?" },
+    { "type": "textarea", "id": "contact_text", "label": "Texte", "default": "Notre équipe répond en moins d'une heure, du lundi au vendredi de 9h à 18h." },
+    { "type": "text", "id": "contact_btn", "label": "Texte bouton", "default": "Nous contacter" },
+    { "type": "url", "id": "contact_link", "label": "Lien bouton" }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "category", "label": "Catégorie", "info": "Ex: Produit, Livraison, Garantie. Laisser vide si pas de filtre.", "default": "" },
+        { "type": "text", "id": "question", "label": "Question", "default": "Comment fonctionne Lisora ?" },
+        { "type": "richtext", "id": "answer", "label": "Réponse", "default": "<p>Lisora utilise la technologie céramique infrarouge pour chauffer vos cheveux de l'intérieur vers l'extérieur, en préservant leur structure naturelle.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ — Page complète",
+      "blocks": [
+        { "type": "faq_item", "settings": { "category": "Produit", "question": "Est-ce que Lisora convient à tous les types de cheveux ?", "answer": "<p>Oui ! Lisora est conçu pour fonctionner sur tous les types de cheveux : fins, épais, bouclés, frisés ou ondulés. Grâce à ses 5 niveaux de température ajustables (160°C à 230°C), vous choisissez l'intensité adaptée à votre type capillaire.</p>" } },
+        { "type": "faq_item", "settings": { "category": "Produit", "question": "Combien de temps dure le lissage ?", "answer": "<p>En général, le lissage dure toute la journée — parfois jusqu'à 48h selon votre type de cheveux. La technologie ions négatifs scelle les écailles pour un résultat longue durée.</p>" } },
+        { "type": "faq_item", "settings": { "category": "Produit", "question": "Est-ce que Lisora abîme les cheveux ?", "answer": "<p>Absolument pas. La céramique infrarouge chauffe les cheveux de l'intérieur vers l'extérieur, en respectant la structure de la tige capillaire. Zéro casse, zéro brûlure. Utilisé quotidiennement, Lisora est compatible avec des cheveux colorés ou traités chimiquement.</p>" } },
+        { "type": "faq_item", "settings": { "category": "Produit", "question": "Lisora s'arrête-t-il automatiquement ?", "answer": "<p>Oui ! Pour votre sécurité, Lisora s'éteint automatiquement après 60 minutes d'inactivité. Vous pouvez partir sereine.</p>" } },
+        { "type": "faq_item", "settings": { "category": "Livraison", "question": "Combien de temps avant la livraison ?", "answer": "<p>Commandes passées avant 14h expédiées le jour même. Livraison en 2–3 jours ouvrés en France métropolitaine. Un email de suivi vous est envoyé dès l'expédition.</p>" } },
+        { "type": "faq_item", "settings": { "category": "Livraison", "question": "La livraison est-elle gratuite ?", "answer": "<p>La livraison est offerte à partir de 50€ d'achat. En dessous de ce seuil, les frais de port sont de 4,90€.</p>" } },
+        { "type": "faq_item", "settings": { "category": "Garantie", "question": "Quelle est la durée de la garantie ?", "answer": "<p>Lisora est garanti 2 ans pièces et main d'œuvre. Si votre lisseur présente un défaut de fabrication, nous le remplaçons ou remboursons sans questions.</p>" } },
+        { "type": "faq_item", "settings": { "category": "Garantie", "question": "Puis-je retourner mon Lisora si je ne suis pas satisfaite ?", "answer": "<p>Absolument. Vous disposez de 30 jours pour changer d'avis — retour entièrement gratuit. Remboursement 100% traité sous 48h sur votre moyen de paiement d'origine.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

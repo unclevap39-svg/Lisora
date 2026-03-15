@@ -1,0 +1,30 @@
+{
+  "sections": {
+    "faq": {
+      "type": "faq-main",
+      "settings": {
+        "eyebrow": "💬 On répond à tout",
+        "title": "Questions fréquentes",
+        "subtitle": "Tout ce que vous voulez savoir sur Lisora — en toute transparence.",
+        "contact_icon": "💬",
+        "contact_title": "Vous n'avez pas trouvé votre réponse ?",
+        "contact_text": "Notre équipe répond en moins d'une heure, du lundi au vendredi de 9h à 18h.",
+        "contact_btn": "Nous contacter",
+        "contact_link": "/pages/contact"
+      },
+      "blocks": {
+        "q1": { "type": "faq_item", "settings": { "category": "Produit", "question": "Est-ce que Lisora convient à tous les types de cheveux ?", "answer": "<p>Oui ! Lisora est conçu pour fonctionner sur tous les types de cheveux : fins, épais, bouclés, frisés ou ondulés. Grâce à ses 5 niveaux de température ajustables (160°C à 230°C), vous choisissez l'intensité adaptée à votre type capillaire.</p>" } },
+        "q2": { "type": "faq_item", "settings": { "category": "Produit", "question": "Combien de temps dure le lissage ?", "answer": "<p>En général, le lissage dure toute la journée — parfois jusqu'à 48h selon votre type de cheveux. La technologie ions négatifs scelle les écailles pour un résultat longue durée.</p>" } },
+        "q3": { "type": "faq_item", "settings": { "category": "Produit", "question": "Est-ce que Lisora abîme les cheveux ?", "answer": "<p>Absolument pas. La céramique infrarouge chauffe les cheveux de l'intérieur vers l'extérieur, en respectant la structure de la tige capillaire. Zéro casse, zéro brûlure.</p>" } },
+        "q4": { "type": "faq_item", "settings": { "category": "Produit", "question": "Lisora s'arrête-t-il automatiquement ?", "answer": "<p>Oui ! Pour votre sécurité, Lisora s'éteint automatiquement après 60 minutes d'inactivité.</p>" } },
+        "q5": { "type": "faq_item", "settings": { "category": "Livraison", "question": "Combien de temps avant la livraison ?", "answer": "<p>Commandes passées avant 14h expédiées le jour même. Livraison en 2–3 jours ouvrés en France métropolitaine. Un email de suivi vous est envoyé dès l'expédition.</p>" } },
+        "q6": { "type": "faq_item", "settings": { "category": "Livraison", "question": "La livraison est-elle gratuite ?", "answer": "<p>La livraison est offerte à partir de 50€ d'achat. En dessous de ce seuil, les frais de port sont de 4,90€.</p>" } },
+        "q7": { "type": "faq_item", "settings": { "category": "Garantie", "question": "Quelle est la durée de la garantie ?", "answer": "<p>Lisora est garanti 2 ans pièces et main d'œuvre. Si votre lisseur présente un défaut de fabrication, nous le remplaçons ou remboursons sans questions.</p>" } },
+        "q8": { "type": "faq_item", "settings": { "category": "Garantie", "question": "Puis-je retourner mon Lisora si je ne suis pas satisfaite ?", "answer": "<p>Absolument. Vous disposez de 30 jours pour changer d'avis — retour entièrement gratuit. Remboursement 100% traité sous 48h.</p>" } },
+        "q9": { "type": "faq_item", "settings": { "category": "Garantie", "question": "Comment activer ma garantie ?", "answer": "<p>Aucune démarche nécessaire. La garantie est automatiquement activée à la date d'achat. Conservez votre email de confirmation comme preuve d'achat.</p>" } }
+      },
+      "block_order": ["q1","q2","q3","q4","q5","q6","q7","q8","q9"]
+    }
+  },
+  "order": ["faq"]
+}

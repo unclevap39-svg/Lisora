@@ -1,0 +1,202 @@
+<article class="about-section" id="about-content">
+
+  {%- comment -%} ── Hero about ── {%- endcomment -%}
+  <div class="about-hero">
+    <div class="container about-hero__inner">
+      <div class="about-hero__copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="section-eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h1 class="about-hero__title">{{ section.settings.title | default: 'Notre mission : sublimer chaque femme.' }}</h1>
+        <div class="about-hero__desc">
+          {{ section.settings.intro | default: '<p>Lisora est née d\'une frustration simple : pourquoi les femmes devaient-elles payer 60€ en salon pour avoir de beaux cheveux lisses ?</p><p>Nous avons créé le lisseur qui change ça.</p>' }}
+        </div>
+      </div>
+      {%- if section.settings.hero_image -%}
+        <div class="about-hero__image-wrap">
+          <img
+            src="{{ section.settings.hero_image | image_url: width: 700 }}"
+            alt="{{ section.settings.hero_image.alt | default: 'Lisora — Notre histoire' }}"
+            width="700"
+            loading="eager"
+            class="about-hero__image"
+          >
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} ── Histoire / Story ── {%- endcomment -%}
+  {%- if section.settings.story_title != blank or section.settings.story_body != blank -%}
+    <div class="about-story">
+      <div class="container about-story__inner">
+        {%- if section.settings.story_image -%}
+          <div class="about-story__image-wrap">
+            <img
+              src="{{ section.settings.story_image | image_url: width: 600 }}"
+              alt="{{ section.settings.story_image.alt | default: section.settings.story_title }}"
+              width="600"
+              loading="lazy"
+              class="about-story__image"
+            >
+          </div>
+        {%- endif -%}
+        <div class="about-story__copy">
+          {%- if section.settings.story_eyebrow != blank -%}
+            <p class="section-eyebrow">{{ section.settings.story_eyebrow }}</p>
+          {%- endif -%}
+          <h2 class="about-story__title">{{ section.settings.story_title }}</h2>
+          <div class="about-story__body rte">{{ section.settings.story_body }}</div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ── Valeurs ── {%- endcomment -%}
+  {%- assign value_blocks = section.blocks | where: 'type', 'value' -%}
+  {%- if value_blocks.size > 0 -%}
+    <div class="about-values">
+      <div class="container">
+        {%- if section.settings.values_title != blank -%}
+          <h2 class="about-values__title text-center">{{ section.settings.values_title }}</h2>
+        {%- endif -%}
+        <div class="about-values__grid">
+          {%- for block in value_blocks -%}
+            <div class="about-value-card" {{ block.shopify_attributes }}>
+              <div class="about-value-card__icon" aria-hidden="true">{{ block.settings.icon }}</div>
+              <h3 class="about-value-card__title">{{ block.settings.title }}</h3>
+              <p class="about-value-card__desc">{{ block.settings.description }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ── Équipe (optionnel) ── {%- endcomment -%}
+  {%- assign team_blocks = section.blocks | where: 'type', 'team_member' -%}
+  {%- if team_blocks.size > 0 -%}
+    <div class="about-team">
+      <div class="container">
+        {%- if section.settings.team_title != blank -%}
+          <h2 class="about-team__title text-center">{{ section.settings.team_title }}</h2>
+        {%- endif -%}
+        <div class="about-team__grid">
+          {%- for block in team_blocks -%}
+            <div class="about-team__member" {{ block.shopify_attributes }}>
+              {%- if block.settings.photo -%}
+                <img
+                  src="{{ block.settings.photo | image_url: width: 300 }}"
+                  alt="{{ block.settings.name }}"
+                  width="240"
+                  loading="lazy"
+                  class="about-team__photo"
+                >
+              {%- else -%}
+                <div class="about-team__photo-placeholder">{{ block.settings.name | slice: 0 }}</div>
+              {%- endif -%}
+              <div class="about-team__info">
+                <strong class="about-team__name">{{ block.settings.name }}</strong>
+                <span class="about-team__role">{{ block.settings.role }}</span>
+                {%- if block.settings.quote != blank -%}
+                  <blockquote class="about-team__quote">"{{ block.settings.quote }}"</blockquote>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ── CTA final ── {%- endcomment -%}
+  {%- if section.settings.cta_text != blank -%}
+    <div class="about-cta">
+      <div class="container text-center">
+        <h2 class="about-cta__title">{{ section.settings.cta_title | default: 'Rejoignez la communauté Lisora' }}</h2>
+        <p class="about-cta__sub">{{ section.settings.cta_subtitle | default: '50 000 femmes ont déjà transformé leur routine beauté.' }}</p>
+        <a href="{{ section.settings.cta_link | default: '/products' }}" class="btn btn-primary btn-lg">
+          {{ section.settings.cta_text }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  {%- endif -%}
+
+</article>
+
+{% schema %}
+{
+  "name": "À propos — Contenu",
+  "tag": "section",
+  "class": "section-about",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Accroche", "default": "💖 Notre histoire" },
+    { "type": "text", "id": "title", "label": "Titre principal", "default": "Née d'une frustration. Construite pour vous." },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Lisora est née d'une frustration simple : pourquoi les femmes devaient-elles payer 60€ en salon pour avoir de beaux cheveux lisses ?</p><p>En 2022, nous avons décidé de changer ça. Résultat : un lisseur céramique infrarouge professionnel, accessible à toutes.</p>" },
+    { "type": "image_picker", "id": "hero_image", "label": "Image hero" },
+    {
+      "type": "header",
+      "content": "Notre histoire"
+    },
+    { "type": "text", "id": "story_eyebrow", "label": "Accroche", "default": "📖 D'où on vient" },
+    { "type": "text", "id": "story_title", "label": "Titre", "default": "De l'idée au lisseur que toute la France s'arrache" },
+    { "type": "richtext", "id": "story_body", "label": "Corps du texte", "default": "<p>Tout a commencé dans un petit appartement parisien. Léa, la fondatrice de Lisora, passait deux heures chaque matin à dompter ses cheveux bouclés — et des fortunes en salon.</p><p>Elle a cherché une alternative professionnelle. Introuvable à un prix raisonnable.</p><p>Alors elle l'a créée. Avec une équipe d'ingénieurs capillaires et trois ans de R&D, Lisora Pro est née.</p><p>Aujourd'hui, 50 000 femmes en France partagent son secret. Et elles ne reviendront plus jamais en arrière.</p>" },
+    { "type": "image_picker", "id": "story_image", "label": "Image histoire" },
+    {
+      "type": "header",
+      "content": "Nos valeurs"
+    },
+    { "type": "text", "id": "values_title", "label": "Titre valeurs", "default": "Ce qui nous guide chaque jour" },
+    {
+      "type": "header",
+      "content": "Équipe (optionnel)"
+    },
+    { "type": "text", "id": "team_title", "label": "Titre équipe", "default": "L'équipe derrière Lisora" },
+    {
+      "type": "header",
+      "content": "CTA final"
+    },
+    { "type": "text", "id": "cta_title", "label": "Titre CTA", "default": "Rejoignez la communauté Lisora" },
+    { "type": "text", "id": "cta_subtitle", "label": "Sous-titre CTA", "default": "50 000 femmes ont déjà transformé leur routine beauté." },
+    { "type": "text", "id": "cta_text", "label": "Texte bouton", "default": "Découvrir Lisora Pro" },
+    { "type": "url", "id": "cta_link", "label": "Lien bouton" }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Valeur de marque",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Emoji / icône", "default": "💎" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Excellence" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Chaque détail compte. Du câble pivotant à la céramique infrarouge — rien n'est laissé au hasard." }
+      ]
+    },
+    {
+      "type": "team_member",
+      "name": "Membre de l'équipe",
+      "settings": [
+        { "type": "image_picker", "id": "photo", "label": "Photo" },
+        { "type": "text", "id": "name", "label": "Prénom & Nom", "default": "Léa Dupont" },
+        { "type": "text", "id": "role", "label": "Rôle", "default": "Fondatrice & CEO" },
+        { "type": "text", "id": "quote", "label": "Citation", "default": "Chaque femme mérite d'avoir confiance en ses cheveux." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "À propos — Contenu",
+      "blocks": [
+        { "type": "value", "settings": { "icon": "💎", "title": "Excellence", "description": "Chaque détail compte. Du câble pivotant à la céramique infrarouge — rien n'est laissé au hasard." } },
+        { "type": "value", "settings": { "icon": "💖", "title": "Bienveillance", "description": "Nous croyons que chaque femme mérite de se sentir belle, sans compromis sur sa santé capillaire." } },
+        { "type": "value", "settings": { "icon": "🌱", "title": "Responsabilité", "description": "Packaging recyclé, production éthique, livraison neutre en carbone. Beau et responsable." } },
+        { "type": "value", "settings": { "icon": "🔬", "title": "Innovation", "description": "3 ans de R&D avec des experts capillaires pour concevoir le lisseur le plus performant du marché." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

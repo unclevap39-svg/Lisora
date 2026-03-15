@@ -1,0 +1,151 @@
+<section class="comparison-section" id="product-comparison">
+  <div class="container">
+
+    {%- comment -%} ── En-tête ── {%- endcomment -%}
+    <div class="comparison__header text-center">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="section-eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="section-title">{{ section.settings.title | default: 'Pourquoi choisir Lisora ?' }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ── Tableau de comparaison ── {%- endcomment -%}
+    <div class="comparison__table-wrap">
+      <table class="comparison__table" role="table">
+        <thead>
+          <tr>
+            <th class="comparison__feature-col" scope="col">Critère</th>
+            <th class="comparison__brand-col comparison__brand-col--lisora" scope="col">
+              <div class="comparison__brand-head">
+                <span class="comparison__brand-badge">★ Notre choix</span>
+                <strong class="comparison__brand-name">{{ section.settings.brand_lisora | default: 'Lisora Pro' }}</strong>
+              </div>
+            </th>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'competitor' -%}
+                <th class="comparison__brand-col" scope="col" {{ block.shopify_attributes }}>
+                  <strong class="comparison__brand-name comparison__brand-name--comp">{{ block.settings.name }}</strong>
+                </th>
+              {%- endif -%}
+            {%- endfor -%}
+          </tr>
+        </thead>
+        <tbody>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'row' -%}
+              <tr class="comparison__row" {{ block.shopify_attributes }}>
+                <td class="comparison__feature">
+                  <span class="comparison__feature-icon">{{ block.settings.icon }}</span>
+                  {{ block.settings.feature }}
+                </td>
+                <td class="comparison__cell comparison__cell--lisora">
+                  {%- if block.settings.lisora_check -%}
+                    <span class="comparison__check comparison__check--yes" aria-label="Oui">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="18" height="18"><path d="M20 6L9 17l-5-5"/></svg>
+                    </span>
+                  {%- else -%}
+                    <span class="comparison__val">{{ block.settings.lisora_value }}</span>
+                  {%- endif -%}
+                </td>
+                {%- assign comp_values = block.settings.competitor_values | split: '|' -%}
+                {%- assign comp_checks = block.settings.competitor_checks | split: '|' -%}
+                {%- assign col_idx = 0 -%}
+                {%- for b in section.blocks -%}
+                  {%- if b.type == 'competitor' -%}
+                    <td class="comparison__cell">
+                      {%- assign chk = comp_checks[col_idx] | strip -%}
+                      {%- if chk == 'yes' -%}
+                        <span class="comparison__check comparison__check--yes" aria-label="Oui">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="18" height="18"><path d="M20 6L9 17l-5-5"/></svg>
+                        </span>
+                      {%- elsif chk == 'no' -%}
+                        <span class="comparison__check comparison__check--no" aria-label="Non">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="18" height="18"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        </span>
+                      {%- else -%}
+                        <span class="comparison__val comparison__val--neutral">{{ comp_values[col_idx] | strip }}</span>
+                      {%- endif -%}
+                    </td>
+                    {%- assign col_idx = col_idx | plus: 1 -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </tr>
+            {%- endif -%}
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+
+    {%- comment -%} ── CTA sous le tableau ── {%- endcomment -%}
+    {%- if section.settings.cta_text != blank -%}
+      <div class="comparison__cta text-center">
+        <a href="{{ section.settings.cta_link | default: '#' }}" class="btn btn-primary btn-lg">
+          {{ section.settings.cta_text }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        {%- if section.settings.cta_sub != blank -%}
+          <p class="comparison__cta-sub">{{ section.settings.cta_sub }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Comparaison produits",
+  "tag": "section",
+  "class": "section-comparison",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Accroche", "default": "🏆 La différence est claire" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Lisora vs. la concurrence" },
+    { "type": "textarea", "id": "subtitle", "label": "Sous-titre", "default": "Nous avons comparé les lisseurs les plus populaires. Les faits parlent d'eux-mêmes." },
+    { "type": "text", "id": "brand_lisora", "label": "Nom Lisora", "default": "Lisora Pro" },
+    { "type": "text", "id": "cta_text", "label": "Texte CTA", "default": "Commander Lisora maintenant" },
+    { "type": "url", "id": "cta_link", "label": "Lien CTA" },
+    { "type": "text", "id": "cta_sub", "label": "Texte sous le CTA", "default": "Livraison offerte · Retour gratuit 30 jours" }
+  ],
+  "blocks": [
+    {
+      "type": "competitor",
+      "name": "Concurrent",
+      "limit": 3,
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nom du concurrent", "default": "Lisseur X" }
+      ]
+    },
+    {
+      "type": "row",
+      "name": "Ligne de comparaison",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icône", "default": "⚡" },
+        { "type": "text", "id": "feature", "label": "Critère", "default": "Temps de chauffe" },
+        { "type": "checkbox", "id": "lisora_check", "label": "Lisora : case à cocher", "default": true },
+        { "type": "text", "id": "lisora_value", "label": "Lisora : valeur texte (si pas de case)", "default": "" },
+        { "type": "text", "id": "competitor_checks", "label": "Concurrents : yes/no/texte séparés par |", "info": "Exemple: no|no|yes", "default": "no|no" },
+        { "type": "text", "id": "competitor_values", "label": "Concurrents : valeurs texte (si pas yes/no)", "info": "Exemple: 90s|2 min", "default": "" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparaison produits",
+      "blocks": [
+        { "type": "competitor", "settings": { "name": "GHD Platinum+" } },
+        { "type": "competitor", "settings": { "name": "Dyson Corrale" } },
+        { "type": "row", "settings": { "icon": "⚡", "feature": "Chauffe en 30 secondes", "lisora_check": true, "competitor_checks": "no|no" } },
+        { "type": "row", "settings": { "icon": "💎", "feature": "Céramique infrarouge", "lisora_check": true, "competitor_checks": "no|no" } },
+        { "type": "row", "settings": { "icon": "🌡️", "feature": "5 niveaux de température", "lisora_check": true, "competitor_checks": "no|yes" } },
+        { "type": "row", "settings": { "icon": "✨", "feature": "Ions négatifs anti-frisottis", "lisora_check": true, "competitor_checks": "yes|yes" } },
+        { "type": "row", "settings": { "icon": "🔄", "feature": "Retour gratuit 30 jours", "lisora_check": true, "competitor_checks": "no|no" } },
+        { "type": "row", "settings": { "icon": "🛡️", "feature": "Garantie 2 ans", "lisora_check": true, "competitor_checks": "yes|no" } },
+        { "type": "row", "settings": { "icon": "💸", "feature": "Prix", "lisora_check": false, "lisora_value": "79€", "competitor_checks": "val|val", "competitor_values": "249€|499€" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
