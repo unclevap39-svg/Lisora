@@ -12,6 +12,24 @@
         "trust_text": "+50 000 clientes ravies · 4,9 ★"
       }
     },
+    "social_proof": {
+      "type": "social-proof-ticker",
+      "settings": {
+        "media_label": "Vu dans"
+      },
+      "blocks": {
+        "sp1": { "type": "stat", "settings": { "number": "50 000+", "label": "clientes satisfaites" } },
+        "sp2": { "type": "stat", "settings": { "number": "4,9 / 5", "label": "note moyenne" } },
+        "sp3": { "type": "stat", "settings": { "number": "98%", "label": "recommandent Lisora" } },
+        "sp4": { "type": "stat", "settings": { "number": "30 jours", "label": "satisfaite ou remboursée" } },
+        "m1": { "type": "media_logo", "settings": { "name": "Elle" } },
+        "m2": { "type": "media_logo", "settings": { "name": "Vogue" } },
+        "m3": { "type": "media_logo", "settings": { "name": "Marie Claire" } },
+        "m4": { "type": "media_logo", "settings": { "name": "Cosmopolitan" } },
+        "m5": { "type": "media_logo", "settings": { "name": "Grazia" } }
+      },
+      "block_order": ["sp1","sp2","sp3","sp4","m1","m2","m3","m4","m5"]
+    },
     "trust": {
       "type": "trust-bar",
       "blocks": {
@@ -66,6 +84,29 @@
         "s4": { "type": "stat", "settings": { "number": "2 ans", "label": "Garantie incluse" } }
       },
       "block_order": ["b1","b2","b3","b4","b5","a1","a2","a3","a4","a5","s1","s2","s3","s4"]
+    },
+    "comparison": {
+      "type": "product-comparison",
+      "settings": {
+        "eyebrow": "🏆 La différence est claire",
+        "title": "Lisora vs. la concurrence",
+        "subtitle": "Nous avons comparé les lisseurs les plus populaires. Les faits parlent d'eux-mêmes.",
+        "brand_lisora": "Lisora Pro",
+        "cta_text": "Commander Lisora maintenant",
+        "cta_sub": "Livraison offerte · Retour gratuit 30 jours"
+      },
+      "blocks": {
+        "cc1": { "type": "competitor", "settings": { "name": "GHD Platinum+" } },
+        "cc2": { "type": "competitor", "settings": { "name": "Dyson Corrale" } },
+        "cr1": { "type": "row", "settings": { "icon": "⚡", "feature": "Chauffe en 30 secondes", "lisora_check": true, "competitor_checks": "no|no", "competitor_values": "" } },
+        "cr2": { "type": "row", "settings": { "icon": "💎", "feature": "Céramique infrarouge", "lisora_check": true, "competitor_checks": "no|no", "competitor_values": "" } },
+        "cr3": { "type": "row", "settings": { "icon": "🌡️", "feature": "5 niveaux de température", "lisora_check": true, "competitor_checks": "no|yes", "competitor_values": "" } },
+        "cr4": { "type": "row", "settings": { "icon": "✨", "feature": "Ions négatifs anti-frisottis", "lisora_check": true, "competitor_checks": "yes|yes", "competitor_values": "" } },
+        "cr5": { "type": "row", "settings": { "icon": "🔄", "feature": "Retour gratuit 30 jours", "lisora_check": true, "competitor_checks": "no|no", "competitor_values": "" } },
+        "cr6": { "type": "row", "settings": { "icon": "🛡️", "feature": "Garantie 2 ans", "lisora_check": true, "competitor_checks": "yes|no", "competitor_values": "" } },
+        "cr7": { "type": "row", "settings": { "icon": "💸", "feature": "Prix", "lisora_check": false, "lisora_value": "79€", "competitor_checks": "val|val", "competitor_values": "249€|499€" } }
+      },
+      "block_order": ["cc1","cc2","cr1","cr2","cr3","cr4","cr5","cr6","cr7"]
     },
     "colors": {
       "type": "color-showcase",
@@ -155,57 +196,6 @@
       },
       "block_order": ["r1", "r2", "r3", "r4"]
     },
-    "cta": {
-      "type": "cta-banner",
-      "settings": {
-        "title": "Vos cheveux de rêve, à portée de main",
-        "description": "Ne laissez plus vos cheveux dicter votre humeur. Avec Lisora, chaque matin devient un moment de plaisir. Livraison offerte · Satisfaite ou remboursée.",
-        "cta_primary": "Commander Lisora maintenant",
-        "cta_secondary": "Voir les coloris"
-      }
-    }
-  },
-    "social_proof": {
-      "type": "social-proof-ticker",
-      "settings": {
-        "media_label": "Vu dans"
-      },
-      "blocks": {
-        "sp1": { "type": "stat", "settings": { "number": "50 000+", "label": "clientes satisfaites" } },
-        "sp2": { "type": "stat", "settings": { "number": "4,9 / 5", "label": "note moyenne" } },
-        "sp3": { "type": "stat", "settings": { "number": "98%", "label": "recommandent Lisora" } },
-        "sp4": { "type": "stat", "settings": { "number": "30 jours", "label": "satisfaite ou remboursée" } },
-        "m1": { "type": "media_logo", "settings": { "name": "Elle" } },
-        "m2": { "type": "media_logo", "settings": { "name": "Vogue" } },
-        "m3": { "type": "media_logo", "settings": { "name": "Marie Claire" } },
-        "m4": { "type": "media_logo", "settings": { "name": "Cosmopolitan" } },
-        "m5": { "type": "media_logo", "settings": { "name": "Grazia" } }
-      },
-      "block_order": ["sp1","sp2","sp3","sp4","m1","m2","m3","m4","m5"]
-    },
-    "comparison": {
-      "type": "product-comparison",
-      "settings": {
-        "eyebrow": "🏆 La différence est claire",
-        "title": "Lisora vs. la concurrence",
-        "subtitle": "Nous avons comparé les lisseurs les plus populaires. Les faits parlent d'eux-mêmes.",
-        "brand_lisora": "Lisora Pro",
-        "cta_text": "Commander Lisora maintenant",
-        "cta_sub": "Livraison offerte · Retour gratuit 30 jours"
-      },
-      "blocks": {
-        "cc1": { "type": "competitor", "settings": { "name": "GHD Platinum+" } },
-        "cc2": { "type": "competitor", "settings": { "name": "Dyson Corrale" } },
-        "cr1": { "type": "row", "settings": { "icon": "⚡", "feature": "Chauffe en 30 secondes", "lisora_check": true, "competitor_checks": "no|no", "competitor_values": "" } },
-        "cr2": { "type": "row", "settings": { "icon": "💎", "feature": "Céramique infrarouge", "lisora_check": true, "competitor_checks": "no|no", "competitor_values": "" } },
-        "cr3": { "type": "row", "settings": { "icon": "🌡️", "feature": "5 niveaux de température", "lisora_check": true, "competitor_checks": "no|yes", "competitor_values": "" } },
-        "cr4": { "type": "row", "settings": { "icon": "✨", "feature": "Ions négatifs anti-frisottis", "lisora_check": true, "competitor_checks": "yes|yes", "competitor_values": "" } },
-        "cr5": { "type": "row", "settings": { "icon": "🔄", "feature": "Retour gratuit 30 jours", "lisora_check": true, "competitor_checks": "no|no", "competitor_values": "" } },
-        "cr6": { "type": "row", "settings": { "icon": "🛡️", "feature": "Garantie 2 ans", "lisora_check": true, "competitor_checks": "yes|no", "competitor_values": "" } },
-        "cr7": { "type": "row", "settings": { "icon": "💸", "feature": "Prix", "lisora_check": false, "lisora_value": "79€", "competitor_checks": "val|val", "competitor_values": "249€|499€" } }
-      },
-      "block_order": ["cc1","cc2","cr1","cr2","cr3","cr4","cr5","cr6","cr7"]
-    },
     "faq": {
       "type": "product-faq",
       "settings": {
@@ -217,10 +207,19 @@
         "fq1": { "type": "faq_item", "settings": { "question": "Est-ce que Lisora convient à tous les types de cheveux ?", "answer": "Oui ! Lisora est conçu pour fonctionner sur tous les types de cheveux : fins, épais, bouclés, frisés ou ondulés. Grâce à ses 5 niveaux de température ajustables (160°C à 230°C), vous choisissez l'intensité adaptée à votre type capillaire." } },
         "fq2": { "type": "faq_item", "settings": { "question": "Combien de temps dure le lissage ?", "answer": "En général, le lissage dure toute la journée — parfois jusqu'à 48h selon votre type de cheveux. La technologie ions négatifs scelle les écailles pour un résultat longue durée." } },
         "fq3": { "type": "faq_item", "settings": { "question": "Est-ce que Lisora abîme les cheveux ?", "answer": "Absolument pas. La céramique infrarouge chauffe les cheveux de l'intérieur vers l'extérieur, en respectant la structure de la tige capillaire. Zéro casse, zéro brûlure." } },
-        "fq4": { "type": "faq_item", "settings": { "question": "Quelle est la durée de la garantie ?", "answer": "Lisora est garanti 2 ans pièces et main d'œuvre. Si votre lisseur présente un défaut de fabrication, nous le remplaçons ou remboursons sans questions." } },
+        "fq4": { "type": "faq_item", "settings": { "question": "Quelle est la durée de la garantie ?", "answer": "Lisora est garanti 2 ans pièces et main d'oeuvre. Si votre lisseur présente un défaut de fabrication, nous le remplaçons ou remboursons sans questions." } },
         "fq5": { "type": "faq_item", "settings": { "question": "Puis-je retourner mon Lisora si je ne suis pas satisfaite ?", "answer": "Bien sûr. Vous disposez de 30 jours pour changer d'avis — retour entièrement gratuit. Remboursement 100% sous 48h." } }
       },
       "block_order": ["fq1","fq2","fq3","fq4","fq5"]
+    },
+    "cta": {
+      "type": "cta-banner",
+      "settings": {
+        "title": "Vos cheveux de rêve, à portée de main",
+        "description": "Ne laissez plus vos cheveux dicter votre humeur. Avec Lisora, chaque matin devient un moment de plaisir. Livraison offerte · Satisfaite ou remboursée.",
+        "cta_primary": "Commander Lisora maintenant",
+        "cta_secondary": "Voir les coloris"
+      }
     }
   },
   "order": ["hero", "social_proof", "trust", "featured_product", "before_after", "comparison", "colors", "how", "testimonials", "results", "faq", "cta"]

@@ -7,16 +7,16 @@
         {%- if section.settings.eyebrow != blank -%}
           <p class="section-eyebrow">{{ section.settings.eyebrow }}</p>
         {%- endif -%}
-        <h1 class="about-hero__title">{{ section.settings.title | default: 'Notre mission : sublimer chaque femme.' }}</h1>
-        <div class="about-hero__desc">
-          {{ section.settings.intro | default: '<p>Lisora est née d\'une frustration simple : pourquoi les femmes devaient-elles payer 60€ en salon pour avoir de beaux cheveux lisses ?</p><p>Nous avons créé le lisseur qui change ça.</p>' }}
-        </div>
+        <h1 class="about-hero__title">{{ section.settings.title }}</h1>
+        {%- if section.settings.intro != blank -%}
+          <div class="about-hero__desc rte">{{ section.settings.intro }}</div>
+        {%- endif -%}
       </div>
       {%- if section.settings.hero_image -%}
         <div class="about-hero__image-wrap">
           <img
             src="{{ section.settings.hero_image | image_url: width: 700 }}"
-            alt="{{ section.settings.hero_image.alt | default: 'Lisora — Notre histoire' }}"
+            alt="{{ section.settings.hero_image.alt | default: shop.name }}"
             width="700"
             loading="eager"
             class="about-hero__image"
@@ -45,8 +45,12 @@
           {%- if section.settings.story_eyebrow != blank -%}
             <p class="section-eyebrow">{{ section.settings.story_eyebrow }}</p>
           {%- endif -%}
-          <h2 class="about-story__title">{{ section.settings.story_title }}</h2>
-          <div class="about-story__body rte">{{ section.settings.story_body }}</div>
+          {%- if section.settings.story_title != blank -%}
+            <h2 class="about-story__title">{{ section.settings.story_title }}</h2>
+          {%- endif -%}
+          {%- if section.settings.story_body != blank -%}
+            <div class="about-story__body rte">{{ section.settings.story_body }}</div>
+          {%- endif -%}
         </div>
       </div>
     </div>
@@ -73,7 +77,7 @@
     </div>
   {%- endif -%}
 
-  {%- comment -%} ── Équipe (optionnel) ── {%- endcomment -%}
+  {%- comment -%} ── Équipe ── {%- endcomment -%}
   {%- assign team_blocks = section.blocks | where: 'type', 'team_member' -%}
   {%- if team_blocks.size > 0 -%}
     <div class="about-team">
@@ -113,9 +117,9 @@
   {%- if section.settings.cta_text != blank -%}
     <div class="about-cta">
       <div class="container text-center">
-        <h2 class="about-cta__title">{{ section.settings.cta_title | default: 'Rejoignez la communauté Lisora' }}</h2>
-        <p class="about-cta__sub">{{ section.settings.cta_subtitle | default: '50 000 femmes ont déjà transformé leur routine beauté.' }}</p>
-        <a href="{{ section.settings.cta_link | default: '/products' }}" class="btn btn-primary btn-lg">
+        <h2 class="about-cta__title">{{ section.settings.cta_title }}</h2>
+        <p class="about-cta__sub">{{ section.settings.cta_subtitle }}</p>
+        <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="btn btn-primary btn-lg">
           {{ section.settings.cta_text }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
@@ -127,7 +131,7 @@
 
 {% schema %}
 {
-  "name": "À propos — Contenu",
+  "name": "A propos — Contenu",
   "tag": "section",
   "class": "section-about",
   "settings": [
@@ -135,36 +139,101 @@
       "type": "header",
       "content": "Hero"
     },
-    { "type": "text", "id": "eyebrow", "label": "Accroche", "default": "💖 Notre histoire" },
-    { "type": "text", "id": "title", "label": "Titre principal", "default": "Née d'une frustration. Construite pour vous." },
-    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Lisora est née d'une frustration simple : pourquoi les femmes devaient-elles payer 60€ en salon pour avoir de beaux cheveux lisses ?</p><p>En 2022, nous avons décidé de changer ça. Résultat : un lisseur céramique infrarouge professionnel, accessible à toutes.</p>" },
-    { "type": "image_picker", "id": "hero_image", "label": "Image hero" },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Accroche",
+      "default": "Notre histoire"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre principal",
+      "default": "Née d'une frustration. Construite pour vous."
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Introduction"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Image hero"
+    },
     {
       "type": "header",
       "content": "Notre histoire"
     },
-    { "type": "text", "id": "story_eyebrow", "label": "Accroche", "default": "📖 D'où on vient" },
-    { "type": "text", "id": "story_title", "label": "Titre", "default": "De l'idée au lisseur que toute la France s'arrache" },
-    { "type": "richtext", "id": "story_body", "label": "Corps du texte", "default": "<p>Tout a commencé dans un petit appartement parisien. Léa, la fondatrice de Lisora, passait deux heures chaque matin à dompter ses cheveux bouclés — et des fortunes en salon.</p><p>Elle a cherché une alternative professionnelle. Introuvable à un prix raisonnable.</p><p>Alors elle l'a créée. Avec une équipe d'ingénieurs capillaires et trois ans de R&D, Lisora Pro est née.</p><p>Aujourd'hui, 50 000 femmes en France partagent son secret. Et elles ne reviendront plus jamais en arrière.</p>" },
-    { "type": "image_picker", "id": "story_image", "label": "Image histoire" },
+    {
+      "type": "text",
+      "id": "story_eyebrow",
+      "label": "Accroche",
+      "default": "D'où on vient"
+    },
+    {
+      "type": "text",
+      "id": "story_title",
+      "label": "Titre",
+      "default": "De l'idée au lisseur que toute la France s'arrache"
+    },
+    {
+      "type": "richtext",
+      "id": "story_body",
+      "label": "Corps du texte"
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Image histoire"
+    },
     {
       "type": "header",
       "content": "Nos valeurs"
     },
-    { "type": "text", "id": "values_title", "label": "Titre valeurs", "default": "Ce qui nous guide chaque jour" },
+    {
+      "type": "text",
+      "id": "values_title",
+      "label": "Titre valeurs",
+      "default": "Ce qui nous guide chaque jour"
+    },
     {
       "type": "header",
-      "content": "Équipe (optionnel)"
+      "content": "Equipe (optionnel)"
     },
-    { "type": "text", "id": "team_title", "label": "Titre équipe", "default": "L'équipe derrière Lisora" },
+    {
+      "type": "text",
+      "id": "team_title",
+      "label": "Titre équipe",
+      "default": "L'équipe derrière Lisora"
+    },
     {
       "type": "header",
       "content": "CTA final"
     },
-    { "type": "text", "id": "cta_title", "label": "Titre CTA", "default": "Rejoignez la communauté Lisora" },
-    { "type": "text", "id": "cta_subtitle", "label": "Sous-titre CTA", "default": "50 000 femmes ont déjà transformé leur routine beauté." },
-    { "type": "text", "id": "cta_text", "label": "Texte bouton", "default": "Découvrir Lisora Pro" },
-    { "type": "url", "id": "cta_link", "label": "Lien bouton" }
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "Titre CTA",
+      "default": "Rejoignez la communauté Lisora"
+    },
+    {
+      "type": "text",
+      "id": "cta_subtitle",
+      "label": "Sous-titre CTA",
+      "default": "50 000 femmes ont déjà transformé leur routine beauté."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Texte bouton",
+      "default": "Découvrir Lisora Pro"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Lien bouton"
+    }
   ],
   "blocks": [
     {
@@ -189,7 +258,7 @@
   ],
   "presets": [
     {
-      "name": "À propos — Contenu",
+      "name": "A propos — Contenu",
       "blocks": [
         { "type": "value", "settings": { "icon": "💎", "title": "Excellence", "description": "Chaque détail compte. Du câble pivotant à la céramique infrarouge — rien n'est laissé au hasard." } },
         { "type": "value", "settings": { "icon": "💖", "title": "Bienveillance", "description": "Nous croyons que chaque femme mérite de se sentir belle, sans compromis sur sa santé capillaire." } },
