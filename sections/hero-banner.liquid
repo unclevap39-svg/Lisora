@@ -19,7 +19,7 @@
 
     <div class="hero__cta">
       {%- if section.settings.cta_primary_label != blank -%}
-        <a href="{{ section.settings.cta_primary_url }}" class="btn btn-primary">
+        <a href="{{ section.settings.cta_primary_url | default: all_products['lisora'].url | default: '/products/lisora' }}" class="btn btn-primary">
           {{ section.settings.cta_primary_label }}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -27,7 +27,7 @@
         </a>
       {%- endif -%}
       {%- if section.settings.cta_secondary_label != blank -%}
-        <a href="{{ section.settings.cta_secondary_url }}" class="btn btn-outline">
+        <a href="{{ section.settings.cta_secondary_url | default: all_products['lisora'].url | default: '/products/lisora' }}" class="btn btn-outline">
           {{ section.settings.cta_secondary_label }}
         </a>
       {%- endif -%}

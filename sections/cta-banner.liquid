@@ -4,7 +4,7 @@
     <p class="cta-banner__desc">{{ section.settings.description }}</p>
     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
       {%- if section.settings.cta_primary != blank -%}
-        <a href="{{ section.settings.cta_primary_url | default: '/collections/all' }}" class="btn btn-primary btn-lg">
+        <a href="{{ section.settings.cta_primary_url | default: all_products['lisora'].url | default: '/products/lisora' }}" class="btn btn-primary btn-lg">
           {{ section.settings.cta_primary }}
         </a>
       {%- endif -%}

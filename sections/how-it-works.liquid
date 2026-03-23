@@ -55,7 +55,7 @@
 
     {%- if section.settings.cta_label != blank -%}
       <div style="text-align:center;margin-top:56px;" data-aos="fade-up" data-aos-delay="300">
-        <a href="{{ section.settings.cta_url | default: '/products' }}" class="btn btn-primary btn-lg">
+        <a href="{{ section.settings.cta_url | default: all_products['lisora'].url | default: '/products/lisora' }}" class="btn btn-primary btn-lg">
           {{ section.settings.cta_label }}
         </a>
       </div>

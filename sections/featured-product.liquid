@@ -98,6 +98,8 @@
           </ul>
         {%- elsif product.description != blank -%}
           <p class="product-info__short-desc">{{ product.description | strip_html | truncate: 160 }}</p>
+        {%- else -%}
+          <p class="product-info__short-desc">Le lisseur céramique infrarouge professionnel pour des cheveux lisses en 5 minutes.</p>
         {%- endif -%}
 
         <script>window.__LISORA_PRODUCT__ = {{ product | json }};</script>
