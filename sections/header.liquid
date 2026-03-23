@@ -58,7 +58,7 @@
       <div class="site-header__actions">
 
         {%- comment -%} CTA pill — desktop seulement {%- endcomment -%}
-        <a href="{{ section.settings.cta_link | default: all_products['lisora'].url | default: '/products/lisora' }}" class="header-cta-btn" aria-label="{{ section.settings.cta_text | default: 'Commander' }}">
+        <a href="{{ section.settings.cta_link | default: '/products/lisora' }}" class="header-cta-btn" aria-label="{{ section.settings.cta_text | default: 'Commander' }}">
           <span>{{ section.settings.cta_text | default: 'Commander' }}</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -162,7 +162,7 @@
 
     {%- comment -%} Bouton CTA {%- endcomment -%}
     <div class="mobile-menu__cta">
-      <a href="{{ section.settings.cta_link | default: all_products['lisora'].url | default: '/products/lisora' }}" class="btn btn-primary btn-full" data-mobile-close>
+      <a href="{{ section.settings.cta_link | default: '/products/lisora' }}" class="btn btn-primary btn-full" data-mobile-close>
         {{ section.settings.cta_text | default: 'Commander Lisora' }}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true">
           <path d="M5 12h14M12 5l7 7-7 7"/>
